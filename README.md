@@ -58,7 +58,7 @@ It is important to spell out nicknames and distinguish between hyphenated last n
 
 ## Incumbency (`inc`)
 
-Determine incumbency based on prior election results for the same office including all special elections. District numberings do not matterr; Conor Lamb who won a special election to PA-18 in March 2018 is still an incumbent when he ran in November 2018 for the re-drawn PA-17. The codes are
+Determine incumbency based on prior election results for the same office including all special elections. District numberings do not matter; Conor Lamb who won a special election to PA-18 in March 2018 is still an incumbent when he ran in November 2018 for the re-drawn PA-17. The codes are
 
 |Code | Description|
 |-----|------------|
@@ -70,13 +70,13 @@ Determine incumbency based on prior election results for the same office includi
 
 ## Party affiliation
 
-Democrats are coded as `"D"`, Republicans as `"D"`. Liberatrians coded as `"Lbt"`, Green party as `"Grn"`.
+Democrats are coded as `"D"`, Republicans as `"D"`. Libertarians coded as `"Lbt"`, Green party as `"Grn"`.
 
 There are several regional and idiosyncratic party names. 
 
 - The Minnesota DFL (Democratic–Farmer–Labor Party) are coded as `"D"`
 - The North Dakota NPL (Nonpartisan League Party) are coded as `"D"`
-- The Working Families Parties endorses candidates in New York, Connecticut, South Carolina, and .... that appear on the ballot. Determine the primary party affiliation and code D-WFP cross-listed candidates as `"D"`.
+- The Working Families Parties endorses candidates in New York, Connecticut, South Carolina, and .... that appear on the ballot. Determine the primary party affiliation and code D-WFP cross-listed or fusion candidates as `"D"`.
 
 
 ## Election outcome (`won`)
