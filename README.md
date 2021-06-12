@@ -60,6 +60,20 @@ The Senate class is important for distinguishing different seats in the same yea
 - `CA-01`: California's 1st Congressional district (leading 0)
 - `AK-01`: Alaska's at large Congressional district 
 
+### Special Elections and Runoff Elections
+
+A "normal" special election, when an incumbent retires or dies before their term is up, can be listed as `1`. A general election that happens on the first Tuesday of November for a seat where the term is up is listed as `0`.
+
+
+"[T]wo states --- Georgia and Louisiana --- require runoff elections in a general election when no candidate receives a majority of the vote. In every other state, a candidate can win a general election with a plurality of the vote." (Ballotpedia).  
+
+Several corner cases are worth enumerating:
+
+In **Louisiana** for Non-Presidential elections, starting from 1977, there is a jungle primary in the first **November election**, when all 49 states have their general elections ([Ballotpedia](https://ballotpedia.org/Jungle_primary)).  Unless a candidate wins with the majority of the vote, the top two candidates go to a runoff often in December. I am still deliberating how to code this. 
+
+- For example in November 2014, neither Bill Cassidy (R) and incumbent Mary Landrieu (D) got a majority in the first round, with 5 other Democrat or Republican candidates on the ballot. A runoff was held in December with the two candidates and Cassidy won with 55 percent of the vote. In 2020, Cassidy won 59 percent of the jungle primary vote and won re-election outright.
+
+
 
 ### Candidate Names 
 
@@ -86,7 +100,7 @@ Determine incumbency based on prior election results for the same office includi
 | 3 | incumbent who was appointed (US senate)|
 
 
-## Party affiliation
+### Party affiliation
 
 Democrats are coded as `"D"`, Republicans as `"D"`. Libertarians coded as `"Lbt"`, Green party as `"Grn"`.
 
@@ -106,6 +120,7 @@ Write-in votes, when officially reported, are coded ____.
 ### Vote count (`votes`)
 
 The official number of votes (instead of the voteshare). An integer. 
+In some states, notably Florida, if a congressional district is uncontested by one of the major parties, the winner's vote count is __not reported__ by the Secretary of State. Votes here should be listed as blank.
 
 ##  Related Datasets and Data Sources
 
