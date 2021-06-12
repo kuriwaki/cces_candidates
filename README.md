@@ -23,6 +23,10 @@ The goal of cces_candidates is to serve as a standardized interface for U.S. can
 |G | Governor | 
 
 
+### Election Year
+
+`year` stands in for the year of the general election cycle. Unless otherwise noted `2016` indicates the 2016 General election in November. Odd-year general elections in VA and NJ are noted by their odd year. Run-off elections that go on till January, for example in the Georgia Senate runoffs, are *still* coded as 2020.
+
 ### State and State codes
 
 The variable `st` refers to the two letter code given by R's `state.abb` and the variable `state` is the spelled out name given by R's `state.name`.
@@ -33,7 +37,20 @@ The variable `st` refers to the two letter code given by R's `state.abb` and the
 |`"WY"` | `"Wyoming"`|
 
 
+### District and Senate Class (`dist`)
 
+A number for the Congressional district for the House. For the Senate, the **Senate class** of the election. For Governor and statewide executives, this should be left blank.
+
+The Senate class is important for distinguishing different seats in the same year when a off-cycle seat is up due to a special election.
+
+| year | office | st| dist | special | winner |
+|----|--|--|--|--|---------------|
+|2020|S|GA| 2|0| OSSOFF, JON |
+|2020|S|GA|3|1|WARNOCK, RAPHAEL |
+|2016|S|GA|3|0|ISAKOSN, JOHNNY |
+|2014|S|GA|2|0|PERDUE, DAVID|
+
+(there is no class 1 Senate seat in Georgia)
 
 ### Congressional Districts (`cd`)
 
