@@ -1,5 +1,6 @@
+# Candidate and Official Election Results for Federal and Statewide elections, 2006-2020
 
-# cces_candidates
+---------
 
 <!-- badges: start -->
 <!-- badges: end -->
@@ -7,12 +8,12 @@
 The goal of cces_candidates is to serve as a standardized interface for U.S. candidate metadata with a particular application to merging with the CES / CCES
 
 
-# Candidate Data Format
+## Candidate Data Format
 
 
-# Candidate Data Requirements
+## Candidate Data Requirements
 
-## Office (`office`)
+### Office (`office`)
 
 |Code:|Office | 
 |-----|-------|
@@ -22,7 +23,7 @@ The goal of cces_candidates is to serve as a standardized interface for U.S. can
 |G | Governor | 
 
 
-## State and State codes
+### State and State codes
 
 The variable `st` refers to the two letter code given by R's `state.abb` and the variable `state` is the spelled out name given by R's `state.name`.
 
@@ -34,7 +35,7 @@ The variable `st` refers to the two letter code given by R's `state.abb` and the
 
 
 
-## Congressional Districts (`cd`)
+### Congressional Districts (`cd`)
 
 `cd` refers to the State - Congressional district number combination, combined with a hyphen. Single-digit districts must have a leading zero. At-large states should be numbered `01` instead of `00` or `-AL`. For example:
 
@@ -43,7 +44,7 @@ The variable `st` refers to the two letter code given by R's `state.abb` and the
 - `AK-01`: Alaska's at large Congressional district 
 
 
-## Candidate Names 
+### Candidate Names 
 
 Standardized candidate name from James Snyder.  The syntax is `[Last name], [First Name] [Middle name] ([Nickname]), [Jr/Sr/I/II/III]`.  Some examples of names are below, to give a sense of the syntax.
  
@@ -56,7 +57,7 @@ Standardized candidate name from James Snyder.  The syntax is `[Last name], [Fir
 
 It is important to spell out nicknames and distinguish between hyphenated last names wherever possible, to merge across datasets. 
 
-## Incumbency (`inc`)
+### Incumbency (`inc`)
 
 Determine incumbency based on prior election results for the same office including all special elections. District numberings do not matter; Conor Lamb who won a special election to PA-18 in March 2018 is still an incumbent when he ran in November 2018 for the re-drawn PA-17. The codes are
 
@@ -81,15 +82,15 @@ There are several regional and idiosyncratic party names.
 Write-in votes, when officially reported, are coded ____.
 
 
-## Election outcome (`won`)
+### Election outcome (`won`)
 
 1 if the candidate won the election, 0 otherwise. For President, 1 if the candidate won the electoral college votes in that _state_, rather than the office. 
 
-## Vote count (`votes`)
+### Vote count (`votes`)
 
 The official number of votes (instead of the voteshare). An integer. 
 
-# Related Datasets and Data Sources
+##  Related Datasets and Data Sources
 
 - The Clerk of the House [Official Election Returns](https://history.house.gov/Institution/Election-Statistics/) is the authoritative source for vote counts and party affiliations for `P`, `S`, `H`.  It does not include `inc` or the standardized name.
 - The MIT Election Data Science Lab [Dataverse](https://dataverse.harvard.edu/dataverse/medsl_election_returns) compiles this Clerk information in csv [`P`](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/PEJ5QU), [`S`](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/PEJ5QU), [`H`](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/IG0UN2) (only till 2018 as of June 2021). It has information on special elections but not `inc`. 
