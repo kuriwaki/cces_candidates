@@ -78,9 +78,19 @@ There are several regional and idiosyncratic party names.
 - The North Dakota NPL (Nonpartisan League Party) are coded as `"D"`
 - The Working Families Parties endorses candidates in New York, Connecticut, South Carolina, and .... that appear on the ballot. Determine the primary party affiliation and code D-WFP cross-listed or fusion candidates as `"D"`.
 
+Write-in votes, when officially reported, are coded ____.
+
 
 ## Election outcome (`won`)
 
+1 if the candidate won the election, 0 otherwise. For President, 1 if the candidate won the electoral college votes in that _state_, rather than the office. 
 
-## Vote count (`won`)
+## Vote count (`votes`)
+
+The official number of votes (instead of the voteshare). An integer. 
+
 # Related Datasets and Data Sources
+
+- The Clerk of the House [Official Election Returns](https://history.house.gov/Institution/Election-Statistics/) is the authoritative source for vote counts and party affiliations for `P`, `S`, `H`.  It does not include `inc` or the standardized name.
+- The MIT Election Data Science Lab [Dataverse](https://dataverse.harvard.edu/dataverse/medsl_election_returns) compiles this Clerk information in csv [`P`](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/PEJ5QU), [`S`](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/PEJ5QU), [`H`](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/IG0UN2) (only till 2018 as of June 2021). It has information on special elections but not `inc`. 
+- State executive offices (`G`, Secretary of State, AG, etc..) are taken from official statements of the vote of the Secretary of State. I have collected the list of URLs for each state at [`sec-state_statement-of-votes.csv`](links/sec-state_statement-of-votes.csv)
