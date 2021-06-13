@@ -11,6 +11,13 @@ The goal of cces_candidates is to serve as a standardized interface for U.S. can
 ## Candidate Data Format
 
 
+Candidate data is stored in "long" (as opposed to wide) format, with each row representing a candidate in a particular race. Each row is represented by `office`, `state`, `dist`,  and `candidatename`.
+
+
+A combination of `state` and `candidatename` uniquely identifies a candidate. Note that we do not use `office` or `party` here, because that can change across time. For example, House members run to become Senators, and in rare occasions candidates change their party (e.g. Charlie Crist, Kyrsten Sinema).
+
+
+
 ## Candidate Data Requirements
 
 ### Office (`office`)
