@@ -1,11 +1,14 @@
 # Candidate and Official Election Results for Federal and Statewide elections, 2006-2020
 
----------
+Shiro Kuriwaki
 
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of cces_candidates is to serve as a standardized interface for U.S. candidate metadata with a particular application to merging with the CES / CCES
+The goal of cces_candidates is to serve as a standardized interface for U.S. candidate metadata with a particular application to merging with the CES / CCES.
+
+Although these data formally only cover 2006 and onwards, the coding rules are written so that they are mostly consistent with a historical database mainly constructed by Jim Snyder.
+
 
 
 ## Candidate Data Format
@@ -122,7 +125,10 @@ Write-in votes, when officially reported, are coded ____.
 
 ### Election outcome (`won`)
 
-1 if the candidate won the election, 0 otherwise. For President, 1 if the candidate won the electoral college votes in that _state_, rather than the office. 
+1 if the candidate won that race, 0 otherwise. For President, 1 if the candidate won the electoral college votes in that _state_, rather than the office. 
+
+If the election was effectively a primary or a race where no one candidate won outright (and a runoff was held later), then the winner of that first stage election gets a value of ___.
+
 
 ### Vote count (`candidatevotes`)
 
