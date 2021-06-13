@@ -124,9 +124,13 @@ Write-in votes, when officially reported, are coded ____.
 
 1 if the candidate won the election, 0 otherwise. For President, 1 if the candidate won the electoral college votes in that _state_, rather than the office. 
 
-### Vote count (`votes`)
+### Vote count (`candidatevotes`)
 
-The official number of votes (instead of the voteshare). An integer. 
+The official number of votes (instead of the voteshare). An integer.
+
+For candidates running on multiple party tickets, this will be the _sum_ of all of their votes.  For example, in 2016, Rep. Rosa L. DeLauro (CT-03) ran as a Democrat and also ran as a Working Families Party candidate. She won 192,274 votes in the former and 21,298 votes in the latter, so her `candidatevotes` is the total, 213,572.
+
+
 In some states, notably Florida, if a congressional district is uncontested by one of the major parties, the winner's vote count is __not reported__ by the Secretary of State. Votes here should be listed as blank.
 
 ##  Related Datasets and Data Sources
