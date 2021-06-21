@@ -1,0 +1,63 @@
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(haven)}
+\KeywordTok{library}\NormalTok{(tidyverse)}
+\KeywordTok{library}\NormalTok{(fs)}
+
+\NormalTok{rel\_dir \textless{}{-}}\StringTok{ "\textasciitilde{}/Dropbox/CCES\_candidates/Release/"}
+\NormalTok{ccc\_dir \textless{}{-}}\StringTok{ "\textasciitilde{}/Dropbox/cces\_cumulative/data/release"}
+
+\CommentTok{\# Read datasets {-}{-}{-}{-}{-}{-}}
+
+\CommentTok{\#\# Candidate dataset}
+\NormalTok{cand\_case \textless{}{-}}\StringTok{ }\KeywordTok{read\_dta}\NormalTok{(}\KeywordTok{path}\NormalTok{(rel\_dir, }\StringTok{"cces\_candidates\_pre.dta"}\NormalTok{)) }
+\NormalTok{cand\_info \textless{}{-}}\StringTok{ }\KeywordTok{read\_dta}\NormalTok{(}\KeywordTok{path}\NormalTok{(rel\_dir, }\StringTok{"candidates\_snyder.dta"}\NormalTok{)) }
+
+\CommentTok{\#\# Cumulative CCES (separate dataset)}
+\NormalTok{ccc\_cumulative \textless{}{-}}\StringTok{ }\KeywordTok{read\_rds}\NormalTok{(}\KeywordTok{path}\NormalTok{(ccc\_dir, }\StringTok{"cumulative\_2006\_2019.rds"}\NormalTok{))}
+
+\CommentTok{\# Slim down data {-}{-}{-}{-}}
+\CommentTok{\#\# Cumulative}
+\NormalTok{ccc\_house \textless{}{-}}\StringTok{ }\NormalTok{ccc\_cumulative }\OperatorTok{\%\textgreater{}\%}\StringTok{ }
+\StringTok{  }\KeywordTok{select}\NormalTok{(year, case\_id, st, dist\_up, cd, race,  intent\_rep\_chosen) }\OperatorTok{\%\textgreater{}\%}\StringTok{ }
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{cand =} \KeywordTok{as.integer}\NormalTok{(intent\_rep\_party),}
+         \DataTypeTok{race =} \KeywordTok{as\_factor}\NormalTok{(race))}
+
+\CommentTok{\#\# candidate data by respondent}
+\NormalTok{cand\_df \textless{}{-}}\StringTok{ }\NormalTok{cand\_case }\OperatorTok{\%\textgreater{}\%}\StringTok{ }
+\StringTok{  }\KeywordTok{select}\NormalTok{(year, case\_id, cand, name\_snyder, won)}
+ 
+
+\CommentTok{\# Find contested races with a D and a R {-}{-}{-}{-}}
+\NormalTok{race\_df \textless{}{-}}\StringTok{ }\NormalTok{cand\_info }\OperatorTok{\%\textgreater{}\%}\StringTok{ }
+\StringTok{  }\KeywordTok{filter}\NormalTok{(office }\OperatorTok{==}\StringTok{ "H"}\NormalTok{) }\OperatorTok{\%\textgreater{}\%}\StringTok{ }
+\StringTok{  }\KeywordTok{select}\NormalTok{(year, st, dist\_up, party, inc, won) }\OperatorTok{\%\textgreater{}\%}\StringTok{ }
+\StringTok{  }\KeywordTok{group\_by}\NormalTok{(year, st, dist\_up) }\OperatorTok{\%\textgreater{}\%}\StringTok{ }
+\StringTok{  }\KeywordTok{summarize}\NormalTok{(}\DataTypeTok{n\_Ds =} \KeywordTok{sum}\NormalTok{(party }\OperatorTok{==}\StringTok{ "D"}\NormalTok{, }\DataTypeTok{na.rm =} \OtherTok{TRUE}\NormalTok{), }
+            \DataTypeTok{n\_Rs =} \KeywordTok{sum}\NormalTok{(party }\OperatorTok{==}\StringTok{ "R"}\NormalTok{, }\DataTypeTok{na.rm =} \OtherTok{TRUE}\NormalTok{),}
+            \DataTypeTok{.groups =} \StringTok{"drop"}\NormalTok{)}
+\NormalTok{contested \textless{}{-}}\StringTok{ }\NormalTok{race\_df }\OperatorTok{\%\textgreater{}\%}\StringTok{ }
+\StringTok{  }\KeywordTok{filter}\NormalTok{(n\_Ds }\OperatorTok{==}\StringTok{ }\DecValTok{1}\NormalTok{, n\_Rs }\OperatorTok{==}\StringTok{ }\DecValTok{1}\NormalTok{) }\OperatorTok{\%\textgreater{}\%}\StringTok{ }
+\StringTok{  }\KeywordTok{select}\NormalTok{(year, st, dist\_up)}
+
+\CommentTok{\# Merge candidate dataset to cumulative}
+\CommentTok{\# subset to contested candidates and add whether the candidate won}
+\NormalTok{house\_df \textless{}{-}}\StringTok{ }\NormalTok{ccc\_house }\OperatorTok{\%\textgreater{}\%}\StringTok{ }
+\StringTok{  }\KeywordTok{filter}\NormalTok{(race }\OperatorTok{\%in\%}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"White"}\NormalTok{, }\StringTok{"Black"}\NormalTok{, }\StringTok{"Hispanic"}\NormalTok{)) }\OperatorTok{\%\textgreater{}\%}\StringTok{  }\CommentTok{\# subset to three races}
+\StringTok{  }\KeywordTok{inner\_join}\NormalTok{(contested, }\DataTypeTok{by =} \KeywordTok{c}\NormalTok{(}\StringTok{"year"}\NormalTok{,}\StringTok{"st"}\NormalTok{, }\StringTok{"dist\_up"}\NormalTok{)) }\OperatorTok{\%\textgreater{}\%}\StringTok{ }\CommentTok{\# subset to contested}
+\StringTok{  }\KeywordTok{left\_join}\NormalTok{(cand\_df, }\DataTypeTok{by =} \KeywordTok{c}\NormalTok{(}\StringTok{"year"}\NormalTok{, }\StringTok{"case\_id"}\NormalTok{, }\StringTok{"cand"}\NormalTok{))}
+
+\CommentTok{\# Results {-}{-}{-}{-}{-}}
+\CommentTok{\# summary statistics {-} are racial minorities likely to vote for losing candidates?}
+\NormalTok{results\_long \textless{}{-}}\StringTok{ }\NormalTok{house\_df }\OperatorTok{\%\textgreater{}\%}\StringTok{ }
+\StringTok{  }\KeywordTok{group\_by}\NormalTok{(year, race) }\OperatorTok{\%\textgreater{}\%}\StringTok{ }
+\StringTok{  }\KeywordTok{summarize}\NormalTok{(}\DataTypeTok{vote\_for\_winning =} \KeywordTok{mean}\NormalTok{(won, }\DataTypeTok{na.rm =} \OtherTok{TRUE}\NormalTok{),}
+            \DataTypeTok{n =} \KeywordTok{n}\NormalTok{())}
+
+\CommentTok{\#\# present in table}
+\KeywordTok{pivot\_wider}\NormalTok{(results\_long, }
+            \DataTypeTok{id\_cols =}\NormalTok{ year, }
+            \DataTypeTok{names\_from =}\NormalTok{ race, }
+            \DataTypeTok{values\_from =}\NormalTok{ vote\_for\_winning)}
+\end{Highlighting}
+\end{Shaded}
