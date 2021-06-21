@@ -87,7 +87,7 @@ In **Louisiana** for Non-Presidential elections, starting from 1977, there is a 
 
 ### Candidate Names (`candidatename`) 
 
-Standardized candidate name following Jim Snyder's coding rules. The specifics of this varibale are important for overtime tracking because __name and state__ uniquely identify a unique person in the data. The syntax is 
+Standardized candidate name following Jim Snyder's coding rules. The specifics of this variable are important for overtime tracking because __name and state uniquely identify a unique person__ across all his Congressional candidate data (at least 1950 to the present). The syntax is 
 
 `[Last name], [First Name] [Middle name] ([Nickname]), [Jr/Sr/I/II/III]`
 
@@ -100,11 +100,12 @@ For example:
 - `KENNEDY, JOSEPH P. (JOE), III`: commonly known as Joe Kennedy (MA)
 - `WASSERMAN SCHULTZ, DEBBIE`: note the last name is not hyphenated and is two words
 
-It is important to spell out nicknames and distinguish between hyphenated last names wherever possible, to merge across datasets. 
 
 Note that these names are *different* from other official names (1) on the ballot, (2) on the Clerk of the House report, or the (3) FEC. Any of these sources can disagree on the formatting of the names or whether to abbreviate a middle name. 
 
 The Snyder formalization solves some shortcomings in the official data above. Candidates may report different style names in the ballot vs. the FEC (e.g. ____) or they may have multiple FEC IDs at the same time (e.g. _____). More commonly, a House representative who then runs for higher office like Senate will often get a separate FEC ID, even though they are the same person (e.g. ____). In theses cases, the Snyder formalization of ID'ing people by their full name and state is the most reliable. 
+
+Therefore, it is important in our formalizatioon to spell out nicknames and distinguish between hyphenated last names to the extent that it uniquely identifies a person within a state. The same person's name should be formatted exactly the same way, and conversely, two different people with near-identical last names should somehow be given **different** names. For example, if a John Smith ran for Congress in 1980  in Ohio and then a *separate, unrelated* John Smith ran again in Ohio in 2020. Then to distinguish the two different people, we would need to find _something_ like a middle name or suffix to distinguish the name in characters.
 
 One shortcoming of the Snyder formalization is that it may be __too__ rigid. Whether or not something is abbreviated can be determined on a coding rule decided early on. If a person's name changes, e.g. through marriage or divorce, the old name must be kept. For example:
 
