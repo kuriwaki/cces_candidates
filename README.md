@@ -85,10 +85,14 @@ In **Louisiana** for Non-Presidential elections, starting from 1977, there is a 
 
 
 
-### Candidate Names 
+### Candidate Names (`candidatename`) 
 
-Standardized candidate name from James Snyder.  The syntax is `[Last name], [First Name] [Middle name] ([Nickname]), [Jr/Sr/I/II/III]`.  Some examples of names are below, to give a sense of the syntax.
- 
+Standardized candidate name following Jim Snyder's coding rules. The specifics of this varibale are important for overtime tracking because __name and state__ uniquely identify a unique person in the data. The syntax is 
+
+`[Last name], [First Name] [Middle name] ([Nickname]), [Jr/Sr/I/II/III]`
+
+
+For example:
 
 - `SEWELL, TERRYCINA ANDREA (TERRI)`: commonly known as Terri Sewell (AL)
 - `GRASSLEY, CHARLES ERNEST (CHUCK)`: commonly known as Chuck Grassley (IA)
@@ -97,6 +101,16 @@ Standardized candidate name from James Snyder.  The syntax is `[Last name], [Fir
 - `WASSERMAN SCHULTZ, DEBBIE`: note the last name is not hyphenated and is two words
 
 It is important to spell out nicknames and distinguish between hyphenated last names wherever possible, to merge across datasets. 
+
+Note that these names are *different* from other official names (1) on the ballot, (2) on the Clerk of the House report, or the (3) FEC. Any of these sources can disagree on the formatting of the names or whether to abbreviate a middle name. 
+
+The Snyder formalization solves some shortcomings in the official data above. Candidates may report different style names in the ballot vs. the FEC (e.g. ____) or they may have multiple FEC IDs at the same time (e.g. _____). More commonly, a House representative who then runs for higher office like Senate will often get a separate FEC ID, even though they are the same person (e.g. ____). In theses cases, the Snyder formalization of ID'ing people by their full name and state is the most reliable. 
+
+One shortcoming of the Snyder formalization is that it may be __too__ rigid. Whether or not something is abbreviated can be determined on a coding rule decided early on. If a person's name changes, e.g. through marriage or divorce, the old name must be kept. For example:
+
+
+* `BIDEN, JOSEPH R., JR.` has his middle name abbreviated, even though it is known (Robinette).
+* `MACK, MARY BONO` (R-CA, 1998-2012) married to Connie Mack IV (R-FL, 2001-2003) during 2007-2013. They separated in 2013 and now goes by Mary Bono, but in the data she will be coded by the above name. 
 
 ### Incumbency (`inc`)
 
