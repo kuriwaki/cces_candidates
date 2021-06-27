@@ -1,3 +1,6 @@
+# Set-up ------------------------------------------------------------------
+
+
 library(tidyverse)
 library(haven)
 
@@ -10,7 +13,9 @@ js_06 <- read_dta("2020-06-13 election_results_2006_2016.dta") # Candidate data 
 
 js_18 <- read_dta("2020-08-16 election_results_2018_names_updated.dta") # Candidate 2018
 
-js_06_18 <- bind_rows(js_06, js_18) # Binding two datasets
+js_06_18 <- bind_rows(js_06, js_18) %>%# Binding two datasets
+  arrange(state, dist, name) %>%
+  filter(state <= "NY")
 
 js_20 <- read_dta("2021-06-19_election_results_2020_pres_house_ussen.dta") %>%
   filter(party != "Write-in",
@@ -52,17 +57,78 @@ new <- c("AVERHART, JAMES", "CARL, JERRY", "HARVEY-HALL, PHYLLIS", "MOORE, BARRY
          "BANYAI, CINDY LYN", "DONALDS, BYRON", "MUSSELWHITE, GREG",
          "LOOMER, LAURA", "MALKEMUS, CHARLESTON", "PRUDEN, JAMES (JIM)",
          "SPICER, LAVERN", "OLIVO, CHRISTINE ALEXANDRIA", "GIMENEZ, CARLOS",
-         "GRIGGS, JOYCE MARIE", )
+         "GRIGGS, JOYCE MARIE", "COLE, DON", "ALMONORD, VAL",
+         "EZAMMUDEEN, JOHSIE CRUZ", "WILLIAMS, NIKEMA", "STANTON-KING, ANGELA",
+         "MCCORMICK, RICH", "HOLLIDAY, LINDSAY", "PANDY, DEVIN", "CLYDE, ANDREW",
+         "BARRETT, DANA", "JOHNSON, LIZ", "HITES, BECKY E.", "AUSDAL, KEVIN VAN",
+         "GREENE, MARJORIE TAYLOR", "AHELE, KAIALIAI (KAI)", "AKANA, JOE",
+         "HOOMANAWANUI, JONATHAN", "BURRUS, RON", "SOTO, RUDY", "EVANS, JOE",
+         "LAW, IDAHO SIERRA", "WHITE, PHILANISE", "RABORN, THERESA J.",
+         "NEWMAN, MARIE", "FRICILONE, MIKE", "SOLORIO, JESUS",
+         "WILDA, THOMAS J.", "IVES, JEANNE", "REDPATH, BILL",
+         "JENNINGS, TRACY", "NELSON, PRESTON GABRIEL", "SANGARI, SARGIS",
+         "MUKHERJEE, VALERIE RAMIREZ", "LAIB, RICK", "LENZI, RAYMOND C.",
+         "WEAVER, ERIKA C.", "MILLER, MARY", "BRZOZOWSKI, DANI",
+         "KING, ESTHER JOY", "PETRILLI, GEORGE", "MRVAN, FRANK J.",
+         "STRAUSS, MICHAEL", "HACKETT, PATRICIA (PAT)", "COLDIRON, CHIP",
+         "MACKEY, JOE", "HALE, CHRISTINA", "SPARTZ, VICTORIA",
+         "TUCKER, KENNETH", "SMITH, SUSAN MARIE", "MARSILI, E THOMASINA",
+         "RODENBERGER, JAMES D.", "RUFF, ANDY", "MILLIS, TONYA L.",
+         "FINKENAUER, ABBY", "HINSON, ASHLEY", "HART, RITA R.",
+         "FEENSTRA, RANDY", "BARNETT, KALI", "MANN, TRACEY",
+         "DE LA ISLA, MICHELLE", "ADKINS, AMANDA L.", "LOMBARD, LAURA",
+         "RHODES, JAMES", "PERRY, ROBERT LEE", "CARTER, LEWIS", "OWENSBY, ALEXANDRA",
+         "BEST, MATTHEW RYAN", "HICKS, JOSH", "HARRIS, GLENN ADRAIN",
+         "SCHILLING, DAVID M.", "VINCENT, SHELDON C., SR.", "JAMES, COLBY",
+         "HARRIS, BRAYLON", "LELEUX, BRANDON", "HOUSTON, KENNY", "GIBSON, BEN",
+         "CHRISTOPHE, SANDRA (CANDY)", "LEMELLE, MARTIN, JR.", "SNOWDEN, PHILLIP",
+         "LAGARDE, JESSE P.", "LETLOW, LUKE J.", "HARRIS, LANCE", "ROBINSON, (SCOTTY)",
+         "GUILLORY, ALLEN, SR.", "HASTY, (MATT)", "WILLIAMS, DARTANYON (DAW)",
+         "SLOAN, SHANNON", "TORREGANO, RICHARD (RPT)", "ALLEN, JAY T.",
+         "CRAFTS, DALE JOHN", "MASON, MIA", "SALLING, JOHNNY RAY", "PALOMBI, CHRIS",
+         "PARROTT, NEIL C.", "HERRICK, JASON", "MFUME, KWEISI", "KLACIK, KIMBERLY",
+         "COLL, GREGORY THOMAS", "AUCHINCLOSS, JAKE", "HALL, JULIE A.",
+         "COLARUSSO, CAROLINE", "MORAN, JOHN PAUL", "OWENS, ROY A., SR.",
+         "LOTT, JONATHAN D.", "MANLEY, MICHAEL", "BOREN, BEN", "BERGHOEF, BRYAN",
+         "RIEKSE, MAX", "CREVIERE, JEAN-MICHEL", "MEIJER, PETER", "CANNY, DAVID",
+         "SLEPR, AMY", "KELLY, TIM", "HARRIS, JAMES", "HOADLEY, JON",
+         "DEPOY, JEFF", "JUNGE, PAUL", "HARTMAN, JOE", "LANGWORTHY, CHARLES J.",
+         "SALIBA, MIKE", "MCCLAIN, LISA", "ESSHAKI, ERIC S.", "DUDENHOEFER, DAVID",
+         "BOMER, ARTICIA", "PATRICK, ROBERT VANCE", "ROOD, BILL", "KISTNER, TYLER",
+         "WEEKS, ADAM CHARLES", "QUALLS, KENDALL", "RECHTZIGEL, GENE",
+         "JOHNSON, LACY", "MOORE, MICHAEL", "ZAHRADKA, TAWNJA", "FISCHBACH, MICHELLE",
+         "JOHNSON, SLATER", "ANDERSON, RAE HART", "NYSTROM, QUINN", "ELIASON, ANTONIA",
+         "FLOWERS, BRIAN", "BENFORD, DOROTHY (DOT)", "BUSH, CORI", "ROGERS, ANTHONY",
+         "FURMAN, ALEX", "SCHUPP, JILL", "SCHULTE, MARTIN", "REZABEK, MEGAN",
+         "STEINMAN, LEONARD J., II", "SIMMONS, LINDSEY", "KOONSE, STEVEN K.",
+         "DERKS, RYAN", "DOMINICK, ROBIN", "ROSS, GENA L.", "MONTSENY, TERESA",
+         "SCHMITZ, TOM", "BOLZ, KATE", "GRACE, DENNIS B.", " SCHAEFFER, TYLER",
+         "ELSWORTH, MARK, JR.", "HOBBS, DUSTIN C.", "ACKERMAN, PATRICIA",
+         "RODIMER, DAN (BIG DAN)", "RIDGES, ED S., II", "MARCHANT, JIM",
+         "ESTEBAN, JONATHAN ROYCE", "RUBINSON, BARRY L.", "MOWERS, MATT",
+         "DUMONT, ZACHARY S.", "NEGRON, STEVEN", "OLDING, ANDREW",
+         "GUSTAFSON, CLAIRE H.", "KENNEDY, AMY", "HARVEY, JENNA",
+         "EHRNSTROM, JESSE", "RICHTER, DAVID", "WEBER, MARTIN",
+         "SCHMID, STEPHANIE", "PACHUTA, ANDREW", "PALLOTTA, FRANK T.",
+         "VELLUCCI, LOUIS A.", "ONUOHA, CHRISTIAN", "MUSHNICK, JASON TODD",
+         "PREMPEH, BILLY", "AURIEMMA, CHRIS", "ZINONE, JENNIFER",
+         "KHALFANI, AKIL", "FITCHETTE, KHALIAH", "MIRRIONE, JOHN",
+         "BECCHI, ROSEMARY", "RAZZOLI, MARK", "SMITH, SANDY", "SWAIN, ALAN D.",
+         "FARROW, DARYL", "MURPHY, GREGORY F.", "THOMAS, ROBERT", "HAYWOOD, LEE",
+         "WARD, CHRISTOPHER M.", "TIMMONS-GOODSON, PATRICIA", "WALLACE, CYNTHIA L.",
+         "BISHOP, DAN", "PARKER, DAVID", "DAVIS, MOE", "CAWTHORN, MADISON",
+         "DEBRUHL, TRACEY", "ZWINAK, TAMARA", "HUFFMAN, SCOTT",
+         )
 
 
 # Regex Check -------------------------------------------------------------
 
 js_06_18 %>%
-  filter(str_detect(name, "BISHOP")) %>%
+  filter(str_detect(name, "BUDD")) %>%
   select(name, state, dist, office)
 
 js_20 %>%
-  filter(str_detect(name, "BISHOP")) %>%
+  filter(str_detect(name, "BUDD")) %>%
   select(name, state, dist, office)
 
 
@@ -213,62 +279,212 @@ js_20 %>%
          name = replace(name, name == "SALAZAR, MARIA ELVIRA", "SALAZAR, MARIA ELVIRA"),
          name = replace(name, name == "CARTER, EARL L. (BUDDY)", "CARTER, EARL L. (BUDDY)"), #SAME
          name = replace(name, name == "BISHOP, SANFORD D., JR.", "BISHOP, SANFORD DIXON, JR."),
-         name = replace(name, name == ""),
-         name = replace(name, name == ""),
-         name = replace(name, name == ""),
-         name = replace(name, name == ""),
-         name = replace(name, name == ""),
-         name = replace(name, name == ""),
-         name = replace(name, name == ""),
-         name = replace(name, name == ""),
-         name = replace(name, name == ""),
-         name = replace(name, name == ""),
-         name = replace(name, name == ""),
-         name = replace(name, name == ""),
-         name = replace(name, name == ""),
-         name = replace(name, name == ""),
-         name = replace(name, name == ""),
-         name = replace(name, name == ""),
-         name = replace(name, name == ""),
-         name = replace(name, name == ""),
-         name = replace(name, name == ""),
-         name = replace(name, name == ""),
-         name = replace(name, name == ""),
-         name = replace(name, name == ""),
-         name = replace(name, name == ""),
-         name = replace(name, name == ""),
-         name = replace(name, name == ""),
-         name = replace(name, name == ""),
-         name = replace(name, name == ""),
-         name = replace(name, name == ""),
-         name = replace(name, name == ""),
-         name = replace(name, name == ""),
-         name = replace(name, name == ""),
-         name = replace(name, name == ""),
-         name = replace(name, name == ""),
-         name = replace(name, name == ""),
-         name = replace(name, name == ""),
-         name = replace(name, name == ""),
-         name = replace(name, name == ""),
-         name = replace(name, name == ""),
-         name = replace(name, name == ""),
-         name = replace(name, name == ""),
-         name = replace(name, name == ""),
-         name = replace(name, name == ""),
-         name = replace(name, name == ""),
-         name = replace(name, name == ""),
-         name = replace(name, name == ""),
-         name = replace(name, name == ""),
-         name = replace(name, name == ""),
-         name = replace(name, name == ""),
-         name = replace(name, name == ""),
-         name = replace(name, name == ""),
-         name = replace(name, name == ""),
-         name = replace(name, name == ""),
-         name = replace(name, name == ""),
-         name = replace(name, name == ""),
-         name = replace(name, name == ""),
-         name = replace(name, name == ""),
-         name = replace(name, name == ""),
-         name = replace(name, name == ""),
+         name = replace(name, name == "FERGUSON, A. DREW, IV", "FERGUSON, DREW"),
+         name = replace(name, name == "JOHNSON, HENRY C. (HANK), JR.", "JOHNSON, HENRY C. (HANK), JR."), #SAME
+         name = replace(name, name == "MCBATH, LUCY", "MCBATH, LUCY"), #SAME
+         name = replace(name, name == "HANDEL, KAREN", "HANDEL, KAREN C."),
+         name = replace(name, name == "BOURDEAUX, CAROLYN", "BOURDEAUX, CAROLYN"), #SAME
+         name = replace(name, name == "SCOTT, AUSTIN", "SCOTT, JAMES AUSTIN"),
+         name = replace(name, name == "JOHNSON-GREEN, TABITHA", "JOHNSON-GREEN, TABITHA A."),
+         name = replace(name, name == "HICE, JODY B.", "HICE, JODY B."), #SAME
+         name = replace(name, name == "LOUDERMILK, BARRY", "LOUDERMILK, BARRY D."),
+         name = replace(name, name == "ALLEN, RICK W.", "ALLEN, RICHARD W. (RICK)"),
+         name = replace(name, name == "SCOTT, DAVID", "SCOTT, DAVID ALBERT"),
+         name = replace(name, name == "CASE, ED", "CASE, EDWARD ESPENETT (ED)"),
+         name = replace(name, name == "CURTIS, RON", "CURTIS, RON"), #SAME
+         name = replace(name, name == "TIPPENS, MICHELLE ROSE", "TIPPENS, MICHELLE ROSE"), #SAME
+         name = replace(name, name == "GIUFFRE, JOHN (RAGHU)", "IUFFRE, JOHN M. (RAGHU)"),
+         name = replace(name, name == "FULCHER, RUSS", "FULCHER, RUSSELL M. (RUSS)"),
+         name = replace(name, name == "SWISHER, C AARON", "SWISHER, AARON"),
+         name = replace(name, name == "SIMPSON, MICHAEL K.", "SIMPSON, MICHAEL K. (MIKE)"),
+         name = replace(name, name == "RUSH, BOBBY L.", "RUSH, BOBBY LEE"),
+         name = replace(name, name == "KELLY, ROBIN L.", "KELLY, ROBIN L."), #SAME
+         name = replace(name, name == "GARCIA, JESUS G. (CHUY)", "GARCIA, CHUY"),
+         name = replace(name, name == "QUIGLEY, MIKE", "QUIGLEY, MICHAEL (MIKE)"),
+         name = replace(name, name == "HANSON, TOMMY", "HANSON, TOM"),
+         name = replace(name, name == "CASTEN, SEAN", "CASTEN, SEAN"), #SAME
+         name = replace(name, name == "DAVIS, DANNY K.", "DAVIS, DANNY K."), #SAME
+         name = replace(name, name == "CAMERON, CRAIG", "CAMERON, CRAIG"), #SAME
+         name = replace(name, name == "KRISHNAMOORTHI, RAJA", "KRISHNAMOORTHI, S. RAJA"),
+         name = replace(name, name == "SCHAKOWSKY, JANICE D.", "SCHAKOWSKY, JANICE D. (JAN)"),
+         name = replace(name, name == "SCHNEIDER, BRADLEY SCOTT", "SCHNEIDER, BRADLEY SCOTT (BRAD)"),
+         name = replace(name, name == "FOSTER, BILL", "FOSTER, G. WILLIAM (BILL)"),
+         name = replace(name, name == "BOST, MIKE", "BOST, MICHAEL J. (MIKE)"),
+         name = replace(name, name == "LONDRIGAN, BETSY DIRKSEN", "LONDRIGAN, BETSY DIRKSEN"), #SAME
+         name = replace(name, name == "DAVIS, RODNEY", "DAVIS, RODNEY L."),
+         name = replace(name, name == "UNDERWOOD, LAUREN", "UNDERWOOD, LAUREN"), #SAME
+         name = replace(name, name == "OBERWEIS, JIM", "OBERWEIS, JAMES D. (JIM)"),
+         name = replace(name, name == "KINZINGER, ADAM", "KINZINGER, ADAM"), #SAME
+         name = replace(name, name == "BUSTOS, CHERI", "BUSTOS, CHERI"), #SAME
+         name = replace(name, name == "LAHOOD, DARIN", "LAHOOD, DARIN M."),
+         name = replace(name, name == "LEYVA, MARK", "LEYVA, MARK J."),
+         name = replace(name, name == "WALORSKI, JACKIE", "WALORSKI, JACKIE SWIHART"),
+         name = replace(name, name == "BANKS, JIM", "BANKS, JAMES E. (JIM)"),
+         name = replace(name, name == "BAIRD, JAMES R.", "BAIRD, JIM"),
+         name = replace(name, name == "LAKE, JEANNINE LEE", "LAKE, JEANNINE LEE"), #SAME
+         name = replace(name, name == "PENCE, GREG", "PENCE, GREG"), #SAME
+         name = replace(name, name == "FERKINHOFF, TOM", "FERKINHOFF, TOM"),
+         name = replace(name, name == "CARSON, ANDRÃ©", "CARSON, ANDRE D."),
+         name = replace(name, name == "BUCSHON, LARRY", "BUCSHON, LARRY D."),
+         name = replace(name, name == "HOLLINGSWORTH, TREY", "HOLLINGSWORTH, JOSEPH A. (TREY), III"),
+         name = replace(name, name == "MILLER-MEEKS, MARIANNETTE", "MILLER-MEEKS, MARIANNETTE JANE"),
+         name = replace(name, name == "AXNE, CYNTHIA", "AXNE, CINDY"),
+         name = replace(name, name == "YOUNG, DAVID", "YOUNG, DAVID"), #SAME
+         name = replace(name, name == "HOLDER, BRYAN JACK", "HOLDER, BRYAN JACK"), #SAME
+         name = replace(name, name == "CHOLTEN, J D.", "SCHOLTEN, J.D."), #SAME
+         name = replace(name, name == "LATURNER, JAKE", "LATURNER, JACOB"), #SAME
+         name = replace(name, name == "GARRARD, ROBERT", "GARRARD, ROBERT DAVID"),
+         name = replace(name, name == "DAVIDS, SHARICE", "DAVIDS, SHARICE"), #SAME
+         name = replace(name, name == "OHE, STEVEN A.", "HOHE, STEVEN A. (STEVE)"),
+         name = replace(name, name == "ESTES, RON", "ESTES, RON"), #SAME
+         name = replace(name, name == "COMER, JAMES", "COMER, JAMES R. (JAMIE), JR."),
+         name = replace(name, name == "LINDERMAN, HANK", "LINDERMAN, HANK"), #SAME
+         name = replace(name, name == "GUTHRIE, BRETT", "GUTHRIE, STEVEN (BRETT)"),
+         name = replace(name, name == "YARMUTH, JOHN A.", "YARMUTH, JOHN A"), #SAME
+         name = replace(name, name == "PALAZZO, STEVEN M.", "PALAZZO, STEVEN MCCARTY"),
+         name = replace(name, name == "MASSIE, THOMAS", "MASSIE, THOMAS H."),
+         name = replace(name, name == "ROGERS, HAROLD", "ROGERS, HAROLD DALLAS (HAL)"),
+         name = replace(name, name == "BARR, ANDY", "BARR, GARLAND (ANDY)"),
+         name = replace(name, name == "HARRIS, FRANK", "HARRIS, FRANK"), #SAME
+         name = replace(name, name == "DUGAS, LEE ANN", "DUGAS, LEE ANN"), #SAME
+         name = replace(name, name == "SCALISE, STEVE", "SCALISE, STEPHEN J. (STEVE)"),
+         name = replace(name, name == "KEARNEY, HOWARD", "KEARNEY, HOWARD L."),
+         name = replace(name, name == "RICHMOND, CEDRIC L.", "RICHMOND, CEDRIC L."),
+         name = replace(name, name == "BATISTE, BELDEN (NOONIE MAN)", "BATISTE, BELDEN (NOONIE MAN)"), #SAME
+         name = replace(name, name == "ANDERSON, (ROB)", "ANDERSON, ROB"),
+         name = replace(name, name == "HIGGINS, CLAY", "HIGGINS, CLAY"), #SAME
+         name = replace(name, name == "TRUNDLE, RYAN", "TRUNDLE, RYAN"), #SAME
+         name = replace(name, name == "JOHNSON, MIKE", "JOHNSON, MIKE"), #SAME
+         name = replace(name, name == "ROBINSON, (SCOTTY)", "ROBINSON, SCOTTY"), #ASK
+         name = replace(name, name == "HASTY, (MATT)", "HASTY, MATT"), #ASK
+         name = replace(name, name == "GRAVES, GARRET", "GRAVES, GARRET"), #SAME
+         name = replace(name, name == "PINGREE, CHELLIE", "PINGREE, ROCHELLE M. (CHELLIE)"),
+         name = replace(name, name == "GOLDEN, JARED F.", "GOLDEN, JARED F."), #SAME
+         name = replace(name, name == "HARRIS, ANDY", "HARRIS, ANDREW P. (ANDY)"),
+         name = replace(name, name == "RUPPERSBERGER, C A. DUTCH", "RUPPERSBERGER, C.A. (DUTCH)"),
+         name = replace(name, name == "SARBANES, JOHN P.", "SARBANES, JOHN P."), #SAME
+         name = replace(name, name == "ANTHONY, CHARLES", "ANTHONY, CHARLES"), #SAME
+         name = replace(name, name == "BROWN, ANTHONY G.", "BROWN, ANTHONY G."), #SAME
+         name = replace(name, name == "MCDERMOTT, GEORGE E.", "MCDERMOTT, GEORGE EDWARD"),
+         name = replace(name, name == "HOYER, STENY H.", "HOYER, STENY HAMILTON"),
+         name = replace(name, name == "TRONE, DAVID J.", "TRONE, DAVID"),
+         name = replace(name, name == "GLUCK, GEORGE", "GLUCK, GEORGE"), #SAME
+         name = replace(name, name == "RASKIN, JAMIE", "RASKIN, JAMIN B."),
+         name = replace(name, name == "NEAL, RICHARD E.", "NEAL, RICHARD E."), #SAME
+         name = replace(name, name == "MCGOVERN, JAMES P.", "MCGOVERN, JAMES P. (JIM)"),
+         name = replace(name, name == "LOVVORN, TRACY LYN", "LOVVORN, TRACY LYN"), #SAME
+         name = replace(name, name == "TRAHAN, LORI", "TRAHAN, LORI LOUREIRO"),
+         name = replace(name, name == "CLARK, KATHERINE M.", "CLARK, KATHERINE M."), #SAME
+         name = replace(name, name == "MOULTON, SETH", "MOULTON, SETH W."),
+         name = replace(name, name == "PRESSLEY, AYANNA", "PRESSLEY, AYANNA S."),
+         name = replace(name, name == "LYNCH, STEPHEN F.", "LYNCH, STEPHEN F."), #SAME
+         name = replace(name, name == "KEATING, WILLIAM R.", "KEATING, WILLIAM RICHARD (BILL)"),
+         name = replace(name, name == "BRADY, HELEN", "BRADY, HELEN"), #SAME
+         name = replace(name, name == "FERGUSON, A. DREW, IV", "FERGUSON, DREW"),
+         name = replace(name, name == "BERGMAN, JACK", "BERGMAN, JACK"), #SAME
+         name = replace(name, name == "HUIZENGA, BILL", "HUIZENGA, WILLIAM P. (BILL)"),
+         name = replace(name, name == "SICKLE, GERALD T. VAN", "VAN SICKLE, GERALD TRUMAN"),
+         name = replace(name, name == "SCHOLTEN, J D.", "SCHOLTEN, J.D."),
+         name = replace(name, name == "HILLIARD, JERRY", "HILLIARD, JERRY"), #SAME
+         name = replace(name, name == "MOOLENAAR, JOHN R.", "MOOLENAAR, JOHN R."), #ASK
+         name = replace(name, name == "KILDEE, DANIEL T.", "KILDEE, DANIEL TIMOTHY (DAN)"),
+         name = replace(name, name == "GOODWIN, KATHY", "GOODWIN, KATHY"), #SAME
+         name = replace(name, name == "UPTON, FRED", "UPTON, FREDERICK STEPHEN (FRED)"),
+         name = replace(name, name == "LAWRENCE, JOHN", "LAWRENCE, JOHN"), #SAME
+         name = replace(name, name == "DRISKELL, GRETCHEN D.", "DRISKELL, GRETCHEN D."), #SAME
+         name = replace(name, name == "WALBERG, TIM", "WALBERG, TIMOTHY L. (TIM)"),
+         name = replace(name, name == "SLOTKIN, ELISSA", "SLOTKIN, ELISSA"), #SAME
+         name = replace(name, name == "LEVIN, ANDY", "LEVIN, ANDY"), #SAME
+         name = replace(name, name == "KIRBY, ANDREA L.", "KIRBY, ANDREA"),
+         name = replace(name, name == "BIZON, KIMBERLY", "BIZON, KIMBERLY"), #SAME
+         name = replace(name, name == "STEVENS, HALEY M.", "STEVENS, HALEY"),
+         name = replace(name, name == "SCHWARTZ, LEONARD", "SCHWARTZ, LEONARD C."),
+         name = replace(name, name == "DINGELL, DEBBIE", "DINGELL, DEBBIE INSLEY"),
+         name = replace(name, name == "JONES, JEFF", "JONES, JEFFREY W. (JEFF)"),
+         name = replace(name, name == "WALKOWICZ, GARY", "WALKOWICZ, GARY"), #SAME
+         name = replace(name, name == "TLAIB, RASHIDA", "TLAIB, RASHIDA"), #SAME
+         name = replace(name, name == "JOHNSON, SAM", "JOHNSON, SAM"), #SAME
+         name = replace(name, name == "WILCOXON, D ETTA", "WILCOXON, D. ETTA"), #SAME
+         name = replace(name, name == "LAWRENCE, BRENDA L.", "LAWRENCE, BRENDA LUIENAR"),
+         name = replace(name, name == "GIOIA, LISA LANE", "GIOIA, LISA LANE"), #SAME
+         name = replace(name, name == "KOLODY, PHILIP", "KOLODY, PHILIP"), #SAME
+         name = replace(name, name == "SHABAZZ, CLYDE K.", "SHABAZZ, CLYDE K."), #SAME
+         name = replace(name, name == "FEEHAN, DAN", "FEEHAN, DAN"), #SAME
+         name = replace(name, name == "HAGEDORN, JIM ", "HAGEDORN, JAMES (JIM)"),
+         name = replace(name, name == "CRAIG, ANGIE", "CRAIG, ANGELA DAWN (ANGIE)"),
+         name = replace(name, name == "PHILLIPS, DEAN", "PHILLIPS, DEAN"), #SAME
+         name = replace(name, name == "MCCOLLUM, BETTY", "MCCOLLUM, BETTY"), #SAME
+         name = replace(name, name == "SINDT, SUSAN", "SINDT, SUSAN PENDERGAST"),
+         name = replace(name, name == "OMAR, ILHAN", "OMAR, ILHAN"), #SAME
+         name = replace(name, name == "EMMER, TOM", "EMMER, THOMAS (TOM)"),
+         name = replace(name, name == "PETERSON, COLLIN C.", "PETERSON, COLLIN CLARK"),
+         name = replace(name, name == "STAUBER, PETE", "STAUBER, PETE"), #SAME
+         name = replace(name, name == "SCHWARTZBACKER, JUDITH", "SCHWARTZBACKER, JUDITH"), #SAME
+         name = replace(name, name == "KELLY, TRENT", "KELLY, TRENT"), #SAME
+         name = replace(name, name == "THOMPSON, BENNIE G.", "THOMPSON, BENNIE G."), #SAME
+         name = replace(name, name == "GUEST, MICHAEL", "GUEST, MICHAEL"), #SAME
+         name = replace(name, name == "PALAZZO, STEVEN M.", "PALAZZO, STEVEN MCCARTY"),
+         name = replace(name, name == "WAGNER, ANN", "WAGNER, ANN L."),
+         name = replace(name, name == "LUETKEMEYER, BLAINE", "LUETKEMEYER, W. BLAINE"),
+         name = replace(name, name == "HARTZLER, VICKY", "HARTZLER, VICKY J."),
+         name = replace(name, name == "CLEAVER, EMANUEL", "LEAVER, EMANUEL, II"),
+         name = replace(name, name == "GRAVES, SAM", "GRAVES, SAMUEL B. (SAM), JR."),
+         name = replace(name, name == "HIGGINS, JIM", "HIGGINS, JAMES EDWARD (JIM)"),
+         name = replace(name, name == "LONG, BILLY", "LONG, BILLY"), #SAME
+         name = replace(name, name == "CRAIG, KEVIN", "CRAIG, KEVIN"), #SAME
+         name = replace(name, name == "ELLIS, KATHY", "ELLIS, KATHY"), #SAME
+         name = replace(name, name == "SMITH, JASON", "SMITH, JASON T."),
+         name = replace(name, name == "WILLIAMS, KATHLEEN", "WILLIAMS, KATHLEEN"), #SAME
+         name = replace(name, name == "ROSENDALE, MATT", "ROSENDALE, MATTHEW M. (MATT)"),
+         # North Carolina
+         name = replace(name, name == "BUTTERFIELD, G K.", "BUTTERFIELD, GEORGE K. (G.K.), JR."),
+         name = replace(name, name == "ROSS, DEBORAH K.", "ROSS, DEBORAH K."), #SAME
+         name = replace(name, name == "MATEMU, JEFF", "MATEMU, JEFF"), #SAME
+         name = replace(name, name == "PRICE, DAVID E.", "PRICE, DAVID EUGENE"),
+         name = replace(name, name == "BROWN, DAVID WILSON", "BROWN, DAVID WILSON"), #SAME
+         name = replace(name, name == "FOXX, VIRGINIA", "FOXX, VIRGINIA ANN"),
+         name = replace(name, name == "GREGORY, JEFF", "GREGORY, JEFFREY DALE (JEFF)"),
+         name = replace(name, name == "MANNING, KATHY", "MANNING, KATHY"), #SAME
+         name = replace(name, name == "ROUZER, DAVID", "ROUZER, DAVID CHESTON"),
+         name = replace(name, name == "HUDSON, RICHARD", "HUDSON, RICHARD L., JR."),
+         name = replace(name, name == "MCHENRY, PATRICK T.", "MCHENRY, PATRICK TIMOTHY"),
+         name = replace(name, name == "ADAMS, ALMA S", "ADAMS, ALMA SHEALEY"),
+         name = replace(name, name == "BUDD, TED", "BUDD, THEODORE PAUL (TED)"),
+         # Nebraska - New Jersey
+         name = replace(name, name == "FORTENBERRY, JEFF", "FORTENBERRY, JEFFREY (JEFF)"),
+         name = replace(name, name == "EASTMAN, KARA", "EASTMAN, KARA"), #SAME
+         name = replace(name, name == "BACON, DON", "BACON, DONALD JOHN (DON)"),
+         name = replace(name, name == "SMITH, ADRIAN", "SMITH, ADRIAN M."),
+         name = replace(name, name == "TITUS, DINA", "TITUS, ALICE C. (DINA)"),
+         name = replace(name, name == "BENTLEY, JOYCE", "BENTLEY, JOYCE"), #SAME
+         name = replace(name, name == "BAKARI, KAMAU", "BAKARI, KAMAU A."),
+         name = replace(name, name == "STRAWDER, ROBERT VAN, JR.", "STRAWDER, ROBERT"),
+         name = replace(name, name == "AMODEI, MARK E.", "AMODEI, MARK EUGENE"),
+         name = replace(name, name == "HANSEN, JANINE", "HANSEN, JANINE"), #SAME
+         name = replace(name, name == "LEE, SUSIE", "LEE, SUSIE"), #SAME
+         name = replace(name, name == "BROWN, STEVE", "BROWN, STEVE"), #SAME
+         name = replace(name, name == "HORSFORD, STEVEN", "HORSFORD, STEVEN ALEXZANDER"),
+         name = replace(name, name == "PAPPAS, CHRIS", "PAPPAS, CHRIS"), #SAME
+         name = replace(name, name == "LUSTER, ANN M.", "KUSTER, ANN MCLANE (ANNIE)"),
+         name = replace(name, name == "NORCROSS, DONALD", "NORCROSS, DONALD W."),
+         name = replace(name, name == "DREW, JEFFERSON VAN", "VAN DREW, JEFF"),
+         name = replace(name, name == "KIM, ANDY", "KIM, ANDY"), #SAME
+         name = replace(name, name == "SHAPIRO, ROBERT", "SHAPIRO, ROBERT"), #SAME
+         name = replace(name, name == "SMITH, CHRISTOPHER H.", "SMITH, CHRISTOPHER H. (CHRIS)"),
+         name = replace(name, name == "SCHROEDER, HANK", "SCHROEDER, HENRY E. (HANK)"),
+         name = replace(name, name == "RUFO, MICHAEL J.", "RUFO, MICHAEL"),
+         name = replace(name, name == "GOTTHEIMER, JOSH", "GOTTHEIMER, JOSHUA S. (JOSH)"), #ASK
+         name = replace(name, name == "PALLONE, FRANK, JR.", "PALLONE, FRANK J., JR."),
+         name = replace(name, name == "MALINOWSKI, TOM", "MALINOWSKI, TOM"), #SAME
+         name = replace(name, name == "KEAN, THOMAS H., JR.", "KEAN, THOMAS H., JR."), #SAME
+         name = replace(name, name == "SIRES, ALBIO", "SIRES, ALBIO"), #SAME
+         name = replace(name, name == "DELANEY, DAN", "DELANEY, DAN"), #SAME
+         name = replace(name, name == "PASCRELL, BILL, JR.", "PASCRELL, WILLIAM J. (BILL), JR."),
+         name = replace(name, name == "PAYNE, DONALD M., JR.", "PAYNE, DONALD M. (DON), JR."),
+         name = replace(name, name == "SHERRILL, MIKIE", "SHERRILL, MIKIE"), #SAME
+         name = replace(name, name == "COLEMAN, BONNIE WATSON", "WATSON COLEMAN, BONNIE"),
+         name = replace(name, name == "FORCHION, EDWARD (NJ WEEDMAN)", "FORCHION, ROBERT EDWARD"),
+         name = replace(name, name == "CODY, KENNETH J.", "CODY, KENNETH J. (KEN)")
   )
+
+
