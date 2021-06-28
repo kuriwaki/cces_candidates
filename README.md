@@ -89,7 +89,7 @@ In **Louisiana** for Non-Presidential elections, starting from 1977, there is a 
 
 Standardized candidate name following Jim Snyder's coding rules. The specifics of this variable are important for overtime tracking because __name and state uniquely identify a unique person__ across all his Congressional candidate data (at least 1950 to the present). The syntax is 
 
-`[Last name], [First Name] [Middle name] ([Nickname]), [Jr/Sr/I/II/III]`
+`[Last name], [First Name] [Middle name] ([Nickname]), [Jr./Sr./I/II/III]`
 
 
 For example:
@@ -98,7 +98,9 @@ For example:
 - `GRASSLEY, CHARLES ERNEST (CHUCK)`: commonly known as Chuck Grassley (IA)
 - `CORNYN, JOHN, III`: commonly known as John Cornyn (TX)
 - `KENNEDY, JOSEPH P. (JOE), III`: commonly known as Joe Kennedy (MA)
+- `KELLY, GEORGE J. (MIKE), JR.`, commonly known as Mike Kelly (PA). Note the use of periods for abbreviation and comma before the JR.
 - `WASSERMAN SCHULTZ, DEBBIE`: note the last name is not hyphenated and is two words
+- `JACKSON LEE, SHEILA`: note that the last name is not Lee, so we use this instead of "LEE, SHEILA JACKSON"
 
 
 Note that these names are *different* from other official names (1) on the ballot, (2) on the Clerk of the House report, or the (3) FEC. Any of these sources can disagree on the formatting of the names or whether to abbreviate a middle name. 
