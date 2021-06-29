@@ -5,6 +5,19 @@ use "~/Dropbox/CCES_candidates_Dropbox/Input/from-snyder/2021-06-19_election_res
 keep if office == "H"
 
 
+replace name = "CHABOT, STEVEN J. (STEVE)" if state == "OH" & name == "CHABOT, STEVE"
+replace name = "JORDAN, JAMES D. (JIM)" if state == "OH" & name == "JORDAN, JIM"
+replace name = "LATTA, ROBERT EDWARD (BOB)" if state == "OH" & name == "LATTA, ROBERT E."
+
+replace name = "GIBBS, ROBERT (BOB)" if state == "OH" & name == "GIBBS, BOB"
+replace name = "KAPTUR, MARCIA C. (MARCY)" if state == "OH" & name == "KAPTUR, MARCY"
+replace name = "TURNER, MICHAEL R. (MIKE)" if state == "OH" & name == "TURNER, MICHAEL R."
+replace name = "RYAN, TIMOTHY J. (TIM)" if state == "OH" & name == "RYAN, TIM"
+replace name = "STIVERS, STEVEN (STEVE)" if state == "OH" & name == "STIVERS, STEVE"
+replace name = "COLE, TOM JEFFREY" if state == "OK" & name == "COLE, TOM"
+replace name = "HORN, KENDRA S." if state == "OK" & name == "HORN, KENDRA" // 2018 to 2020
+
+
 replace name = "LANGEVIN, JAMES R. (JIM)" if state == "RI" & name == "LANGEVIN, JAMES R."
 replace name = "HOULAHAN, CHRISSY J." if state == "PA" & name == "HOULAHAN, CHRISSY" // 2018 to 2020
 replace name = "CARTWRIGHT, MATTHEW A. (MATT)" if state == "PA" & name == "CARTWRIGHT, MATTHEW ALTON"
