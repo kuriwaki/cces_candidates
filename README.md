@@ -83,6 +83,7 @@ In **Louisiana** for Non-Presidential elections, starting from 1977, there is a 
 
 - For example in November 2014, neither Bill Cassidy (R) and incumbent Mary Landrieu (D) got a majority in the first round, with 5 other Democrat or Republican candidates on the ballot. A runoff was held in December with the two candidates and Cassidy won with 55 percent of the vote. In 2020, Cassidy won 59 percent of the jungle primary vote and won re-election outright.
 
+We code these as `type = G` or `type = R` for the runoff (if applicable), and treat these as separate rows. We check the Clerk and state SOS results for those elections.
 
 
 ### Candidate Names (`candidatename`) 
