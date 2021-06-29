@@ -355,8 +355,8 @@ js_20 %>%
          name = replace(name, name == "HIGGINS, CLAY", "HIGGINS, CLAY"), #SAME
          name = replace(name, name == "TRUNDLE, RYAN", "TRUNDLE, RYAN"), #SAME
          name = replace(name, name == "JOHNSON, MIKE", "JOHNSON, MIKE"), #SAME
-         name = replace(name, name == "ROBINSON, (SCOTTY)", "ROBINSON, SCOTTY"), #ASK
-         name = replace(name, name == "HASTY, (MATT)", "HASTY, MATT"), #ASK
+         name = replace(name, name == "ROBINSON, (SCOTTY)", "ROBINSON, RANDALL SCOTT (SCOTTY)"), # https://ballotpedia.org/Randall_Scott_Robinson_(Louisiana)
+         name = replace(name, name == "HASTY, (MATT)", "HASTY, MATTHEW (MATT)"), # https://docquery.fec.gov/pdf/640/202007179250399640/202007179250399640.pdf
          name = replace(name, name == "GRAVES, GARRET", "GRAVES, GARRET"), #SAME
          name = replace(name, name == "PINGREE, CHELLIE", "PINGREE, ROCHELLE M. (CHELLIE)"),
          name = replace(name, name == "GOLDEN, JARED F.", "GOLDEN, JARED F."), #SAME
