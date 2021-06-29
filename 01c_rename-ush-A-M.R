@@ -245,7 +245,7 @@ js_20 %>%
          name = replace(name, name == "DELAURO, ROSA L.", "DELAURO, ROSA L."), #SAME
          name = replace(name, name == "HIMES, JAMES A.", "HIMES, JAMES A. (JIM)"),
          name = replace(name, name == "HAYES, JAHANA", "HAYES, JAHANA"), #SAME
-         name = replace(name, name == "ROCHESTER, LISA BLUNT", "ROCHESTER, LISA BLUNT"), #ASK
+         name = replace(name, name == "ROCHESTER, LISA BLUNT", "BLUNT ROCHESTER, LISA LATRELLE"),
          name = replace(name, name == "GAETZ, MATT", "GAETZ, MATT (JERRY)"),
          name = replace(name, name == "DUNN, NEAL P.", "DUNN, NEAL"),
          name = replace(name, name == "RUTHERFORD, JOHN H.", "RUTHERFORD, JOHN H."), #ASK
@@ -273,7 +273,7 @@ js_20 %>%
          name = replace(name, name == "SCHULTZ, DEBBIE WASSERMAN", "SCHULTZ, DEBBIE WASSERMAN"), #SAME
          name = replace(name, name == "SPALDING, CARLA", "SPALDING, CARLA ARLENE"),
          name = replace(name, name == "WILSON, FREDERICA S.", "WILSON, FREDERICA S. (FREDDI)"),
-         name = replace(name, name == "DIAZ-BALART, MARIO", "DIAZ-BALART, MARIO"), #ASK
+         name = replace(name, name == "DIAZ-BALART, MARIO", "DIAZ-BALART, MARIO"),
          name = replace(name, name == "MUCARSEL-POWELL, DEBBIE", "MUCARSEL-POWELL, DEBBIE"), #SAME
          name = replace(name, name == "SHALALA, DONNA E.", "SHALALA, DONNA"),
          name = replace(name, name == "SALAZAR, MARIA ELVIRA", "SALAZAR, MARIA ELVIRA"),

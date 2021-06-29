@@ -32,17 +32,17 @@ replace name = "DUNCAN, JEFFREY D. (JEFF)" if state == "SC" & name == "DUNCAN, J
 replace name = "NORMAN, RALPH W." if state == "SC" & name == "NORMAN, RALPH"
 replace name = "CLYBURN, JAMES E. (JIM)" if state == "SC" & name == "CLYBURN, JAMES E."
 replace name = "RICE, HUGH THOMPSON (TOM), JR." if state == "SC" & name == "RICE, TOM"
-* "TIMMONS, WILLIAM"  "TIMMONS, WILLIAM R., IV"
+replace name = "TIMMONS, WILLIAM R., IV" if state == "SC" & "TIMMONS, WILLIAM R., IV" // 2018 to 2020
 
 replace name = "JOHNSON, DUSTIN (DUSTY)" if state == "SD" & name == "JOHNSON, DUSTY"
 
-* hoyos, john rose
+* hoyos, john rose for more 2018 to 2020
 replace name = "DESJARLAIS, SCOTT EUGENE" if state == "TN" & name == "DESJARLAIS, SCOTT"
 replace name = "COOPER, JAMES H. (JIM)" if state == "TN" & name == "COOPER, JIM"
 replace name = "COHEN, STEPHEN IRA (STEVE)" if state == "TN" & name == "COHEN, STEVE"
 
 
-* crenshaw, ron wright
+* crenshaw, ron wright for more 2018 to 2020
 replace name = "GOHMERT, LOUIS (LOUIE)" if state == "TX" & name == "GOHMERT, LOUIE"
 replace name = "TAYLOR, NICHOLAS VANCAMPEN" if state == "TX" & name == "TAYLOR, VAN"
 replace name = "FLETCHER, LIZZIE PANNILL" if state == "TX" & name == "FLETCHER, LIZZIE"
@@ -54,14 +54,14 @@ replace name = "ARRINGTON, JODEY" if state == "TX" & name == "ARRINGTON, JODEY C
 
 
 replace name = "CURTIS, JOHN R." if state == "UT" & name == "CURTIS, JOHN" // 2018 to 2020
-replace name = "OWENS, CLARENCE BURGESS" if state == "UT" & name == "OWENS, BURGESS" // new cand, how to code nickname burgess?
+replace name = "OWENS, CLARENCE BURGESS" if state == "UT" & name == "OWENS, BURGESS"
 replace name = "MCADAMS, BENJAMIN MICHAEL (BEN)" if state == "UT" & name == "MCADAMS, BEN" // 2018 to 2020
 
 
 replace name = "WITTMAN, ROBERT J. (ROB)" if state == "VA" & name == "WITTMAN, ROBERT J."
 replace name = "MCEACHIN, ASTON DONALD" if state == "VA" & name == "MCEACHIN, A DONALD"
-replace name = "CLINE, BEN L." if state == "VA" & name == "CLINE, BEN" // always try to find middle name?  CLINE, BENJAMIN LEE (BEN)
-// wikipedia says Abigail Davis Spanberger (nee Davis) but congress says  Abigail D. Spanberger
+replace name = "CLINE, BENJAMIN LEE" if state == "VA" & name == "CLINE, BEN" // 2018 to 2020
+replace name = "SPANBERGER, ABIGAIL ANNE DAVIS" if state == "VA" & regexm(name, "SPANBERGER")
 replace name = "GRIFFITH, H. MORGAN" if state == "VA" & name == "GRIFFITH, H MORGAN" 
 replace name = "WEXTON, JENNIFER T." if state == "VA" & name == "WEXTON, JENNIFER"
 replace name = "CONNOLLY, GERALD E. (GERRY)" if state == "VA" & name == "CONNOLLY, GERALD E."
