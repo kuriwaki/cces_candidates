@@ -544,7 +544,7 @@ js_20 %>%
          name = replace(name, name == "CLARKE, YVETTE D.", "CLARKE, YVETTE DIANE"), #SAME
          name = replace(name, name == "ANABILAH-AZUMAH, JOEL B.", "ANABILAH-AZUMAH, JOEL"),
          name = replace(name, name == "NADLER, JERROLD", "NADLER, JERROLD L. (JERRY)"),
-         name = replace(name, name == "ROSE, MAX", "OSE, MAX N."),
+         name = replace(name, name == "ROSE, MAX", "ROSE, MAX N."),
          name = replace(name, name == "MALONEY, CAROLYN B.", "MALONEY, CAROLYN B."), #SAME
          name = replace(name, name == "ESPAILLAT, ADRIANO", "ESPAILLAT, ADRIANO"), #SAME
          name = replace(name, name == "OCASIO-CORTEZ, ALEXANDRIA", "OCASIO-CORTEZ, ALEXANDRIA"), #SAME
