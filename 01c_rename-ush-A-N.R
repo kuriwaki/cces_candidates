@@ -566,4 +566,60 @@ js_20 %>%
          name = replace(name, name == "HIGGINS, BRIAN", "HIGGINS, BRIAN M.")
   )
 
+# New York Aggregation ----------------------------------------------------
+
+# Working Family and Democrats
+x <- js_20 %>%
+  filter(office == "H", # Subsetting Democratic NY House candidates
+         state == "NY",
+         party == "Democrat" |
+           party == "Working Families" |
+           party == "Independence", # Independence votes went to D, except in
+         !((dist == 1 & party == "Independence")| # CD-1,21,23,24,27
+             (dist == 21 & party == "Independence")|
+             (dist == 23 & party == "Independence")|
+             (dist == 24 & party == "Independence")|
+             (dist == 27 & party == "Independence"))) %>%
+  mutate(party = "D, WF") %>%
+  group_by(dist) %>%
+  summarise(vote_total = sum(vote_g))
+
+# Republicans
+ny_r <- js_20 %>%
+  filter(office == "H",
+         state == "NY",
+         party == "Republican" |
+           party == " Republican" | # Ricky Donovan's party has a space
+           party == "Conservative" |
+           party == "Libertarian" |
+           party == "Serve America Movement" |
+           party == "Save Our City" |
+           party == "Constitution",
+         (dist == 1 & party == "Independence")| # Removing votes for non-Republicans
+           (dist == 21 & party == "Independence")|
+           (dist == 23 & party == "Independence")|
+           (dist == 24 & party == "Independence")|
+           (dist == 27 & party == "Independence")|
+           !((dist == 3 & party == "Libertarian") |
+               (dist == 7 & party == "Libertarian") |
+               (dist == 9 & party == "Libertarian") |
+               (dist == 10 & party == "Libertarian") |
+               (dist == 12 & party == "Libertarian") |
+               (dist == 19 & party == "Libertarian") |
+               (dist == 22 & party == "Libertarian") |
+               (dist == 23 & party == "Libertarian") |
+               (dist == 25 & party == "Libertarian") |
+               (dist == 27 & party == "Libertarian") |
+               (dist == 13 & party == "Conservative") |
+               (dist == 17 & party == "Conservative") |
+               (dist == 18 & party == "Conservative") |
+               (dist == 9 & party == "Serve America Movement") |
+               (dist == 17 & party == "Serve America Movement") |
+               (dist == 18 & party == "Serve America Movement"))) %>%
+  mutate(party = "R") %>%
+  group_by(dist) %>%
+  mutate(vote_total = sum(vote_g)) %>%
+  ungroup() %>% # Retaining other vars
+  arrange(dist, vote_total) %>%
+  distinct(dist, .keep_all = T) # Removing duplicates
 
