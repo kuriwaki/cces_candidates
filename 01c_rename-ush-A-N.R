@@ -640,4 +640,4 @@ js_20 <- js_20 %>%
     name = replace(name, dist == 27 & state == "NY" & party == "Independence", "JACOBS, CHRIS")
   ) %>%
   group_by(name) %>%
-  mutate(vote_total = ifelse(state == "NY" & office == "H" & party == "", sum(vote_g), NA_integer_))
+  mutate(vote_total = ifelse(state == "NY" & office == "H", sum(vote_g), NA_integer_))
