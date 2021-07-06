@@ -1,7 +1,4 @@
-cd "~/Dropbox/cces_candidates/"
-
-
-use "~/Dropbox/CCES_candidates_Dropbox/Input/from-snyder/2021-06-19_election_results_2020_pres_house_ussen.dta", clear
+use "data/input/2021-06-19_election_results_2020_pres_house_ussen.dta", clear
 
 keep if office ==  "P"
 
@@ -10,4 +7,4 @@ replace name = "TRUMP, DONALD J."      if name == "REPUBLICAN"
 replace name = "JORGENSEN, JO"         if name == "LIBERTARIAN"
 
 
-save intermediate/2020_uspresident, replace
+save data/intermediate/2020_uspresident, replace

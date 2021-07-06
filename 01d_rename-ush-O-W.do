@@ -1,6 +1,4 @@
-cd "~/Dropbox/cces_candidates/"
-
-use "~/Dropbox/CCES_candidates_Dropbox/Input/from-snyder/2021-06-19_election_results_2020_pres_house_ussen.dta", clear
+use "data/input/2021-06-19_election_results_2020_pres_house_ussen.dta", clear
 
 keep if office == "H"
 keep if inrange(substr(state, 1, 1), "O", "Z")
@@ -82,4 +80,4 @@ replace name = "MILLER, CAROL" if state == "WV" & name == "MILLER, CAROL D."
 
 
 * save
-save intermediate/2020_ushouse_O-W.dta, replace
+save data/intermediate/2020_ushouse_O-W.dta, replace

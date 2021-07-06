@@ -1,6 +1,4 @@
-cd "~/Dropbox/cces_candidates/"
-
-use "~/Dropbox/CCES_candidates_Dropbox/Input/from-snyder/2021-06-19_election_results_2020_pres_house_ussen.dta", clear
+use "data/input/2021-06-19_election_results_2020_pres_house_ussen.dta", clear
 
 keep if office == "S"
 
@@ -58,4 +56,4 @@ replace name = "LUMMIS, CYNTHIA MARIE" if state == "WY" & name == "LUMMIS, CYNTH
 
 
 * save
-save intermediate/2020_ussenate.dta, replace
+save data/intermediate/2020_ussenate.dta, replace
