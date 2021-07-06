@@ -566,7 +566,9 @@ js_20 %>%
     name = replace(name, name == "BALTER, DANA", "BALTER, DANA"), # SAME
     name = replace(name, name == "KATKO, JOHN", "KATKO, JOHN M."),
     name = replace(name, name == "MORELLE, JOSEPH D.", "MORELLE, JOSEPH D."), # SAME
-    name = replace(name, name == "HIGGINS, BRIAN", "HIGGINS, BRIAN M.")
+    name = replace(name, name == "HIGGINS, BRIAN", "HIGGINS, BRIAN M."),
+    # Misc New Candidate corrections
+    name = replace(name, name == "TIMMONS-GOODSON, PATRICIA", "TIMMONS-GOODSON, PATRICIA (PAT)")
   )
 
 # New York Aggregation ----------------------------------------------------
