@@ -4,6 +4,9 @@
 .Ruserdata
 .DS_Store
 
+# Dataset out
+*.dta
+
 
 # pdf out
 *.pdf
