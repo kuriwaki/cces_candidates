@@ -1,4 +1,4 @@
-use "data/input/2021-06-19_election_results_2020_pres_house_ussen.dta", clear
+use ${js_2020_init}, clear
 
 keep if office == "H"
 keep if inrange(substr(state, 1, 1), "A", "N")
@@ -488,5 +488,6 @@ replace name = "COURTNEY, JOSEPH D. (JOE)" if state == "CT" & dist == 2 & party 
 replace name = "DELAURO, ROSA L."          if state == "CT" & dist == 3 & party == "Working Families"
 replace name = "STREICKER, MARGARET".      if state == "CT" & dist == 3 & party == "Independent"
 replace name = "HAYES, JAHANA"             if state == "CT" & dist == 5 & party == "Working Families"
+
 * save
 save data/intermediate/2020_ushouse_A-N.dta, replace

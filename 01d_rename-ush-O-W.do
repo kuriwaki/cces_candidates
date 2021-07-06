@@ -1,4 +1,4 @@
-use "data/input/2021-06-19_election_results_2020_pres_house_ussen.dta", clear
+use ${js_2020_init}, clear
 
 keep if office == "H"
 keep if inrange(substr(state, 1, 1), "O", "Z")
