@@ -3,6 +3,9 @@ cd "~/Dropbox/cces_candidates/"
 use "~/Dropbox/CCES_candidates_Dropbox/Input/from-snyder/2021-06-19_election_results_2020_pres_house_ussen.dta", clear
 
 keep if office == "H"
+keep if inrange(substr(state, 1, 1), "O", "Z")
+
+
 
 
 replace name = "CHABOT, STEVEN J. (STEVE)" if state == "OH" & name == "CHABOT, STEVE"
@@ -32,7 +35,7 @@ replace name = "DUNCAN, JEFFREY D. (JEFF)" if state == "SC" & name == "DUNCAN, J
 replace name = "NORMAN, RALPH W." if state == "SC" & name == "NORMAN, RALPH"
 replace name = "CLYBURN, JAMES E. (JIM)" if state == "SC" & name == "CLYBURN, JAMES E."
 replace name = "RICE, HUGH THOMPSON (TOM), JR." if state == "SC" & name == "RICE, TOM"
-replace name = "TIMMONS, WILLIAM R., IV" if state == "SC" & "TIMMONS, WILLIAM R., IV" // 2018 to 2020
+replace name = "TIMMONS, WILLIAM R., IV" if state == "SC" & name == "TIMMONS, WILLIAM R., IV" // 2018 to 2020
 
 replace name = "JOHNSON, DUSTIN (DUSTY)" if state == "SD" & name == "JOHNSON, DUSTY"
 
@@ -76,3 +79,7 @@ replace name = "GROTHMAN, GLENN S." if state == "WI"& name == "GROTHMAN, GLENN"
 replace name = "MOONEY, ALEX X." if state == "WV" & name == "MOONEY, ALEXANDER X."
 replace name = "MILLER, CAROL" if state == "WV" & name == "MILLER, CAROL D."
 
+
+
+* save
+save intermediate/2020_ushouse_O-W.dta, replace

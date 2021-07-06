@@ -1,10 +1,10 @@
 cd "~/Dropbox/cces_candidates/"
 
-use "~/Dropbox/CCES_candidates_Dropbox/Input/from-snyder/2021-06-19_election_results_2020_pres_house_ussen.dta", clear
+run 01a_rename-prez.do
+run 01b_rename-uss.do
+run 01d_rename-ush-O-W.do
 
 
-do 01a_rename-prez.do 
-do 01b_rename-uss.do
-do 01c_rename-ush-A-M.R
-do 01d_rename-ush-O-W.do 
-
+use intermediate/2020_uspresident.dta, clear
+append using intermediate/2020_ussenate
+append using intermediate/2020_ushouse_O-W.dta

@@ -55,3 +55,7 @@ replace name = "HEGAR, MARY JENNINGS (MJ)" if state == "TX" & name == "HEGAR, MA
 replace name = "CORNYN, JOHN, III" if state == "TX" & name == "CORNYN, JOHN"
 
 replace name = "LUMMIS, CYNTHIA MARIE" if state == "WY" & name == "LUMMIS, CYNTHIA M."
+
+
+* save
+save intermediate/2020_ussenate.dta, replace
