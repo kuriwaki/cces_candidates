@@ -63,7 +63,7 @@ replace name = "COX, T.J."                           if state == "CA" & name == 
 replace name = "VALADAO, DAVID G."                   if state == "CA" & name == "VALADAO, DAVID G." // SAME
 replace name = "NUNES, DEVIN GERALD"                 if state == "CA" & name == "NUNES, DEVIN"
 replace name = "MCCARTHY, KEVIN"                     if state == "CA" & name == "MCCARTHY, KEVIN"
-replace name = "CARBAJAL, SALUD"                     if state == "CA" & name == "CARBAJAL, SALUD O." // ASK
+replace name = "CARBAJAL, SALUD"                     if state == "CA" & name == "CARBAJAL, SALUD O." 
 replace name = "BROWNLEY, JULIA"                     if state == "CA" & name == "BROWNLEY, JULIA" // SAME
 replace name = "BALDWIN KENNEDY, RONDA"              if state == "CA" & name == "BALDWIN-KENNEDY, RONDA"
 replace name = "CHU, JUDY M."                        if state == "CA" & name == "CHU, JUDY"
@@ -126,9 +126,9 @@ replace name = "BLUNT ROCHESTER, LISA LATRELLE"      if name == "ROCHESTER, LISA
 // Florida
 replace name = "GAETZ, MATT (JERRY)"                 if state == "FL" & name == "GAETZ, MATT"
 replace name = "DUNN, NEAL"                          if state == "FL" & name == "DUNN, NEAL P."
-replace name = "RUTHERFORD, JOHN"                    if state == "FL" & name == "RUTHERFORD, JOHN H." // ASK
+replace name = "RUTHERFORD, JOHN"                    if state == "FL" & name == "RUTHERFORD, JOHN H." // SAME
 replace name = "LAWSON, ALFRED J. (AL), JR."         if state == "FL" & name == "LAWSON, AL, JR."
-replace name = "CURTIS, CLINT"                       if state == "FL" & name == "CURTIS, CLINT" // ASK
+replace name = "CURTIS, CLINT"                       if state == "FL" & name == "CURTIS, CLINT" // SAME
 replace name = "WALTZ, MICHAEL"                      if state == "FL" & name == "WALTZ, MICHAEL" // SAME
 replace name = "MURPHY, STEPHANIE"                   if state == "FL" & name == "MURPHY, STEPHANIE N."
 replace name = "POSEY, WILLIAM (BILL)"               if state == "FL" & name == "POSEY, BILL"
@@ -372,7 +372,7 @@ replace name = "SHAPIRO, ROBERT"                     if state == "NJ" & name == 
 replace name = "SMITH, CHRISTOPHER H. (CHRIS)"       if state == "NJ" & name == "SMITH, CHRISTOPHER H."
 replace name = "SCHROEDER, HENRY E. (HANK)"          if state == "NJ" & name == "SCHROEDER, HANK"
 replace name = "RUFO, MICHAEL"                       if state == "NJ" & name == "RUFO, MICHAEL J."
-replace name = "GOTTHEIMER, JOSHUA S. (JOSH)"        if state == "NJ" & name == "GOTTHEIMER, JOSH" // ASK
+replace name = "GOTTHEIMER, JOSHUA S. (JOSH)"        if state == "NJ" & name == "GOTTHEIMER, JOSH"
 replace name = "PALLONE, FRANK J., JR."              if state == "NJ" & name == "PALLONE, FRANK, JR."
 replace name = "MALINOWSKI, TOM"                     if state == "NJ" & name == "MALINOWSKI, TOM" // SAME
 replace name = "KEAN, THOMAS H., JR."                if state == "NJ" & name == "KEAN, THOMAS H., JR." // SAME
