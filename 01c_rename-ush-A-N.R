@@ -511,8 +511,8 @@ js_20 %>%
     name = replace(name, name == "HORSFORD, STEVEN", "HORSFORD, STEVEN ALEXZANDER"),
     # New Hampshire
     name = replace(name, name == "PAPPAS, CHRIS", "PAPPAS, CHRIS"), # SAME
-    # New Jersey
     name = replace(name, name == "LUSTER, ANN M.", "KUSTER, ANN MCLANE (ANNIE)"),
+    # New Jersey
     name = replace(name, name == "NORCROSS, DONALD", "NORCROSS, DONALD W."),
     name = replace(name, name == "DREW, JEFFERSON VAN", "VAN DREW, JEFF"),
     name = replace(name, name == "KIM, ANDY", "KIM, ANDY"), # SAME
