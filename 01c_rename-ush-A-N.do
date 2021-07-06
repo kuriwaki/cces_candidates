@@ -482,7 +482,11 @@ replace name = "MITRIS, GEORGE"            if state == "NY" & dist == 25 & party
 replace name = "JACOBS, CHRIS"             if state == "NY" & dist == 27 & party == "Constitution"
 replace name = "JACOBS, CHRIS"             if state == "NY" & dist == 27 & party == "Independence"
 
-
-
+// CT Working Families Party
+replace name = "LARSON, JOHN B."           if state == "CT" & dist == 1 & party == "Working Families"
+replace name = "COURTNEY, JOSEPH D. (JOE)" if state == "CT" & dist == 2 & party == "Working Families"
+replace name = "DELAURO, ROSA L."          if state == "CT" & dist == 3 & party == "Working Families"
+replace name = "STREICKER, MARGARET".      if state == "CT" & dist == 3 & party == "Independent"
+replace name = "HAYES, JAHANA"             if state == "CT" & dist == 5 & party == "Working Families"
 * save
 save data/intermediate/2020_ushouse_A-N.dta, replace
