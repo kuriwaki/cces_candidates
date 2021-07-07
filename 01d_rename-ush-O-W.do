@@ -5,11 +5,10 @@ keep if inrange(substr(state, 1, 1), "O", "Z")
 
 
 
-
+// Ohio
 replace name = "CHABOT, STEVEN J. (STEVE)"      if state == "OH" & name == "CHABOT, STEVE"
 replace name = "JORDAN, JAMES D. (JIM)"         if state == "OH" & name == "JORDAN, JIM"
 replace name = "LATTA, ROBERT EDWARD (BOB)"     if state == "OH" & name == "LATTA, ROBERT E."
-
 replace name = "GIBBS, ROBERT (BOB)"            if state == "OH" & name == "GIBBS, BOB"
 replace name = "KAPTUR, MARCIA C. (MARCY)"      if state == "OH" & name == "KAPTUR, MARCY"
 replace name = "TURNER, MICHAEL R. (MIKE)"      if state == "OH" & name == "TURNER, MICHAEL R."
@@ -20,6 +19,8 @@ replace name = "HORN, KENDRA S."                if state == "OK" & name == "HORN
 
 
 replace name = "LANGEVIN, JAMES R. (JIM)"       if state == "RI" & name == "LANGEVIN, JAMES R."
+
+// Pennsylvania
 replace name = "HOULAHAN, CHRISSY J."           if state == "PA" & name == "HOULAHAN, CHRISSY" // 2018 to 2020
 replace name = "CARTWRIGHT, MATTHEW A. (MATT)"  if state == "PA" & name == "CARTWRIGHT, MATTHEW ALTON"
 replace name = "PERRY, SCOTT GORDON"            if state == "PA" & name == "PERRY, SCOTT G."
@@ -27,7 +28,7 @@ replace name = "KELLY, GEORGE J. (MIKE), JR."   if state == "PA" & name == "KELL
 replace name = "LAMB, CONOR JAMES"              if state == "PA" & name == "LAMB, CONOR J."
 replace name = "DOYLE, MICHAEL F. (MIKE), JR."  if state == "PA" & name == "DOYLE, MICHAEL F., JR."
 
-
+// South Carolina
 replace name = "WILSON, ADDISON GRAVES (JOE)"   if state == "SC" & name == "WILSON, JOE"
 replace name = "DUNCAN, JEFFREY D. (JEFF)"      if state == "SC" & name == "DUNCAN, JEFF"
 replace name = "NORMAN, RALPH W."               if state == "SC" & name == "NORMAN, RALPH"
@@ -43,6 +44,7 @@ replace name = "COOPER, JAMES H. (JIM)"         if state == "TN" & name == "COOP
 replace name = "COHEN, STEPHEN IRA (STEVE)"     if state == "TN" & name == "COHEN, STEVE"
 
 
+// Texas
 * crenshaw, ron wright for more 2018 to 2020
 replace name = "GOHMERT, LOUIS (LOUIE)"         if state == "TX" & name == "GOHMERT, LOUIE"
 replace name = "TAYLOR, NICHOLAS VANCAMPEN"     if state == "TX" & name == "TAYLOR, VAN"
@@ -58,7 +60,7 @@ replace name = "CURTIS, JOHN R."                if state == "UT" & name == "CURT
 replace name = "OWENS, CLARENCE BURGESS"        if state == "UT" & name == "OWENS, BURGESS"
 replace name = "MCADAMS, BENJAMIN MICHAEL (BEN)" if state == "UT" & name == "MCADAMS, BEN" // 2018 to 2020
 
-
+// Virginia
 replace name = "WITTMAN, ROBERT J. (ROB)"       if state == "VA" & name == "WITTMAN, ROBERT J."
 replace name = "MCEACHIN, ASTON DONALD"         if state == "VA" & name == "MCEACHIN, A DONALD"
 replace name = "CLINE, BENJAMIN LEE"            if state == "VA" & name == "CLINE, BEN" // 2018 to 2020
