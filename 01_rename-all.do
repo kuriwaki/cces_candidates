@@ -21,4 +21,4 @@ append using data/intermediate/2020_ushouse_A-N.dta
 append using data/intermediate/2020_ushouse_O-W.dta
 
 
-save release/2020_uspresident-congress.dta, replace
+save release/2020_uspresident-congress_JC-SK.dta, replace
