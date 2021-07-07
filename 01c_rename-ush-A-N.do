@@ -10,9 +10,11 @@ replace name = "ADERHOLT, ROBERT BROWN "             if state == "AL" & name == 
 replace name = "BROOKS, MORRIS J. (MO), JR."         if state == "AL" & name == "BROOKS, MO"
 replace name = "PALMER, GARY"                        if state == "AL" & name == "PALMER, GARY J."
 replace name = "SEWELL, TERRYCINA ANDREA (TERRI)"    if state == "AL" & name == "SEWELL, TERRI A."
+
 // Alaska
 replace name = "GALVIN, ALYSE S."                    if state == "AK" & name == "GALVIN, ALYSE S." // SAME
 replace name = "YOUNG, DONALD E. (DON)"              if state == "AK" & name == "YOUNG, DON"
+
 // Arizona
 replace name = "O'HALLERAN, TOM C."                  if state == "AZ" & name == "O'HALLERAN, TOM"
 replace name = "KIRKPATRICK, ANN"                    if state == "AZ" & name == "KIRKPATRICK, ANN" // SAME
@@ -29,7 +31,7 @@ replace name = "GILES, DAVE"                         if state == "AZ" & name == 
 // Arkansas
 replace name = "CRAWFORD, ERIC ALAN (RICK)"          if state == "AR" & name == "CRAWFORD, ERIC A. (RICK)"
 replace name = "ELLIOTT, JOYCE"                      if state == "AR" & name == "ELLIOTT, JOYCE" // SAME,
-replace name = "HILL, FRENCH"                        if state == "AR" & name == "HILL, J FRENCH" // 2020 Name has first initial (J)
+replace name = "HILL, JAMES FRENCH"                  if state == "AR" & name == "HILL, J FRENCH" // 2020 Name has first initial (J)
 replace name = "WOMACK, STEPHEN ALLEN (STEVE)"       if state == "AR" & name == "WOMACK, STEVE"
 replace name = "KALAGIAS, MICHAEL J."                if state == "AR" & name == "KALAGIAS, MICHAEL J."
 replace name = "WESTERMAN, BRUCE"                    if state == "AR" & name == "WESTERMAN, BRUCE" // SAME
@@ -106,7 +108,7 @@ replace name = "PETERS, SCOTT"                       if state == "CA" & name == 
 replace name = "DEGETTE, DIANA LOUISE"               if state == "CO" & name == "DEGETTE, DIANA"
 replace name = "FIORINO, PAUL NOEL"                  if state == "CO" & name == "FIORINO, PAUL NOEL" // SAME
 replace name = "NEGUSE, JOE"                         if state == "CO" & name == "NEGUSE, JOE" // SAME
-replace name = "BUSH, DIANE E. MITSCH"               if state == "CO" & name == "BUSH, DIANE MITSCH"
+replace name = "BUSH, DIANE E. MITSCH"               if state == "CO" & name == "BUSH, DIANE E. MITSCH" // SAME
 replace name = "BUCK, KENNETH (KEN)"                 if state == "CO" & name == "BUCK, KEN"
 replace name = "GRIFFITH, BRUCE"                     if state == "CO" & name == "GRIFFITH, BRUCE" // SAME
 replace name = "LAMBORN, DOUGLAS L. (DOUG)"          if state == "CO" & name == "LAMBORN, DOUG"
