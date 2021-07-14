@@ -1,0 +1,182 @@
+\documentclass[12pt]{article}
+\usepackage{guide_common-preamble} % guide_common-preamble.sty
+
+% Author setting
+\usepackage{authblk}
+
+\title{\large\textbf{Guide to the Congressional and Gubernatorial Candidates, 2006-2020}}
+
+\author[1]{\normalsize Jeremiah Cha}
+\author[2]{\normalsize Shiro Kuriwaki}
+\author[1]{\normalsize James M. Snyder, Jr.}
+\affil[1]{\footnotesize Department of Government, Harvard University.}
+\affil[2]{\footnotesize To be Department of Political Science, Yale University}
+
+
+\date{\normalsize September 2020}
+	
+
+\begin{document}
+\maketitle 
+
+
+Between 2006-2018 alone, there were \input{Ns/all_dists}\unskip \ races for Congress and Governor in the general election, in which \input{Ns/all_cands}\unskip \ Democratic and Republican candiates ran for office.  Here we provide a \textbf{candidate level} dataset that Includes new data such as incumbency, general election vote, party, and the election result, from Jim Snyder's historical candidate level datasets. There is one row for every candidate in each election they ran in. 
+
+
+\section{Examples, Unique Identifiers, and Counts}
+
+The candidate-level dataset shares the same values of the respondent-level data, but is more compact because there is only one row per candidate, as shown in Table \ref{tab:cdataexample}.
+
+\begin{table}[!h]
+\caption{\textbf{Example of Candidate Data Format} \label{tab:cdataexample}}
+\centering
+\footnotesize
+\input{Tables/example_candidates}
+\end{table}
+
+
+
+\section{Data Sources}
+
+The \emph{candidate-level data} is a subset of the data collected by James M. Snyder. Vote counts and candidate listings of Congress are entered from the House Clerk's Official Election Reports, at \url{https://history.house.gov/Institution/Election-Statistics/}.  Election results for the state office of Governor are collected from statements of votes by each state's Secretary of State.  Incumbency is collected by a manual inspection of the candidate's biography. 
+
+\clearpage
+
+\section{Variable Descriptions}
+
+\subsection{Candidate Variables}
+
+\begin{itemize}[leftmargin=*]
+
+\item \colorbox{yellow}{\texttt{office}}: The office the candidate is running for. Following the Snyder data, we use \texttt{H} for the US House of Representatives, \texttt{S} for the US Senate, and \texttt{G} for Governor. 
+
+    \begin{tabularx}{\linewidth}{CC}
+    Respondents & Candidates\\
+    \input{Tables/office_by-resp} & 
+    \input{Tables/office_by-cand}
+    \end{tabularx}
+			
+
+\item \colorbox{yellow}{\texttt{cand}}: Candidate number for respondent. This variable tells the user whether the candidate is candidate number 1, 2, or 3 in order to match to other variables included in the CCES, such as \texttt{HouseCand1\_Gender}, for example.
+
+\begin{center}
+\input{Tables/cand_by-resp}
+\end{center}
+
+
+\item \texttt{name\_snyder}: Standardized candidate name from James Snyder.  The syntax is \texttt{[Last name], [First Name] [Middle name] ([Nickname]), [Jr/Sr/I/II/III]}.  Some examples of names are below, to give a sense of the syntax.
+
+\begin{itemize}
+	\item[] \texttt{SEWELL, TERRYCINA ANDREA (TERRI)}: commonly known as Terri Sewell (AL)
+	\item[] \texttt{GRASSLEY, CHARLES ERNEST (CHUCK)}: commonly known as Chuck Grassley (IA)
+	\item[] \texttt{CORNYN, JOHN, III}: commonly known as John Cornyn (TX)
+	\item[] \texttt{KENNEDY, JOSEPH P. (JOE), III}: commonly known as Joe Kennedy (MA)
+	\item[] \texttt{WASSERMAN SCHULTZ, DEBBIE}: note the last name is not hyphenated and is two words
+\end{itemize}
+
+In order to make names comparable across years, Snyder uses the full name, i.e. spelling out middle names, as much as possible and goes beyond what is printed on the ballot or the House Clerk document.
+
+\item \texttt{party}: The party affiliation of the candidate. We use the ``short'' or colloquial party name. For example, the Democrat-Farmer-Labor Party in Minnesota is given a \texttt{D} instead of \texttt{DFL}. Candidates who ran on third party tickets in Connecticut and New York are simply given the major party name.   %\skcomment{Note I use the "short party", not the technical party, so DFL is a D and fusion D candidates are also D. }
+
+%\skcomment{We should make names consistent with the respondent-level and candidate level dataset. If the short party name is called \texttt{party} in the candidate level dataset, it should also be called that in the candidate's dataset.}
+
+
+\begin{tabularx}{\linewidth}{C}
+  Respondents\\
+  \input{Tables/party_by-resp}\\\addlinespace
+  Candidates\\
+  \input{Tables/party_by-cand}
+\end{tabularx}
+
+\item \texttt{party\_formal} The formal party names, for example DFL in Minnesota. Third party candidate names follow what is given in the House Clerk Document. 
+
+\item \texttt{inc}: Candidate incumbency status. A 0 means the candidate is not an incumbent, a 1 means the candidate is an incumbent, and a 2 means the candidate is an incumbent that was elected in a special election. 
+\begin{itemize}
+\item This may differ from the CCES incumbency variable in some redistricting cases when two incumbents were forced to run against each other. For example, in 2012 Betty Sutton (OH-13) and Jim Renacci (OH-16), both House incumbents, were forced to run in OH-16. While the CCES incumbency variable (HouseCandIncumbent) lists only Sutton as the incumbent, this dataset will list both Sutton and Renacci as incumbents. This is why we include the variable  \texttt{current\_inc} below.  
+\end{itemize}
+
+    \begin{tabularx}{\linewidth}{CC}
+    Respondents & Candidates\\
+    \input{Tables/inc_by-resp} & 
+    \input{Tables/inc_by-cand}
+    \end{tabularx}
+
+\item \texttt{current\_inc}: Candidate incumbency status for that specific respondent. A 0 means the candidate is not the respondent's current representative, a 1 means the candidate is the respondent's current representative. A candidate could be an incumbent in the district but the not the respondent's current representative if the respondent was redistricted. This variable is only included for respondents with \texttt{inc=1}.
+
+			
+			
+\item \texttt{candidatevotes}: The number of total votes the candidate received. 
+\begin{itemize}
+\item For candidates running on multiple party tickets, this will be the \emph{sum} of all of their votes.  For example, in 2016, Rep. Rosa L. DeLauro (CT-03) ran as a Democrat and also ran as a Working Families Party candidate. She won 192,274 votes in the former and 21,298 votes in the latter, so her \texttt{candidatevotes} is the total, 213,572.
+\item  Florida does not report the vote count for a House candidate if she is unopposed. In these case, we have the vote count as \texttt{NA} but have the candidate winning (\texttt{w\_g == 1}).
+\end{itemize}
+%\skcomment{Maybe we call this \texttt{candidatevotes}?  That is consistent with MEDSL's naming system, and I think a lot of people now use MEDSL.}
+				
+
+\item \texttt{totalvotes}: Total votes for all candidates in the general election included in Jim Snyder's data
+
+\item \texttt{won}: Candidate won the general election (0/1)
+%\skcomment{Maybe we call this \texttt{won}? Unlike Jim's, there is no general vs. primary distinction.}
+
+
+\item \texttt{data\_note}: 145 candidates were not included in the election dataset we used to collect the candidate-level variables. We still include these candidates in the supplemental data in case researchers are interested in specific districts or races. The reason for these non-merges can be broken down into four categories, listed below.
+		\begin{enumerate}
+			\item Incorrect Election: Candidates with this code  did not run in the respondent's district or state. This likely occurs because the respondent's information was incorrectly entered. 
+			\item Not on General Election Ballot: Candidates with this code either withdrew from the race, were disqualified, were write-in candidates, did not make it to the included runoff election, or did not receive enough votes to appear on the ballot. 
+			\item Unopposed in Oklahoma: In Oklahoma, unopposed candidates do not appear on the general election ballot. 
+			\item Missing from election data: Candidates with this code were not included in the data we used to merge in the election information. Often times this category is made up of candidates in races with jungle primaries, such as Louisiana. This also includes all candidates from Washington D.C.. 
+		\end{enumerate}
+\end{itemize}
+	
+
+
+
+
+\section{Extensions to Candidate Gender and Race}
+	
+Our dataset does not contain information about the candidate's gender or race. We may add to the dataset in future versions, but in the meantime there are several related data sources users can rely on.
+
+Numerous years in the CCES have data available on candidate race and gender for interested researchers. Please see the table below for further information regarding the availability of such information by year and where it can be located. 
+
+\begin{table}[H]
+	\footnotesize
+	\centering
+	\caption{The Availability of Candidate Race and Gender Data by Year}
+\begin{tabularx}{0.7\linewidth}{lXX}
+	\toprule
+	CCES   & Candidate Race &Candidate Gender \\
+	\midrule
+	2006&  &\\
+	2008&Variables for H, S, G & Variables for H, S, G  \\
+	2010 &  Supplemental Data for H$^1$  &  Variables for H, S, G\\
+	2012&Supplemental Data for H$^2$ & Variables for H and S \\
+	2014& Supplemental Data for H$^3$ &\\% Variables for H and S \\[2ex]
+	2016&Supplemental Data for H, S$^4$  & \\%Variables for current H and S  \\[2ex]
+	2018&  &Variables for current H post \\
+	\bottomrule
+\end{tabularx}
+\caption*{\footnotesize Note that the 2013 common content also includes the gender of House members.}
+\bigskip
+
+%\skcomment{I commented out "for current.." because that's not what the column says. I also delted the odd year rows and used booktabs for table formatting}
+
+\footnotesize
+\singlespacing
+		1. \url{https://doi.org/10.7910/DVN/KC9EQR} \\
+		2. \url{https://doi.org/10.7910/DVN/NI3BDE} \\
+		3. \url{https://doi.org/10.7910/DVN/D1N0GO} \\
+		4. \url{https://doi.org/10.7910/DVN/IAOZOU}\\
+\end{table}
+
+Note that some of this data has been aggregated in the Cumulative Contextual File, located here: \url{https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/26451&version=5.0&widget=dataverse@cces}.
+
+
+
+\section{Version History}
+
+\begin{itemize}
+\item Dataverse 1.0: Initial Release, \skcomment{Enter date of dataverse upload here}.
+\end{itemize}	
+	
+\end{document}
+

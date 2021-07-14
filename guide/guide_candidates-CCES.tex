@@ -1,0 +1,163 @@
+\documentclass[12pt]{article}
+\usepackage{guide_common-preamble} % guide_common-preamble.sty
+
+% Author setting
+\usepackage{authblk}
+
+\title{\large\textbf{Guide to the Candidates - CCES Linkage Dataset}}
+
+
+\author[1]{\normalsize Jeremiah Cha}
+\author[2]{\normalsize Jaclyn Kaslovsky}
+\author[3]{\normalsize Shiro Kuriwaki}
+\author[1]{\normalsize Stephen Ansolabehere}
+\affil[1]{\footnotesize Department of Government, Harvard University.}
+\affil[2]{\footnotesize Department of Political Science, Rice University}
+\affil[3]{\footnotesize To be Department of Political Science, Yale University}
+
+
+
+\date{\normalsize September 2020}
+	
+
+\begin{document}
+\maketitle 
+
+
+Between 2006-2018 alone, there were \input{Ns/all_dists}\unskip \ races for Congress and Governor in the general election, in which \input{Ns/all_cands}\unskip \ Democratic and Republican candiates ran for office. The CCES asked about all these choices. Many researchers use the CCES to analyze how a respondent evaluated a candidate in a race for Congress or Governor. The CCES data refers to such candidates by number, where \texttt{Cand1} and \texttt{Cand2}  for a given respondent \(i\) represents the two candidates who are contesting \(i\)'s seat, and the dataset records whether, for example, \(i\) reported voting for \texttt{Cand1} over \texttt{Cand2} even though the respondent sees the actual numbers while taking the survey.  
+
+
+Now it is often tedious to immediately tell which candidate \texttt{Cand1} and \texttt{Cand2} refer to, without cross-checking with other columns in the data. Usually, candidate 1 is the Democrat and candidate 2 is the Republican, but there are some exceptions, and of course two respondents in different districts have different candidates, with different names, incumbency statuses, or ideology scores. Moreover, some of the reference variables in the Common Content, like \texttt{HouseCand1IncumbentNum}, contain errors.\footnote{For example in the 2014 Common Content, \texttt{HouseCand1IncumbentNum} for respondents in WA-05 are miscoded. Cathy McMorris Rodgers was the incumbent, not Joseph Pakootas. Additionally, 4 out of 127 respondents in \texttt{IL-03} (Lipinski, D) have a missing \texttt{HouseCand1IncumbentNum} value.}
+
+Here we provide a CCES \textbf{respondent level} dataset then provides a linkage between a constituent and the candidates who are running in that district. There is one row per candidate reference, e.g. if there are $N$ voters voting for three offices (House, Senate, Governor), and each race consists of three candidates (Democrat, Republican, Third party), then the dataset will contain $3\times3\times N$ rows.
+
+
+\section{Examples, Unique Identifiers, and Counts}
+
+The respondent-level data is formatted as in Table \ref{tab:rdataexample}.
+
+\begin{table}[!h]
+\caption{\textbf{Example of Respondent Data Format} \label{tab:rdataexample}}
+\begin{adjustwidth}{-1cm}{-1cm}
+\footnotesize
+\input{Tables/example_rows}
+\end{adjustwidth}
+\end{table}
+
+
+Each \texttt{year} $\times$ \texttt{case\_id} combination uniquely defines a respondent. Use these two variables to merge back to the cumulative common content. 
+
+In addition, use the \texttt{office} $\times$ \texttt{cand} variables to uniquely define a candidate for a given respondent. For example, in Table \ref{tab:rdataexample} we see that there are six rows for case ID \texttt{304099877} in the 2016 CCES: two candidates for three offices (House, Senate, and Governor).  In all three cases, \texttt{cand == 1} is the Democrat and \texttt{cand == 2} is the Republican.
+
+Candidates run at the level of districts. Therefore, when merging respondents with candidates, it is sufficient to merge on \texttt{office} $\times$ \texttt{state} $\times$ \texttt{dist} $\times$ \texttt{name\_snyder}. \jkcomment{Should we still say this even though we took out st and dist from the respondent-level dataset?} We use full name instead of party to distinguish candidates because party or last name is not sufficient: in rare occasions, candidates of the same party do contest the same seat and it is sometimes ambiguous what constitutes the last name of a candidate.
+
+The candidate-level dataset shares the same values of the respondent-level data, but is more compact because there is only one row per candidate, as shown in Table \ref{tab:cdataexample}.
+
+\begin{table}[!h]
+\caption{\textbf{Example of Candidate Data Format} \label{tab:cdataexample}}
+\centering
+\footnotesize
+\input{Tables/example_candidates}
+\end{table}
+
+
+Please note there are two versions of respondent-level datasets, for pre-election and post-election. The even-year CCES has a pre-election wave, which could start as early as October, and a post-election wave, which can occur as late as mid-November. Starting from 2010, the CCES started distinguishing the candidates between pre and post waves, in case the voter moved districts before and after the election or the candidates changed.
+ 
+
+Users should pick the dataset that is relevant for the question of interest. For example, pre-election vote intent questions are asked among pre-election respondents and post-election vote choice questions are asked among post-election respondents. A few (about a less than 1 percent) of respondents change their state district sometime between the pre and post waves, so the candidates can differ in such instances.  
+
+In the subsequent tabulations, we only show the pre-election wave numbers for simplicity.
+
+Table \ref{tab:counts} summarizes the number of unique respondents and the number of rows.
+
+\begin{table}[!h]
+\caption{\textbf{Summary of Counts} \label{tab:counts}}
+\begin{tabularx}{\linewidth}{CC}
+    Pre-Election Wave & Post-Election Wave\\
+    \input{Tables/counts_pre} & 
+    \input{Tables/counts_post}\\
+\multicolumn{2}{r}{\footnotesize Note: 2006 and 2008 post-waves did not re-ask location, so they would be identical to the pre-waves.}
+\end{tabularx}
+\end{table}
+
+
+\section{Data Sources}
+
+The \emph{respondent-level data} is an intermediate output of the creation of the Cumulative CCES Dataset, available on Dataverse \url{https://doi.org/10.7910/DVN/II2DB6}.
+
+
+The \emph{candidate-level data} is deposited and deposited at \skcomment{SK: Dataverse DOI}.
+
+\FloatBarrier
+
+\clearpage
+
+\section{Usage Example: Merging to the CCES}
+
+Below is example R code of how to use the candidate data in conjunction with other CCES data. This answers the following question: are voters in the racial minority more likely to vote for the losing candidate? \href{https://doi.org/10.1017/S0003055409090078}{Hajnal (2009)} showed that this was the case and raised issues with representation.
+
+This code
+\vspace{-0.5em}
+\begin{enumerate}\setlength\itemsep{-0.2em}
+\item Loads the data: CCES cumulative, candidate data (respondent-level), candidate data (candidate-level)
+\item Slims it down to necessary covariates
+\item Limits to contested races
+\item Merge the candidates information on victory into the Cumulative Common Content
+\item Analyze the relationship between voter race and candidate victory
+\end{enumerate}
+ 
+\input{Rcode/race-won_R}
+\begin{center}
+\begin{tabularx}{0.4\linewidth}{rCCC}
+\toprule
+Year & White & Black & Hispanic\\
+\midrule
+2006 & 0.58 & 0.71 & 0.58\\
+2008 & 0.58 & 0.64 & 0.63\\
+2010 & 0.60 & 0.52 & 0.59\\
+2012 & 0.58 & 0.70 & 0.62\\
+2014 & 0.60 & 0.52 & 0.61\\
+2016 & 0.59 & 0.57 & 0.61\\
+2018 & 0.60 & 0.63 & 0.62\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+
+
+\clearpage
+
+\section{Variable Descriptions}
+
+\subsection{Respondent Level Variables}
+
+	
+\begin{itemize}
+\item \colorbox{yellow}{\texttt{case\_id}}:  Case (i.e. respondent) identifier
+
+\begin{center}
+\input{Tables/case_id}
+\end{center}
+
+\item  \colorbox{yellow}{\texttt{year}}: CCES year
+
+\item \colorbox{yellow}{\texttt{dataset}}: The source of CCES data. Most of the time this will be the Common Content, which we denote with simply the year, so \texttt{year == dataset}. There are two exceptions. \texttt{2012p} refers to the 2012 Panel Study. \texttt{2018c} is the Competitive District Study of 2018, separate from the Common Content.
+
+\item \texttt{st}: State Abbreviation
+
+\item \texttt{dist}: Congressional district number for current Congress. 
+
+\item \texttt{dist\_up}: Congressional district number for upcoming Congress. This variable will differ from \texttt{dist} when the respondent has been redistricted. As a result, this variable is most commonly different from \texttt{dist} in 2012 after the new districts from the decennial census went into effect. 
+\end{itemize}
+
+
+
+
+\section{Version History}
+
+\begin{itemize}
+\item Dataverse 1.0: Initial Release, \skcomment{Enter date of dataverse upload here}.
+\end{itemize}	
+	
+\end{document}
+

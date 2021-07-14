@@ -6,6 +6,9 @@
 
 # Dataset out
 *.dta
+# Jim's data
+data/snyder
+
 
 # custom data
 candidates_key.RData
