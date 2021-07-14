@@ -4,8 +4,8 @@ if (c(username) == "shirokuriwaki") {
 }
 
 if (c(username) == "jeremiahcha") {
-	cd "~/Dropbox/cces_candidates/"
-	global js_2020_init "/Users/jeremiahcha/Dropbox/from-snyder.dta"
+	cd "~/Desktop/github/cces_candidates/"
+	global js_2020_init "/Users/jeremiahcha/Desktop/github/cces_candidates/data/snyder/2021-06-19_election_results_2020_pres_house_ussen.dta"
 }
 
 	
@@ -20,5 +20,4 @@ append using data/intermediate/2020_ussenate.dta
 append using data/intermediate/2020_ushouse_A-N.dta
 append using data/intermediate/2020_ushouse_O-W.dta
 
-
-save release/2020_uspresident-congress_JC-SK.dta, replace
+save data/intermediate/2020_uspresident-congress_JC-SK.dta, replace
