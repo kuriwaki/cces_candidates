@@ -1,22 +1,19 @@
 library(stringi)
 library(stringr)
 library(dplyr)
-library(readstata13)
 library(readxl)
 
-#Set the working directory
-setwd("~/Dropbox/cces_cumulative/")
 
 #load in the cces candidate data from shiro
-load("data/output/01_responses/candidates_key.RData")
+load("data/candidates_key.RData")
 rc_key_2018 <- rc_key[rc_key$dataset=="2018",]
 rc_key <- rc_key[rc_key$dataset=="2006" | rc_key$dataset=="2008"| rc_key$dataset=="2010"|rc_key$dataset=="2012"|rc_key$dataset=="2014"|rc_key$dataset=="2016",]
 
-#load in the election data from Jim 
+#load in the election data from Jim
 jim_data <- read.dta13("~/Dropbox/CCES_candidates/Input/election_results_2006_2016.dta")
 
 #rename some variables
-jim_data <- jim_data  %>%                     
+jim_data <- jim_data  %>%
   rename(dist_up=dist,
          st=state)
 
@@ -33,7 +30,7 @@ fulldata_check <- anti_join(rc_key[rc_key$year < 2017,], jim_data[jim_data$offic
 #get a dataframe of unique candidate names that aren't merging
 fulldata_check_cands <- fulldata_check[!duplicated(fulldata_check[c("name","year")]), ]
 
-#save the data so that we can see what's going on 
+#save the data so that we can see what's going on
 setwd("~/Dropbox/CCES_candidates/Output")
 write.csv(fulldata_check_cands,'NonMergingCandidates_2006to2017_raw.csv')
 
@@ -47,7 +44,7 @@ cands_2018$year <-2018
 cands_2018 <- cands_2018 %>%
   select(cd, name, year, candidatevotes, inc, w_g, u_g)
 
-#create some variables for the merge 
+#create some variables for the merge
 cands_2018 <- cands_2018 %>%
   separate(cd, c("st","dist_up"), sep = "-")
 cands_2018$dist_up <- as.numeric(cands_2018$dist_up)

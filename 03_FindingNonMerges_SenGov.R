@@ -16,13 +16,13 @@ setwd("~/Dropbox/cces_cumulative/")
 # Load the data         #
 #######################################
 
-load("data/output/01_responses/candidates_key.RData")
+load("data/candidates_key.RData")
 sc_key_2018 <- sc_key[sc_key$dataset=="2018",]
-sc_key <- sc_key %>% 
+sc_key <- sc_key %>%
   filter(dataset %in% c("2006", "2008", "2010", "2012", "2014", "2016"))
 
 gc_key_2018 <- gc_key[gc_key$dataset=="2018",]
-gc_key <- gc_key %>% 
+gc_key <- gc_key %>%
   filter(dataset %in% c("2006", "2008", "2010", "2012", "2014", "2016"))
 
 jim_data <- read_dta("~/Dropbox/CCES_candidates/Input/election_results_2006_2016.dta")
@@ -32,7 +32,7 @@ jim_data <- read_dta("~/Dropbox/CCES_candidates/Input/election_results_2006_2016
 ###########################################
 
 #rename soe variables
-jim_data <- jim_data  %>%                     
+jim_data <- jim_data  %>%
   rename(dist_up=dist,
          st=state)
 
