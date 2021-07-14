@@ -6,6 +6,7 @@ library(readxl)
 
 #load in the cces candidate data from shiro
 load("data/candidates_key.RData")
+
 rc_key_2018 <- rc_key[rc_key$dataset=="2018",]
 rc_key <- rc_key[rc_key$dataset=="2006" | rc_key$dataset=="2008"| rc_key$dataset=="2010"|rc_key$dataset=="2012"|rc_key$dataset=="2014"|rc_key$dataset=="2016",]
 
