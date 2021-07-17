@@ -18,11 +18,12 @@ cand_18 <- read_dta("data/snyder/2020-08-16 election_results_2018_names_updated.
 # Congressional and Gubernatorial Candidates (2020)
 cand_20 <- read_dta("data/intermediate/2020_uspresident-congress_JC-SK.dta")
 
+cand_20g <- read_dta("data/intermediate/2020_govstateexec.dta")
 
 
 # Binding data --------
 
-cand_all <- bind_rows(cand_16, cand_18, cand_20) %>%
+cand_all <- bind_rows(cand_16, cand_18, cand_20, cand_20g) %>%
   arrange(year, office, state, dist)
 
 # Limit to necessary and rename ------
@@ -33,6 +34,7 @@ cand <- cand_all %>%
 
 
 # Add variable labels -----
+
 
 
 # Release Dataverse version
