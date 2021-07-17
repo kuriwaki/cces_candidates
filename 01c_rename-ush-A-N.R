@@ -1,22 +1,21 @@
 # Set-up ------------------------------------------------------------------
-
-
 library(tidyverse)
 library(haven)
 
-setwd("/Users/jeremiahcha/Dropbox/from-snyder")
+if (Sys.info()["user"] == "jeremiahcha") {
+  setwd("/Users/jeremiahcha/Desktop/github/cces_candidates/")
+}
 
 
 # Data Loading ------------------------------------------------------------
 
-js_06 <- read_dta("2020-06-13 election_results_2006_2016.dta") # Candidate data 2006-2016
-
-js_18 <- read_dta("2020-08-16 election_results_2018_names_updated.dta") # Candidate 2018
+js_06 <- read_dta("data/snyder/2020-06-13 election_results_2006_2016.dta") # Candidate data 2006-2016
+js_18 <- read_dta("data/snyder/2020-08-16 election_results_2018_names_updated.dta") # Candidate 2018
 
 js_06_18 <- bind_rows(js_06, js_18) %>% # Binding two datasets
   arrange(state, dist, name)
 
-js_20 <- read_dta("2021-06-19_election_results_2020_pres_house_ussen.dta") %>%
+js_20 <- read_dta("data/snyder/2021-06-19_election_results_2020_pres_house_ussen.dta") %>%
   filter(
     party != "Write-in",
     party != "Write-in (Independent)",
