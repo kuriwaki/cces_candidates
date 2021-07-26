@@ -1,0 +1,69 @@
+library(haven)
+library(fs)
+library(knitr)
+library(glue)
+library(rcces) # install from remotes::install_github("kuriwaki/rcces")
+library(kableExtra)
+library(tidyverse)
+
+
+# functions ---
+fmt_xtab <- function(xtbl, name) {
+  tab <- kable(xtbl,
+               format = "latex",
+               booktabs = TRUE,
+               linesep = "",
+               format.args = list(big.mark = ',')) %>%
+    add_header_above(header = c("year" = 1, XXXXX = ncol(xtbl))) %>%
+    kable_styling(position = "center")
+
+  str_replace(tab, "XXXXX", name)
+}
+
+wri_xtab <- function(tbl, name, dir = "guide/Tables") {
+  tbl %>%
+    str_remove("\\\\begin\\{table\\}\\[(H|t)\\]\\n") %>%
+    str_remove("\\\\centering\\n") %>%
+    str_remove("\\\\caption\\{NA\\}\\n") %>%
+    str_remove("\\n\\\\end\\{table\\}") %>%
+    str_replace("\\\\begin\\{tabular\\}", "\\\\footnotesize\\\\begin{tabular}[t]") %>%
+    write_lines(glue("{dir}/{name}.tex"))
+}
+
+write_numbers <- function(tbl, office_lbl, ndir = "guide/Ns") {
+  tbl %>%
+    distinct(office, st, year, dist_up) %>%
+    nrow() %>%
+    rcces::cmfmtW(file = path(ndir, glue("{office_lbl}_dists.tex")))
+
+  tbl %>%
+    distinct(office, st, year, name_snyder) %>%
+    nrow() %>%
+    rcces::cmfmtW(file = path(ndir, glue("{office_lbl}_cands.tex")))
+}
+
+# Import data ----
+release_dir <- "~/Dropbox/CCES_candidates/Release/"
+
+
+
+
+
+# Counts -- respondents
+count_rdat <- function(tbl, name) {
+  tbl %>%
+  mutate(year = factor(as.character(year), levels = as.character(seq(2006, 2018, 2)))) %>%
+  group_by(year, .drop = FALSE) %>%
+  summarize(n_respondents = n_distinct(case_id),
+            n_nonmissing = sum(name_snyder != ""),
+            n_rows = n(),
+            .groups = "drop") %>%
+  kable(format = "latex", booktabs = TRUE,
+        format.args = list(big.mark = ","),
+        col.names = c("Year", "Respondents", "Non-Missing", "Total"),
+        linesep = "") %>%
+    add_header_above(c(" " = 2, "\\\\shortstack{Respondent $\\\\times$\\\\\\\\ Office $\\\\times$ Candidate Pairs}" = 2),
+                     escape = FALSE) %>%
+    wri_xtab(name)
+}
+
