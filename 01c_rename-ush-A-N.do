@@ -323,7 +323,7 @@ replace name = "PALAZZO, STEVEN MCCARTY"             if state == "MS" & name == 
 replace name = "WAGNER, ANN L."                      if state == "MO" & name == "WAGNER, ANN"
 replace name = "LUETKEMEYER, W. BLAINE"              if state == "MO" & name == "LUETKEMEYER, BLAINE"
 replace name = "HARTZLER, VICKY J."                  if state == "MO" & name == "HARTZLER, VICKY"
-replace name = "LEAVER, EMANUEL, II"                 if state == "MO" & name == "CLEAVER, EMANUEL"
+replace name = "CLEAVER, EMANUEL, II"                 if state == "MO" & name == "CLEAVER, EMANUEL"
 replace name = "GRAVES, SAMUEL B. (SAM), JR."        if state == "MO" & name == "GRAVES, SAM"
 replace name = "HIGGINS, JAMES EDWARD (JIM)"         if state == "MO" & name == "HIGGINS, JIM"
 replace name = "LONG, BILLY"                         if state == "MO" & name == "LONG, BILLY" // SAME
