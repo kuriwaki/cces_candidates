@@ -19,8 +19,8 @@
 \begin{document}
 \maketitle 
 
-
-Between 2006-2018 alone, there were \input{Ns/all_dists}\unskip \ races for Congress and Governor in the general election, in which \input{Ns/all_cands}\unskip \ Democratic and Republican candiates ran for office.  Here we provide a \textbf{candidate level} dataset that Includes new data such as incumbency, general election vote, party, and the election result, from Jim Snyder's historical candidate level datasets. There is one row for every candidate in each election they ran in. 
+%\jccommeent{We should extend this to 2020 and recalculate the race total}
+Between 2006-2018 alone, there were \input{Ns/all_dists}\unskip \ races for Congress and Governor in the general election, in which \input{Ns/all_cands}\unskip \ Democratic and Republican candidates ran for office.  Here we provide a \textbf{candidate level} dataset that includes new data, such as incumbency, general election vote, party, and the election result, from historical candidate level datasets compiled by James M. Snyder. There is one row for every candidate in each election they ran in. 
 
 
 \section{Examples, Unique Identifiers, and Counts}
@@ -38,7 +38,7 @@ The candidate-level dataset shares the same values of the respondent-level data,
 
 \section{Data Sources}
 
-The \emph{candidate-level data} is a subset of the data collected by James M. Snyder. Vote counts and candidate listings of Congress are entered from the House Clerk's Official Election Reports, at \url{https://history.house.gov/Institution/Election-Statistics/}.  Election results for the state office of Governor are collected from statements of votes by each state's Secretary of State.  Incumbency is collected by a manual inspection of the candidate's biography. 
+The \emph{candidate-level data} is a subset of the data collected by James M. Snyder. Vote counts and candidate listings of Congress are entered from the House Clerk's Official Election Reports, at \url{https://history.house.gov/Institution/Election-Statistics/}.  Election results for the state office of Governor are collected from statements of votes by the Secretary of State of each state.  Incumbency is collected by a manual inspection of the biography of each candidate. 
 
 \clearpage
 
@@ -56,15 +56,15 @@ The \emph{candidate-level data} is a subset of the data collected by James M. Sn
     \input{Tables/office_by-cand}
     \end{tabularx}
 			
-
-\item \colorbox{yellow}{\texttt{cand}}: Candidate number for respondent. This variable tells the user whether the candidate is candidate number 1, 2, or 3 in order to match to other variables included in the CCES, such as \texttt{HouseCand1\_Gender}, for example.
+%\jccomment{Are we using this for the Snyder Candidate Data release?}
+\item \colorbox{yellow}{\texttt{cand}}: Candidate number for respondent. This variable tells the user whether the candidate is candidate number 1, 2, or 3 in order to match to other variables included in the Cooperative Election Survey (CES), such as \texttt{HouseCand1\_Gender}, for example.
 
 \begin{center}
 \input{Tables/cand_by-resp}
 \end{center}
 
 
-\item \texttt{name\_snyder}: Standardized candidate name from James Snyder.  The syntax is \texttt{[Last name], [First Name] [Middle name] ([Nickname]), [Jr/Sr/I/II/III]}.  Some examples of names are below, to give a sense of the syntax.
+\item \texttt{name\_snyder}: Standardized candidate name from James M. Snyder.  The syntax is \texttt{[Last name], [First Name] [Middle name] ([Nickname]), [Jr/Sr/I/II/III]}.  Some examples of names are below, to give a sense of the syntax.
 
 \begin{itemize}
 	\item[] \texttt{SEWELL, TERRYCINA ANDREA (TERRI)}: commonly known as Terri Sewell (AL)
@@ -92,7 +92,7 @@ In order to make names comparable across years, Snyder uses the full name, i.e. 
 
 \item \texttt{inc}: Candidate incumbency status. A 0 means the candidate is not an incumbent, a 1 means the candidate is an incumbent, and a 2 means the candidate is an incumbent that was elected in a special election. 
 \begin{itemize}
-\item This may differ from the CCES incumbency variable in some redistricting cases when two incumbents were forced to run against each other. For example, in 2012 Betty Sutton (OH-13) and Jim Renacci (OH-16), both House incumbents, were forced to run in OH-16. While the CCES incumbency variable (HouseCandIncumbent) lists only Sutton as the incumbent, this dataset will list both Sutton and Renacci as incumbents. This is why we include the variable  \texttt{current\_inc} below.  
+\item This may differ from the CES incumbency variable in some redistricting cases when two incumbents were forced to run against each other. For example, in 2012 Betty Sutton (OH-13) and Jim Renacci (OH-16), both House incumbents, were forced to run in OH-16. While the CES incumbency variable (HouseCandIncumbent) lists only Sutton as the incumbent, this dataset will list both Sutton and Renacci as incumbents. This is why we include the variable  \texttt{current\_inc} below.  
 \end{itemize}
 
     \begin{tabularx}{\linewidth}{CC}
@@ -113,18 +113,17 @@ In order to make names comparable across years, Snyder uses the full name, i.e. 
 %\skcomment{Maybe we call this \texttt{candidatevotes}?  That is consistent with MEDSL's naming system, and I think a lot of people now use MEDSL.}
 				
 
-\item \texttt{totalvotes}: Total votes for all candidates in the general election included in Jim Snyder's data
+\item \texttt{totalvotes}: Total votes for all candidates in the general election included in the Snyder data. 
 
-\item \texttt{won}: Candidate won the general election (0/1)
+\item \texttt{won}: Candidate won the general election. A 1 means the candidate won the general election, and a 0 means the candidate lost the general election. 
 %\skcomment{Maybe we call this \texttt{won}? Unlike Jim's, there is no general vs. primary distinction.}
-
 
 \item \texttt{data\_note}: 145 candidates were not included in the election dataset we used to collect the candidate-level variables. We still include these candidates in the supplemental data in case researchers are interested in specific districts or races. The reason for these non-merges can be broken down into four categories, listed below.
 		\begin{enumerate}
 			\item Incorrect Election: Candidates with this code  did not run in the respondent's district or state. This likely occurs because the respondent's information was incorrectly entered. 
 			\item Not on General Election Ballot: Candidates with this code either withdrew from the race, were disqualified, were write-in candidates, did not make it to the included runoff election, or did not receive enough votes to appear on the ballot. 
 			\item Unopposed in Oklahoma: In Oklahoma, unopposed candidates do not appear on the general election ballot. 
-			\item Missing from election data: Candidates with this code were not included in the data we used to merge in the election information. Often times this category is made up of candidates in races with jungle primaries, such as Louisiana. This also includes all candidates from Washington D.C.. 
+			\item Missing from election data: Candidates with this code were not included in the data we used to merge in the election information. Oftentimes, this category is made up of candidates in races with jungle primaries, such as Louisiana. This also includes all candidates from Washington D.C.. 
 		\end{enumerate}
 \end{itemize}
 	
@@ -134,9 +133,9 @@ In order to make names comparable across years, Snyder uses the full name, i.e. 
 
 \section{Extensions to Candidate Gender and Race}
 	
-Our dataset does not contain information about the candidate's gender or race. We may add to the dataset in future versions, but in the meantime there are several related data sources users can rely on.
+Our dataset does not contain information about the gender or race of the candidates. We may add to the dataset in future versions, but in the meantime there are several related data sources users can rely on.
 
-Numerous years in the CCES have data available on candidate race and gender for interested researchers. Please see the table below for further information regarding the availability of such information by year and where it can be located. 
+Numerous years in the CES have data available on candidate race and gender for interested researchers. Please see the table below for further information regarding the availability of such information by year and where it can be located. 
 
 \begin{table}[H]
 	\footnotesize
@@ -144,7 +143,7 @@ Numerous years in the CCES have data available on candidate race and gender for 
 	\caption{The Availability of Candidate Race and Gender Data by Year}
 \begin{tabularx}{0.7\linewidth}{lXX}
 	\toprule
-	CCES   & Candidate Race &Candidate Gender \\
+	CES   & Candidate Race &Candidate Gender \\
 	\midrule
 	2006&  &\\
 	2008&Variables for H, S, G & Variables for H, S, G  \\
