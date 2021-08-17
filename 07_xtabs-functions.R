@@ -32,7 +32,7 @@ wri_xtab <- function(tbl, name, dir = "guide/Tables") {
 
 write_numbers <- function(tbl, office_lbl, ndir = "guide/Ns") {
   tbl %>%
-    distinct(office, st, year, dist_up) %>%
+    distinct(office, st, year, dist) %>%
     nrow() %>%
     rcces::cmfmtW(file = path(ndir, glue("{office_lbl}_dists.tex")))
 
