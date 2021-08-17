@@ -1,9 +1,6 @@
 source("07_xtabs-functions.R")
 
 
-jsdat <- read_dta("release/candidates_2006-2020.dta") %>%
-  filter(office %in% c("S", "H", "G"), # temp before filtering
-         year %% 2 == 0)
 
 
 # counts JS ----
@@ -43,8 +40,6 @@ jsdat  %>%
   xtabs(~ year + party_lump, .) %>%
   fmt_xtab("party") %>%
   wri_xtab("party_by-cand")
-
-
 
 
 # incumbent
