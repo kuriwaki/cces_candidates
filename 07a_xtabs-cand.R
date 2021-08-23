@@ -1,3 +1,4 @@
+source("03_clean-snyder-2006-2020.R") # currently, this holds the data
 source("07_xtabs-functions.R")
 
 
@@ -52,7 +53,8 @@ jsdat %>%
   fmt_xtab("inc") %>%
   wri_xtab("inc_by-cand")
 
-
-# 1. standardize parties
-# 2. check names
-# 3.
+# special vs. general
+jsdat %>%
+  xtabs(~ year + type, .) %>%
+  fmt_xtab("inc") %>%
+  wri_xtab("type_by-cand")

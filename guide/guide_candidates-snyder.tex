@@ -54,12 +54,13 @@ The \emph{candidate-level data} is a subset of the data collected by James M. Sn
     \input{Tables/office_by-cand}
     \end{tabularx}
 			
-%\jccomment{Are we using this for the Snyder Candidate Data release?}
-\item \colorbox{yellow}{\texttt{cand}}: Candidate number for respondent. This variable tells the user whether the candidate is candidate number 1, 2, or 3 in order to match to other variables included in the Cooperative Election Survey (CES), such as \texttt{HouseCand1\_Gender}, for example.
+\item \colorbox{yellow}{\texttt{type}}: Whether an election is a General,  or Special Election
 
 \begin{center}
-\input{Tables/cand_by-resp}
+\input{Tables/type_by-cand}
 \end{center}
+
+\skcomment{Need a column for runoffs}
 
 
 \item \texttt{name\_snyder}: Standardized candidate name from James M. Snyder.  The syntax is \texttt{[Last name], [First Name] [Middle name] ([Nickname]), [Jr/Sr/I/II/III]}.  Some examples of names are below, to give a sense of the syntax.
