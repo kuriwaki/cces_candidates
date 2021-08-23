@@ -7,7 +7,7 @@ jsdat_all <- read_dta("data/snyder/2021-07-29 sen_gov_house_2006_2020.dta")
 
 jsdat <- jsdat_all %>%
   # ONLY KEEP GENERALS in three offices
-  filter(office %in% c("S", "H", "G"), year %% 2 == 0) %>%
+  filter(office %in% c("S", "H", "G")) %>%
   bind_rows(filter(gov_2020, year == 2020, office == "G")) %>%
   mutate(party_formal = str_squish(party),
          party = recode(party_formal, `Democrat` = "D", `Republican` = "R"),
