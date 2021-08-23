@@ -50,9 +50,7 @@ The \emph{candidate-level data} is a subset of the data collected by James M. Sn
 
 \item \colorbox{yellow}{\texttt{office}}: The office the candidate is running for. Following the Snyder data, we use \texttt{H} for the US House of Representatives, \texttt{S} for the US Senate, and \texttt{G} for Governor. 
 
-    \begin{tabularx}{\linewidth}{CC}
-    Respondents & Candidates\\
-    \input{Tables/office_by-resp} & 
+    \begin{tabularx}{\linewidth}{C}
     \input{Tables/office_by-cand}
     \end{tabularx}
 			
@@ -82,9 +80,6 @@ In order to make names comparable across years, Snyder uses the full name, i.e. 
 
 
 \begin{tabularx}{\linewidth}{C}
-  Respondents\\
-  \input{Tables/party_by-resp}\\\addlinespace
-  Candidates\\
   \input{Tables/party_by-cand}
 \end{tabularx}
 
@@ -95,9 +90,7 @@ In order to make names comparable across years, Snyder uses the full name, i.e. 
 \item This may differ from the CES incumbency variable in some redistricting cases when two incumbents were forced to run against each other. For example, in 2012 Betty Sutton (OH-13) and Jim Renacci (OH-16), both House incumbents, were forced to run in OH-16. While the CES incumbency variable (HouseCandIncumbent) lists only Sutton as the incumbent, this dataset will list both Sutton and Renacci as incumbents. This is why we include the variable  \texttt{current\_inc} below.  
 \end{itemize}
 
-    \begin{tabularx}{\linewidth}{CC}
-    Respondents & Candidates\\
-    \input{Tables/inc_by-resp} & 
+    \begin{tabularx}{\linewidth}{C}
     \input{Tables/inc_by-cand}
     \end{tabularx}
 

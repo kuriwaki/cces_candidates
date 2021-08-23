@@ -35,15 +35,24 @@ xtabs(~ year + office, jsdat) %>%
 
 
 jsdat  %>%
-  mutate(party_lump = fct_lump(party_short, n = 5, other_level = "Other"),
-         party_lump = fct_relevel(party_lump, "D", "R", "I", "Lbt", "Grn", "")) %>%
-  xtabs(~ year + party_lump, .) %>%
+  # party_lump = fct_lump(party, n = 5, other_level = "Other"),
+  mutate(party = fct_relevel(party, "D", "R", "I", "Lbt", "Grn", "")) %>%
+  xtabs(~ year + party, .) %>%
   fmt_xtab("party") %>%
   wri_xtab("party_by-cand")
 
+jsdat  %>%
+  xtabs(~ year + office, .) %>%
+  fmt_xtab("office") %>%
+  wri_xtab("office_by-cand")
 
 # incumbent
 jsdat %>%
   xtabs(~ year + inc, .) %>%
   fmt_xtab("inc") %>%
   wri_xtab("inc_by-cand")
+
+
+# 1. standardize parties
+# 2. check names
+# 3.
