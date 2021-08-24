@@ -22,8 +22,6 @@ paste_labels <- function(tbl, lab_df = var_labels) {
 # Read from Output -----
 output_dir <- "data/intermediate/"
 cand_raw <- read_dta(path(output_dir, "CandidateLevel_Candidates.dta"))
-pre  <- read_dta(path(output_dir, "RespondentLevel_Pre.dta"))
-post <- read_dta(path(output_dir, "RespondentLevel_Post.dta"))
 
 warning("Did we change the values of name_snyder when merging? I don't see any, so if not, that's ok.
      But if so we should try to make the values consistent across the candidate and respondent dataset")
@@ -74,8 +72,7 @@ var_labels <- tribble(
 
 # add labels ------
 cand_fmt <- paste_labels(cand)
-pre_fmt <- paste_labels(pre)
-post_fmt <- paste_labels(post)
+
 
 
 # Save to Release ------
@@ -83,9 +80,4 @@ release_dir <- "release"
 
 # Clear
 file_delete(dir_ls(release_dir))
-
-# Save
-write_dta(cand_fmt, path(release_dir, "candidates_2006-2020.dta"))
-write_dta(pre_fmt, path(release_dir, "cces_candidates_pre.dta"))
-write_dta(post_fmt, path(release_dir, "cces_candidates_post.dta"))
 
