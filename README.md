@@ -9,6 +9,12 @@ The goal of cces_candidates is to serve as a standardized interface for U.S. can
 
 Although these data formally only cover 2006 and onwards, the coding rules are written so that they are mostly consistent with a historical database mainly constructed by Jim Snyder.
 
+## Script and data organizations
+
+- Internal data are either from internal Stata files (only shared internally for now)
+- Scripts in the single digits (`01` - `09`) are meant for the candidates data
+- Scripts in the 10s (`11` - `19`) are meant for the CCES merge.
+
 
 
 ## Candidate Data Format
@@ -157,7 +163,7 @@ For candidates running on multiple party tickets, this will be the _sum_ of all 
 
 In some states, notably Florida, if a congressional district is uncontested by one of the major parties, the winner's vote count is __not reported__ by the Secretary of State. Votes here should be listed as blank.
 
-##  Related Datasets and Data Sources
+## Related Datasets and Data Sources
 
 - The Clerk of the House [Official Election Returns](https://history.house.gov/Institution/Election-Statistics/) is the authoritative source for vote counts and party affiliations for `P`, `S`, `H`.  It does not include `inc` or the standardized name.
 - The MIT Election Data Science Lab [Dataverse](https://dataverse.harvard.edu/dataverse/medsl_election_returns) compiles this Clerk information in csv [`P`](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/PEJ5QU), [`S`](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/PEJ5QU), [`H`](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/IG0UN2) (only till 2018 as of June 2021). It has information on special elections but not `inc`. 
