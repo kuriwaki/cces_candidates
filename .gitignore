@@ -18,6 +18,7 @@ candidates_key.RData
 
 # pdf out
 *.pdf
+*.html
 
 ## Core latex/pdflatex auxiliary files:
 *.aux
