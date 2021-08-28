@@ -2,7 +2,7 @@ library(tidyverse)
 library(haven)
 
 # read data ----
-jsdat_all <- read_rds("data/intermediate/candidates_2006-2020.rds")
+jsdat_all <- read_rds("data/intermediate/snyder_2006-2020.rds")
 gov_2020 <- read_csv("data/intermediate/2020_gov.csv")
 
 
