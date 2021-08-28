@@ -1,7 +1,7 @@
 library(googlesheets4)
 library(tidyverse)
 
-g2020_ss <- gs4_get(ss = "141Dt5ysrlbHGQGKVk0QK5ygAVWbcuQovLITJ9zJqoF8")
+g2020_ss <- gs4_get(ss = "1tnOcrDqstmgOOhyJQcDzCz0Qxg68TIiYhPegYg7Bdxs")
 g2020_gov <- range_read(g2020_ss, sheet = "State-Executive")
 
 # rename for other data
