@@ -1,13 +1,8 @@
-library(haven)
-library(fs)
-library(knitr)
-library(glue)
-library(rcces) # install from remotes::install_github("kuriwaki/rcces")
-library(kableExtra)
-library(tidyverse)
-
-
 # functions ---
+
+#' write with comma and percentage point
+
+
 fmt_xtab <- function(xtbl, name) {
   tab <- kable(xtbl,
                format = "latex",
@@ -34,16 +29,18 @@ write_numbers <- function(tbl, office_lbl, ndir = "guide/Ns") {
   tbl %>%
     distinct(office, state, year, dist) %>%
     nrow() %>%
-    rcces::cmfmtW(file = path(ndir, glue("{office_lbl}_dists.tex")))
+    format(big.mark = ",") %>%
+    write_lines(path(ndir, glue("{office_lbl}_dists.tex")))
 
   tbl %>%
-    distinct(office, st, year, name_snyder) %>%
+    distinct(office, state, year, name_snyder) %>%
     nrow() %>%
-    rcces::cmfmtW(file = path(ndir, glue("{office_lbl}_cands.tex")))
+    format(big.mark = ",") %>%
+    write_lines(path(ndir, glue("{office_lbl}_cands.tex")))
 }
 
 # Import data ----
-release_dir <- "~/Dropbox/cces_candidates/release/"
+release_dir <- "release/"
 
 
 

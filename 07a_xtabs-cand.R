@@ -1,30 +1,21 @@
+library(haven)
+library(fs)
+library(knitr)
+library(glue)
+library(kableExtra)
+library(tidyverse)
+
+
 source("07_xtabs-functions.R")
 
 # data ---
 jsdat <- read_dta("release/candidates_2006-2020.dta")
 
 # counts JS ----
-jsdat %>% filter(party %in% c("D", "R")) %>%  write_numbers("all")
-jsdat %>% filter(office == "G", party %in% c("D", "R")) %>% write_numbers("gov")
-jsdat %>% filter(office == "H", party %in% c("D", "R")) %>% write_numbers("house")
-jsdat %>% filter(office == "S", party %in% c("D", "R")) %>% write_numbers("sen")
-
-
-# var example
-
-jsdat %>%
-  filter(year == 2016, state == "MO",  (office %in% c("S", "G") | dist == 5)) %>%
-  mutate(party = fct_relevel(party, "D", "R"),
-         office = fct_relevel(factor(office), "H", "S", "G")) %>%
-  arrange(office, party) %>%
-  select(-party_formal, -type) %>%
-  mutate(across(c(year), as_factor)) %>%
-  kable(format = "latex", booktabs = TRUE,
-        format.args = list(big.mark = ","),
-        linesep = "") %>%
-  column_spec(seq_len(10), monospace = TRUE)  %>%
-  write_lines("guides/Tables/example_candidates.tex")
-
+jsdat %>% filter(as_factor(party) %in% c("D", "R")) %>%  write_numbers("all")
+jsdat %>% filter(office == "G", as_factor(party) %in% c("D", "R")) %>% write_numbers("gov")
+jsdat %>% filter(office == "H", as_factor(party) %in% c("D", "R")) %>% write_numbers("house")
+jsdat %>% filter(office == "S", as_factor(party) %in% c("D", "R")) %>% write_numbers("sen")
 
 
 # main xtab
@@ -35,8 +26,7 @@ xtabs(~ year + office, jsdat) %>%
 
 
 jsdat  %>%
-  # party_lump = fct_lump(party, n = 5, other_level = "Other"),
-  mutate(party = fct_relevel(party, "D", "R", "I", "Lbt", "Grn", "")) %>%
+  mutate(party = fct_relevel(as_factor(party), "D", "R", "I", "Lbt", "Grn")) %>%
   xtabs(~ year + party, .) %>%
   fmt_xtab("party") %>%
   wri_xtab("party_by-cand")
