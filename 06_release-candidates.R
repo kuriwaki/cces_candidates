@@ -14,48 +14,32 @@ paste_labels <- function(tbl, lab_df = var_labels) {
 }
 
 
-# In dta files -----
-# [X] make sure variable names are consistent across datasets
-# [X] add user-friendly labels for each variable (`attr(data$w_g, "label") <- "won general" etc..`)
-# [ ] use the simplest filenames
-
 # Read from Output -----
 output_dir <- "data/intermediate/"
-cand_raw <- read_dta(path(output_dir, "CandidateLevel_Candidates.dta"))
-
-warning("Did we change the values of name_snyder when merging? I don't see any, so if not, that's ok.
-     But if so we should try to make the values consistent across the candidate and respondent dataset")
-
+cand_raw <- read_rds(path(output_dir, "candidates_2006-2020.rds"))
 
 # remove variables from candidate -----
-rmv_candvars <- c("namelast")
-order_candvars <- c("year", "st", "office", "dist_up", "party", "party_formal",
-                    "name_snyder", "inc", "candidatevotes", "won", "totalvotes")
+order_candvars <- c("year", "state",
+                    "office", "dist", "type", "nextup",
+                    "party", "party_formal",
+                    "name_snyder", "inc", "candidatevotes", "totalvotes", "won")
+# should add totalvotes
 
 cand <- cand_raw %>%
-  select(-c(!!!rmv_candvars)) %>%
-  rename(party_formal = party,
-         party = party_short,
-         candidatevotes = vote_g,
-         name_snyder = name,
-         won = w_g) %>%
+  rename(name_snyder = name) %>%
   relocate(!!!order_candvars)
 
 # what are the columns -----
-unique(c(colnames(pre), colnames(post), colnames(cand)))
-
 
 # Define labels
 var_labels <- tribble(
   ~alias, ~label,
   "year",  "Year of the general election or CCES",
-  "dataset", "CCES dataset. Common Content, unless suffix added",
-  "case_id", "Case identifier (to be matched with CCES)",
-  "st",     "State two-letter abbreviation",
+  "state",     "State two-letter abbreviation",
   "office", "Office (H = House, S = Senate, G = Governor)",
   "dist", "Congressional district number, current",
   "dist_up", "Congressional district number in election (for House candidates)",
-  "cand", "Candidate number as coded in CCES dataset",
+  "nextup", "The next year the winner will be up",
   "party", "Candidate party affiliation (short)",
   "party_formal", "Candidate party affiliation (formal)",
   "name_snyder", "Candidate name",
@@ -68,11 +52,13 @@ var_labels <- tribble(
   "type", "Type of election. (G = general, S = special)"
 )
 
+# "dataset", "CCES dataset. Common Content, unless suffix added",
+# "case_id", "Case identifier (to be matched with CCES)",
+  # "cand", "Candidate number as coded in CCES dataset",
 
 
 # add labels ------
 cand_fmt <- paste_labels(cand)
-
 
 
 # Save to Release ------
@@ -81,3 +67,5 @@ release_dir <- "release"
 # Clear
 file_delete(dir_ls(release_dir))
 
+# Save
+write_dta(cand_fmt, path(release_dir, "candidates_2006-2020.dta"))

@@ -6,6 +6,8 @@
 
 # Dataset out
 *.dta
+*.rds
+
 # Jim's data
 data/snyder
 

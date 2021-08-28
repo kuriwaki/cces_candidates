@@ -1,7 +1,5 @@
 
 # Save
-write_dta(cand_fmt, path(release_dir, "candidates_2006-2020.dta"))
-
 pre  <- read_dta(path(output_dir, "RespondentLevel_Pre.dta"))
 post <- read_dta(path(output_dir, "RespondentLevel_Post.dta"))
 
