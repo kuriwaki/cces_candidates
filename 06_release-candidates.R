@@ -15,18 +15,17 @@ paste_labels <- function(tbl, lab_df = var_labels) {
 
 
 # Read from Output -----
-output_dir <- "data/intermediate/"
-cand_raw <- read_rds(path(output_dir, "candidates_2006-2020.rds"))
+cand_raw <- read_rds("data/intermediate/candidates_2006-2020.rds")
+
 
 # remove variables from candidate -----
 order_candvars <- c("year", "state",
                     "office", "dist", "type", "nextup",
                     "party", "party_formal",
-                    "name_snyder", "inc", "candidatevotes", "totalvotes", "won")
-# should add totalvotes
+                    "name_snyder", "inc",
+                    "candidatevotes", "totalvotes", "won")
 
 cand <- cand_raw %>%
-  rename(name_snyder = name) %>%
   relocate(!!!order_candvars)
 
 # what are the columns -----
@@ -59,6 +58,7 @@ var_labels <- tribble(
 
 # add labels ------
 cand_fmt <- paste_labels(cand)
+
 
 
 # Save to Release ------

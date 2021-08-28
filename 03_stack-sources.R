@@ -14,14 +14,15 @@ jsdat <- jsdat_all %>%
   bind_rows(gov_2020) %>%
   # PARTY EDITS
   mutate(party_formal = str_squish(party),
-         party = fct_lump_n(party, n = 6),
-         party = recode_factor(party_formal, `Democrat` = "D", `Republican` = "R")
+         party = recode_factor(party_formal, `Democrat` = "D", `Republican` = "R"),
+         party = fct_lump_n(party, n = 6)
   ) %>%
   # VARIABLE RENAME
   mutate(
     candidatevotes = coalesce(candidatevotes, vote_g),
     won = coalesce(won, w_g)) %>%
   select(-vote_g, -w_g, -u_g) %>%
+  rename(name_snyder = name) %>%
   # TOTAL VOTE
   group_by(year, office, state, dist, type) %>%
   mutate(totalvotes = sum(candidatevotes)) %>%
