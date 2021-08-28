@@ -1,9 +1,11 @@
 library(tidyverse)
 library(haven)
+stopifnot(packageVersion("readr") >= "2.0.0")
 
 # read data ----
 jsdat_all <- read_rds("data/intermediate/snyder_2006-2020.rds")
-gov_2020 <- read_csv("data/intermediate/2020_gov.csv")
+gov_2020 <- read_csv("data/intermediate/2020_gov.csv",
+                     show_col_types = FALSE)
 
 
 # filter, stack, modify ------
