@@ -1,8 +1,7 @@
-source("03_clean-snyder-2006-2020.R") # currently, this holds the data
 source("07_xtabs-functions.R")
 
-
-
+# data ---
+jsdat <- read_dta("release/candidates_2006-2020.dta")
 
 # counts JS ----
 jsdat %>% filter(party %in% c("D", "R")) %>%  write_numbers("all")
