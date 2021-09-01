@@ -38,7 +38,7 @@ The candidate-level dataset shares the same values of the respondent-level data,
 
 \section{Data Sources}
 
-The \emph{candidate-level data} is a subset of the data collected by James M. Snyder. Vote counts and candidate listings of Congress are entered from the House Clerk's Official Election Reports, at \url{https://history.house.gov/Institution/Election-Statistics/}.  Election results for the state office of Governor are collected from statements of votes by the Secretary of State of each state.  Incumbency is collected by a manual inspection of the biography of each candidate. 
+The \emph{candidate-level data} is a subset of the data collected by James M. Snyder. Vote counts and candidate listings of Congress are entered from the House Clerk's Official Election Reports (\url{https://history.house.gov/Institution/Election-Statistics}).  Election results for the state office of Governor are collected from statements of votes by the Secretary of State of each state.  Incumbency is collected by a manual inspection of the biography of each candidate. 
 
 %\jccomment{There may be other things Jim uses to exclude certain candidates - these were the most obvious.}
 This dataset excludes candidates who receive less than ten votes in their general election and those who identify Blank or Miscellaneous as their party. 
@@ -126,12 +126,16 @@ In order to make names comparable across years, Snyder uses the full name, i.e. 
 
 
 
+\section{Related Work}
 
-\section{Extensions to Candidate Gender and Race}
-	
-Our dataset does not contain information about the gender or race of the candidates. We may add to the dataset in future versions, but in the meantime there are several related data sources users can rely on.
+The MIT Election Data Science Lab (\url{https://dataverse.harvard.edu/dataverse/medsl\_election\_returns}) produces similar election results. Their data goes back as far as 1976. However, the data does not include incumbency status, and the names are taken as officially reported rather than standardized to match across years.
 
-Numerous years in the CES have data available on candidate race and gender for interested researchers. Please see the table below for further information regarding the availability of such information by year and where it can be located. 
+
+
+
+\section{Extensions: Race, Gender, and Primary Elections}
+
+Our dataset does not contain information about the gender or race of the candidates. We hope to work collect that data and combine other sources of data in the future.  In the meantime there are several related data sources users can rely on. First, Numerous years in the CES have data available on candidate race and gender for interested researchers. Please see the table below for further information regarding the availability of such information by year and where it can be located. 
 
 \begin{table}[H]
 	\footnotesize
@@ -163,8 +167,13 @@ Numerous years in the CES have data available on candidate race and gender for i
 		4. \url{https://doi.org/10.7910/DVN/IAOZOU}\\
 \end{table}
 
-Note that some of this data has been aggregated in the Cumulative Contextual File, located here: \url{https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/26451&version=5.0&widget=dataverse@cces}.
+Note that some of this data has been aggregated in the Cumulative Contextual File, located here: \url{https://doi.org/10.7910/DVN/26451}.
 
+
+
+
+Finally, other researchers have collected this data in forthcoming work. ``Separating Race and Party in Congressional
+Elections'' by Bernard Fraga (available at \url{https://www.bernardfraga.com/research}) uses hand-coded race data from Congressional general and primary elections from 2006 - 2020. ``Partisanship and Nationalization in American Elections'' by Sharif Almani and Carlos Algara (\emph{Electoral Studies}) contains county-level partisan election data from the statewide offices of President, Governor, and Senator going back to the Civil War. 
 
 
 \section{Version History}
