@@ -45,5 +45,5 @@ jsdat %>%
 # special vs. general
 jsdat %>%
   xtabs(~ year + type, .) %>%
-  fmt_xtab("inc") %>%
+  fmt_xtab("type") %>%
   wri_xtab("type_by-cand")
