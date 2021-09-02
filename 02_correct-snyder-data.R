@@ -18,6 +18,14 @@ jsdat <- jsdat_raw %>%
       values = "G")
     )
 
+# Senate dist issue
+jsdat <- jsdat %>%
+  group_by(state, year, office) %>%
+  arrange(dist) %>%
+  fill(dist, .direction = "down") %>%
+  mutate(dist = replace(dist, state == "AL" & office == "S" & type == "S" & year == 2017, 2),
+         dist = replace(dist, state == "AZ" & office == "S" & type == "S" & year == 2020, 3),
+         dist = replace(dist, state == "LA" & office == "H" & name == "LETLOW, JULIA", 5))
 
 # write
 write_rds(jsdat, "data/intermediate/snyder_2006-2020.rds")
