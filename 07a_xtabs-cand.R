@@ -32,6 +32,7 @@ jsdat  %>%
   wri_xtab("party_by-cand")
 
 jsdat  %>%
+  mutate(office = fct_relevel(factor(office), "P", "S", "H", "G")) %>%
   xtabs(~ year + office, .) %>%
   fmt_xtab("office") %>%
   wri_xtab("office_by-cand")
