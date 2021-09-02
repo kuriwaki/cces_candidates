@@ -23,9 +23,6 @@ pres_fmt <- pres_raw %>%
   ) %>%
   mutate(
     party = replace(party, (writein), "W-I"),
-    office = "P",
-    type = "G",
-    nextup = year + 4,
     name = recode(
       candidate,
       `OBAMA, BARACK H.` = "OBAMA, BARACK",
@@ -43,7 +40,7 @@ pres_fmt <- pres_raw %>%
     )
   ) %>%
   select(-writein, -candidate) %>%
-  relocate(year, state, office, type, nextup,
+  relocate(year, state,
            party, party_formal,
            name,
            inc,

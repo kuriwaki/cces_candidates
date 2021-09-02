@@ -4,10 +4,18 @@ stopifnot(packageVersion("readr") >= "2.0.0")
 
 # read data ----
 jsdat_all <- read_rds("data/intermediate/snyder_2006-2020.rds")
+
+# 2020 state exec
 gov_2020 <- read_csv("data/intermediate/2020_gov.csv",
                      show_col_types = FALSE)
+# president
 pres_2008_2020 <- read_csv("data/intermediate/2008-2020_pres.csv",
-                     show_col_types = FALSE)
+                           show_col_types = FALSE) %>%
+  mutate(
+    office = "P",
+    type = "G",
+    nextup = year + 4
+  )
 
 
 # filter, stack, modify ------
