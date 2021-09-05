@@ -93,8 +93,8 @@ In order to make names comparable across years, Snyder uses the full name, i.e. 
 \item This may differ from the CES incumbency variable in some redistricting cases when two incumbents were forced to run against each other. For example, in 2012 Betty Sutton (OH-13) and Jim Renacci (OH-16), both House incumbents, were forced to run in OH-16. While the CES incumbency variable (HouseCandIncumbent) lists only Sutton as the incumbent, this dataset will list both Sutton and Renacci as incumbents. This is why we include the variable  \texttt{current\_inc} below.  
 \end{itemize}
 
-    \begin{tabularx}{\linewidth}{C}
-    \input{Tables/inc_by-cand}
+    \begin{tabularx}{\linewidth}{CCC}
+    \input{Tables/inc_by-cand_S} & \input{Tables/inc_by-cand_H} & \input{Tables/inc_by-cand_G}
     \end{tabularx}
 
 \item \texttt{current\_inc}: Candidate incumbency status for that specific respondent. A 0 means the candidate is not the respondent's current representative, a 1 means the candidate is the respondent's current representative. A candidate could be an incumbent in the district but the not the respondent's current representative if the respondent was redistricted. This variable is only included for respondents with \texttt{inc=1}.
