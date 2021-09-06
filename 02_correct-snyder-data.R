@@ -39,6 +39,11 @@ jsdat <- jsdat %>%
          vote_g = replace(vote_g, name == "OSSOFF, JON", 2269923),
          vote_g = replace(vote_g, name == "PERDUE, DAVID A.", 2214979))
 
-
+# Adding "runoff" variable
+jsdat <- jsdat %>%
+  mutate(runoff = case_when(
+    state == "GA" & year == 2020 & type == "S" ~ ,
+    state == "LA" & year == & type == "" ~
+  ))
 # write
 write_rds(jsdat, "data/intermediate/snyder_2006-2020.rds")

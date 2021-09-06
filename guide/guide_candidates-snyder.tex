@@ -61,14 +61,13 @@ Although these removal makes the totalvotes be a few votes less than the actual 
     \input{Tables/office_by-cand}
     \end{tabularx}
 			
-\item \colorbox{yellow}{\texttt{type}}: Whether an election is a General, or Special Election
+\item \colorbox{yellow}{\texttt{type}}: The type of election. We use \texttt{G} to denote general election candidates and \texttt{S} to denote special election candidates. Candidates are said to run in special elections if they are running to serve out the term of another legislator. 
 
 \begin{center}
 \input{Tables/type_by-cand}
 \end{center}
 
-\skcomment{Need a column for runoffs}
-
+\item \texttt{runoff}: The candidate's election round. In some states (e.g. Georgia, Louisiana), candidates must run in a runoff election to determine the winner. A 1 denotes that the election the candidate is running in is a runoff election, while a 0 denotes that the election the candidate is running in is not.
 
 \item \texttt{name\_snyder}: Standardized candidate name from James M. Snyder.  The syntax is \texttt{[Last name], [First Name] [Middle name] ([Nickname]), [Jr/Sr/I/II/III]}.  Some examples of names are below, to give a sense of the syntax.
 
@@ -104,7 +103,7 @@ In order to make names comparable across years, Snyder uses the full name, i.e. 
 
 \item \texttt{current\_inc}: Candidate incumbency status for that specific respondent. A 0 means the candidate is not the respondent's current representative, a 1 means the candidate is the respondent's current representative. A candidate could be an incumbent in the district but the not the respondent's current representative if the respondent was redistricted. This variable is only included for respondents with \texttt{inc=1}.
 
-			
+\item \texttt{nextup}: The year that a incumbent candidate is up for re-election. This variable can be useful in determining tenure in office for special election candidates, who may not have served a full term. See \texttt{type} for designation of special election candidates. 		
 			
 \item \texttt{candidatevotes}: The number of total votes the candidate received. 
 \begin{itemize}
