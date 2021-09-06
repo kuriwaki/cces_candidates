@@ -40,7 +40,6 @@ Most of the candidate-level data is a subset of the data collected by James M. S
 
 The Presidential vote count is taken from the dataset compiled by the MIT Election Data Science Lab (\url{https://doi.org/10.7910/DVN/42MVDX}), which in turn mostly sources from the House Clerk's document.
 
-
 Incumbency is collected by a programmatic count of whether the name is repeated across years, and across manual inspection of the biography of each candidate.
 
 %\jccomment{There may be other things Jim uses to exclude certain candidates - these were the most obvious.}
@@ -63,9 +62,9 @@ Although these removal makes the totalvotes be a few votes less than the actual 
 			
 \item \colorbox{yellow}{\texttt{type}}: The type of election. We use \texttt{G} to denote general election candidates and \texttt{S} to denote special election candidates. Candidates are said to run in special elections if they are running to serve out the term of another legislator. 
 
-\begin{center}
-\input{Tables/type_by-cand}
-\end{center}
+\begin{tabularx}{\linewidth}{CCC}
+\input{Tables/type_by-cand_S} & \input{Tables/type_by-cand_H} & \input{Tables/type_by-cand_G}
+\end{tabularx}
 
 \item \texttt{runoff}: The candidate's election round. In some states (e.g. Georgia, Louisiana), candidates must run in a runoff election to determine the winner. A 1 denotes that the election the candidate is running in is a runoff election, while a 0 denotes that the election the candidate is running in is not.
 
@@ -97,8 +96,8 @@ In order to make names comparable across years, Snyder uses the full name, i.e. 
 \item This may differ from the CES incumbency variable in some redistricting cases when two incumbents were forced to run against each other. For example, in 2012 Betty Sutton (OH-13) and Jim Renacci (OH-16), both House incumbents, were forced to run in OH-16. While the CES incumbency variable (HouseCandIncumbent) lists only Sutton as the incumbent, this dataset will list both Sutton and Renacci as incumbents. This is why we include the variable  \texttt{current\_inc} below.  
 \end{itemize}
 
-    \begin{tabularx}{\linewidth}{C}
-    \input{Tables/inc_by-cand}
+    \begin{tabularx}{\linewidth}{CCC}
+    \input{Tables/inc_by-cand_S} & \input{Tables/inc_by-cand_H} & \input{Tables/inc_by-cand_G}
     \end{tabularx}
 
 \item \texttt{current\_inc}: Candidate incumbency status for that specific respondent. A 0 means the candidate is not the respondent's current representative, a 1 means the candidate is the respondent's current representative. A candidate could be an incumbent in the district but the not the respondent's current representative if the respondent was redistricted. This variable is only included for respondents with \texttt{inc=1}.

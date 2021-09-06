@@ -19,11 +19,6 @@ jsdat %>% filter(office == "S", as_factor(party) %in% c("D", "R")) %>% write_num
 
 
 # main xtab
-xtabs(~ year + office, jsdat) %>%
-  fmt_xtab("office") %>%
-  wri_xtab("office_by-cand")
-
-
 
 jsdat  %>%
   mutate(party = fct_relevel(as_factor(party), "D", "R", "I", "Lbt", "Grn")) %>%
@@ -38,13 +33,17 @@ jsdat  %>%
   wri_xtab("office_by-cand")
 
 # incumbent
-jsdat %>%
-  xtabs(~ year + inc, .) %>%
-  fmt_xtab("inc") %>%
-  wri_xtab("inc_by-cand")
+xtabs(~ year + inc, jsdat, subset = office == "G") %>%
+  fmt_xtab("Gov inc") %>% wri_xtab("inc_by-cand_G")
+xtabs(~ year + inc, jsdat, subset = office == "H") %>%
+  fmt_xtab("House inc") %>% wri_xtab("inc_by-cand_H")
+xtabs(~ year + inc, jsdat, subset = office == "S") %>%
+  fmt_xtab("Senate inc") %>% wri_xtab("inc_by-cand_S")
 
 # special vs. general
-jsdat %>%
-  xtabs(~ year + type, .) %>%
-  fmt_xtab("type") %>%
-  wri_xtab("type_by-cand")
+xtabs(~ year + type, jsdat, subset = office == "G") %>%
+  fmt_xtab("Gov type") %>% wri_xtab("type_by-cand_G")
+xtabs(~ year + type, jsdat, subset = office == "H") %>%
+  fmt_xtab("House type") %>% wri_xtab("type_by-cand_H")
+xtabs(~ year + type, jsdat, subset = office == "S") %>%
+  fmt_xtab("Senate type") %>% wri_xtab("type_by-cand_S")
