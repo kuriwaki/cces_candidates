@@ -40,7 +40,9 @@ xtabs(~ year + inc, jsdat, subset = office == "S") %>%
   fmt_xtab("Senate inc") %>% wri_xtab("inc_by-cand_S")
 
 # special vs. general
-jsdat %>%
-  xtabs(~ year + type, .) %>%
-  fmt_xtab("type") %>%
-  wri_xtab("type_by-cand")
+xtabs(~ year + type, jsdat, subset = office == "G") %>%
+  fmt_xtab("Gov type") %>% wri_xtab("type_by-cand_G")
+xtabs(~ year + type, jsdat, subset = office == "H") %>%
+  fmt_xtab("House type") %>% wri_xtab("type_by-cand_H")
+xtabs(~ year + type, jsdat, subset = office == "S") %>%
+  fmt_xtab("Senate type") %>% wri_xtab("type_by-cand_S")
