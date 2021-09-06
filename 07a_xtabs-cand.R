@@ -12,7 +12,7 @@ source("07_xtabs-functions.R")
 jsdat <- read_dta("release/candidates_2006-2020.dta")
 
 # counts JS ----
-jsdat %>% filter(as_factor(party) %in% c("D", "R")) %>%  write_numbers("all")
+jsdat %>% filter(as_factor(party) %in% c("D", "R"), office != "P") %>%  write_numbers("all")
 jsdat %>% filter(office == "G", as_factor(party) %in% c("D", "R")) %>% write_numbers("gov")
 jsdat %>% filter(office == "H", as_factor(party) %in% c("D", "R")) %>% write_numbers("house")
 jsdat %>% filter(office == "S", as_factor(party) %in% c("D", "R")) %>% write_numbers("sen")
@@ -27,6 +27,7 @@ jsdat  %>%
   wri_xtab("party_by-cand")
 
 jsdat  %>%
+  mutate(office = fct_relevel(factor(office), "P", "S", "H", "G")) %>%
   xtabs(~ year + office, .) %>%
   fmt_xtab("office") %>%
   wri_xtab("office_by-cand")

@@ -34,14 +34,23 @@ The candidate-level dataset shares the same values of the respondent-level data,
 \input{Tables/example_candidates}
 \end{table}
 
+\section{Data Sources and Coverage}
 
+Most of the candidate-level data is a subset of the data collected by James M. Snyder. Vote counts and candidate listings of Congress are entered from the House Clerk's Official Election Reports (\url{https://history.house.gov/Institution/Election-Statistics}).  Election results for the state office of Governor are collected from statements of votes by the Secretary of State of each state.
 
-\section{Data Sources}
+The Presidential vote count is taken from the dataset compiled by the MIT Election Data Science Lab (\url{https://doi.org/10.7910/DVN/42MVDX}), which in turn mostly sources from the House Clerk's document.
 
+<<<<<<< HEAD
 The \emph{candidate-level data} is a subset of the data collected by James M. Snyder. Vote counts and candidate listings of Congress are entered from the House Clerk's Official Election Reports (\url{https://history.house.gov/Institution/Election-Statistics/Election-Statistics/}).  Election results for the state office of Governor are collected from statements of votes by the Secretary of State of each state.  Incumbency is collected by a manual inspection of the biography of each candidate. 
+=======
+
+Incumbency is collected by a programmatic count of whether the name is repeated across years, and across manual inspection of the biography of each candidate.
+>>>>>>> fece8b0efdf23f87cf86d072a518add048f7fb80
 
 %\jccomment{There may be other things Jim uses to exclude certain candidates - these were the most obvious.}
-This dataset excludes candidates who receive less than ten votes in their general election and those who identify Blank or Miscellaneous as their party. 
+This dataset excludes candidates who receive less than ten votes in their general election and those who identify Blank or Miscellaneous as their party.
+We also exclude overvotes, undervotes, and invalid votes.
+Although these removal makes the totalvotes be a few votes less than the actual turnout, we made this choice uniformly because states vary in their reporting protocol for such votes. That is, given that some states report overvotes while others exclude them entirely in their official counts, it is more internally consistent to exclude them for all states.
 
 \clearpage
 \section{Variable Descriptions}
