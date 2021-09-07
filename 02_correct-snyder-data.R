@@ -47,8 +47,8 @@ jsdat <- jsdat %>%
          temp = replace(temp, state == "LA" & year == 2020 & dist == 5, 1),
          temp = replace(temp, name == "LETLOW, LUKE J." & year == 2020 |
                           name == "HARRIS, LANCE" & year == 2020, 0)) %>%
-  filter(temp == 0,
-         name != "BUCKLEY, ALLEN" & year != 2008) %>%
+  filter(temp == 0 |
+         (name != "BUCKLEY, ALLEN" & year != 2008)) %>%
   select(-temp) %>%
   mutate(runoff = case_when(
     state == "GA" & year == 2020 & office == "S" ~ 1, # 2020 Georgia Runoff
