@@ -74,11 +74,15 @@ jsdat <- jsdat %>%
 jsdat <- jsdat %>%
   mutate(vote_g = case_when(
     year == 2008 & name == "MARTIN, JAMES FRANCIS (JIM)" ~ 909923,
-    year == 2008 & name == "CHAMBLISS, C. SAXBY" ~ 1228033
+    year == 2008 & name == "CHAMBLISS, C. SAXBY" ~ 1228033,
     year == 2020 & name == "LETLOW, LUKE J." ~ 49183,
     year == 2020 & name == "HARRIS, LANCE" ~ 30124
     )
   )
+
+# Karin Housley w_g fix
+jsdat <- jsdat %>%
+  mutate(w_g = replace(w_g, name == "HOUSLEY, KARIN" & year == 2018, 0))
 
 # write
 write_rds(jsdat, "data/intermediate/snyder_2006-2020.rds")
