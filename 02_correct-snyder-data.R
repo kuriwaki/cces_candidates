@@ -76,7 +76,8 @@ jsdat <- jsdat %>%
     year == 2008 & name == "MARTIN, JAMES FRANCIS (JIM)" ~ 909923,
     year == 2008 & name == "CHAMBLISS, C. SAXBY" ~ 1228033,
     year == 2020 & name == "LETLOW, LUKE J." ~ 49183,
-    year == 2020 & name == "HARRIS, LANCE" ~ 30124
+    year == 2020 & name == "HARRIS, LANCE" ~ 30124,
+    TRUE ~ vote_g
     )
   )
 
@@ -84,5 +85,70 @@ jsdat <- jsdat %>%
 jsdat <- jsdat %>%
   mutate(w_g = replace(w_g, name == "HOUSLEY, KARIN" & year == 2018, 0))
 
+# Democrat and Working Families cleaning
+jsdat <- jsdat %>%
+  mutate(party = recode(party, # Jaclyn Kavolsky Party Recodes
+                       Indep = "I",
+                       IDP = "I",
+                       L = "Lbt",
+                       Refomr = "Rfm",
+                       DFL = "D",
+                       "D,WF" = "D",
+                       "D,Wk Fam" = "D",
+                       "D, I, Wk Fam, Women's Equality" = "D",
+                       "D, Reform, Wk Fam" = "D",
+                       "D, Reform, Wk Fam, Women's Equality" = "D",
+                       "D, Wk Fam" = "D",
+                       "D, Wk Fam, Women's Equality" = "D",
+                       "D, Women's Equality" = "D",
+                       "D,C,Indep,WF" = "D",
+                       "D,I,WF" = "D",
+                       "D,IDP,WF" = "D",
+                       "D,Indep,WF" = "D",
+                       "D,R" = "D",
+                       "D,WF" = "D",
+                       "D,WF,IDP" = "D",
+                       "D,WF,Indep" = "D",
+                       "D,Wk Fam" = "D",
+                       "D, I, Reform, Wk Fam, Women's Equality" = "D",
+                       "R, Reform" = "R",
+                       "R,C" = "R",
+                       "R,C,I" = "R",
+                       "R,C,Indep" = "R",
+                       "R,C,Lbt" = "R",
+                       "R,C,SCC" = "R",
+                       "R,C,Taxp" = "R",
+                       "R,CR" = "R",
+                       "R,CRV" = "R",
+                       "R,CRV,IDP" = "R",
+                       "R,I" = "R",
+                       "R,IDP" = "R",
+                       "R,Indep" = "R",
+                       "R,Lbt" = "R",
+                       "R,Tax" = "R",
+                       "R,Tax,C,Indep" = "R",
+                       "R,Taxp" = "R",
+                       "I, R" = "R",
+                       "Conservative, R" = "R",
+                       "Conservative, R, Reform" = "R",
+                       "Conservative, I, R" = "R",
+                       "Conservative, I, R, Reform" = "R",
+                       "Conservative, I, R, Reform, Tax Revolt" = "R",
+                       "Indep Pty" = "I",
+                       "Indep P" = "I",
+                       "independent" = "I",
+                       "Indp" = "I",
+
+                       #Jeremiah Recodes
+                       "ACL" = "Amigo Constitution",
+                       "ADB" = "All Day Breakfast",
+
+                       )
+  )
+
+
 # write
 write_rds(jsdat, "data/intermediate/snyder_2006-2020.rds")
+
+# temporary line to create data for jc party cleanup
+write_dta(jsdat, "data/intermediate/snyder_2006-2020.dta")
