@@ -60,15 +60,8 @@ Although these removal makes the totalvotes be a few votes less than the actual 
     \input{Tables/office_by-cand}
     \end{tabularx}
 			
-<<<<<<< HEAD
-\item \colorbox{yellow}{\texttt{type}}: The type of election. We use \texttt{G} to denote general election candidates and \texttt{S} to denote special election candidates. Candidates are said to run in special elections if they are running to serve out the term of another legislator. 
-=======
-\item \colorbox{yellow}{\texttt{type}}: Whether an election is a General, or Special Election
 
-\begin{tabularx}{\linewidth}{CCC}
-\input{Tables/type_by-cand_S} & \input{Tables/type_by-cand_H} & \input{Tables/type_by-cand_G}
-\end{tabularx}
->>>>>>> 510f3e80b4b70754f96a76c459daf7ef596b0e24
+\item \colorbox{yellow}{\texttt{type}}: The type of election. We use \texttt{G} to denote general election candidates and \texttt{S} to denote special election candidates. Candidates are said to run in special elections if they are running to serve out the term of another legislator. 
 
 \begin{tabularx}{\linewidth}{CCC}
 \input{Tables/type_by-cand_S} & \input{Tables/type_by-cand_H} & \input{Tables/type_by-cand_G}
@@ -115,7 +108,7 @@ In order to make names comparable across years, Snyder uses the full name, i.e. 
 \item \texttt{candidatevotes}: The number of total votes the candidate received. 
 \begin{itemize}
 \item For candidates running on multiple party tickets, this will be the \emph{sum} of all of their votes.  For example, in 2016, Rep. Rosa L. DeLauro (CT-03) ran as a Democrat and also ran as a Working Families Party candidate. She won 192,274 votes in the former and 21,298 votes in the latter, so her \texttt{candidatevotes} is the total, 213,572.
-\item  Florida does not report the vote count for a House candidate if she is unopposed. In these case, we have the vote count as \texttt{NA} but have the candidate winning (\texttt{w\_g == 1}).
+\item  Florida and Oklahoma do not report the vote count for a House candidate if she won unopposed. In these cases, we have the vote count as \texttt{NA} but have the candidate winning (\texttt{won == 1}).
 \end{itemize}
 %\skcomment{Maybe we call this \texttt{candidatevotes}?  That is consistent with MEDSL's naming system, and I think a lot of people now use MEDSL.}
 				
@@ -135,7 +128,7 @@ Presidential candidates win electoral college votes at the state level, but only
 
 
     \begin{tabularx}{\linewidth}{CCC}
-    \input{Tables/party-won_by-cand_S} & \input{Tables/party-won_by-cand_H} & \input{Tables/party-won_by-cand_G}
+    \input{Tables/party-won_by-cand_S} & \input{Tables/party-won_by-cand_H} & \input{Tables/party-	won_by-cand_G}
     \end{tabularx}
 
 
