@@ -39,25 +39,44 @@ jsdat <- jsdat %>%
          vote_g = replace(vote_g, name == "OSSOFF, JON", 2269923),
          vote_g = replace(vote_g, name == "PERDUE, DAVID A.", 2214979))
 
-# Adding "runoff" variable
+# Adding "runoff" variable and removing extraneous candidates
 ## Georgia data comes from https://sos.ga.gov/index.php/Elections/current_and_past_elections_results
+## Louisiana data comes from https://voterportal.sos.la.gov/graphical
 jsdat <- jsdat %>%
+  mutate(temp = 0, # Temporary var that ids non-runoff candidates
+         temp = replace(temp, state == "LA" & year == 2020 & dist == 5, 1),
+         temp = replace(temp, name == "LETLOW, LUKE J." & year == 2020 |
+                          name == "HARRIS, LANCE" & year == 2020, 0)) %>%
+  filter(temp == 0,
+         name != "BUCKLEY, ALLEN" & year != 2008) %>%
+  select(-temp) %>%
   mutate(runoff = case_when(
     state == "GA" & year == 2020 & office == "S" ~ 1, # 2020 Georgia Runoff
     state == "GA" & year == 2007 & office == "H" & dist == 10 ~ 1,
     state == "GA" & year == 2008 & office == "S" ~ 1,
     state == "GA" & year == 2010 & dist == 9 & type == "S" ~ 1,
     state == "GA" & year == 2017 & dist == 6 & type == "S" ~ 1,
+    state == "LA" & year == 2020 & dist == 5 & type == "G" ~ 1,
+    state == "LA" & year == 2016 & office == "S" ~ 1,
+    state == "LA" & year == 2016 & dist == 3 & type == "G" ~ 1,
+    state == "LA" & year == 2016 & dist == 3 & type == "G" ~ 1,
+    state == "LA" & year == 2014 & office == "S" ~ 1,
+    state == "LA" & year == 2014 & office == "H" & dist == 5 ~ 1,
+    state == "LA" & year == 2014 & office == "H" & dist == 6 ~ 1,
+    state == "LA" & year == 2013 & office == "H" & dist == 5 ~ 1,
+    state == "LA" & year == 2012 & office == "H" & dist == 3 ~ 1,
+    state == "LA" & year == 2006 & office == "H" & dist == 2 ~ 1,
     TRUE ~ 0
     )
   )
 
-# Standardizing vote totals for runoff races and removing extra obs
+# Correcting vote totals to reflect runoffs
 jsdat <- jsdat %>%
-  filter(name != "BUCKLEY, ALLEN" & year != 2008) %>%
   mutate(vote_g = case_when(
     year == 2008 & name == "MARTIN, JAMES FRANCIS (JIM)" ~ 909923,
     year == 2008 & name == "CHAMBLISS, C. SAXBY" ~ 1228033
+    year == 2020 & name == "LETLOW, LUKE J." ~ 49183,
+    year == 2020 & name == "HARRIS, LANCE" ~ 30124
     )
   )
 
