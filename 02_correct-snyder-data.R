@@ -40,10 +40,26 @@ jsdat <- jsdat %>%
          vote_g = replace(vote_g, name == "PERDUE, DAVID A.", 2214979))
 
 # Adding "runoff" variable
+## Georgia data comes from https://sos.ga.gov/index.php/Elections/current_and_past_elections_results
 jsdat <- jsdat %>%
   mutate(runoff = case_when(
-    state == "GA" & year == 2020 & type == "S" ~ ,
-    state == "LA" & year == & type == "" ~
-  ))
+    state == "GA" & year == 2020 & office == "S" ~ 1, # 2020 Georgia Runoff
+    state == "GA" & year == 2007 & office == "H" & dist == 10 ~ 1,
+    state == "GA" & year == 2008 & office == "S" ~ 1,
+    state == "GA" & year == 2010 & dist == 9 & type == "S" ~ 1,
+    state == "GA" & year == 2017 & dist == 6 & type == "S" ~ 1,
+    TRUE ~ 0
+    )
+  )
+
+# Standardizing vote totals for runoff races and removing extra obs
+jsdat <- jsdat %>%
+  filter(name != "BUCKLEY, ALLEN" & year != 2008) %>%
+  mutate(vote_g = case_when(
+    year == 2008 & name == "MARTIN, JAMES FRANCIS (JIM)" ~ 909923,
+    year == 2008 & name == "CHAMBLISS, C. SAXBY" ~ 1228033
+    )
+  )
+
 # write
 write_rds(jsdat, "data/intermediate/snyder_2006-2020.rds")
