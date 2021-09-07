@@ -123,7 +123,21 @@ In order to make names comparable across years, Snyder uses the full name, i.e. 
 \item \texttt{totalvotes}: Total votes for all candidates in the general election included in the Snyder data. 
 
 \item \texttt{won}: Candidate won the general election. A 1 means the candidate won the general election, and a 0 means the candidate lost the general election. 
-%\skcomment{Maybe we call this \texttt{won}? Unlike Jim's, there is no general vs. primary distinction.}
+
+Presidential candidates win electoral college votes at the state level, but only win office with a majority of the college votes. Because of this ambiguity, we have left this variable missing for Presidential candidates.
+
+    \begin{tabularx}{\linewidth}{CCC}
+    \input{Tables/won_by-cand_S} & \input{Tables/won_by-cand_H} & \input{Tables/won_by-cand_G}
+    \end{tabularx}
+
+    The set of tables below show the \emph{party} of the candidate that \emph{won}. 
+
+
+
+    \begin{tabularx}{\linewidth}{CCC}
+    \input{Tables/party-won_by-cand_S} & \input{Tables/party-won_by-cand_H} & \input{Tables/party-won_by-cand_G}
+    \end{tabularx}
+
 
 \item \texttt{data\_note}: 145 candidates were not included in the election dataset we used to collect the candidate-level variables. We still include these candidates in the supplemental data in case researchers are interested in specific districts or races. The reason for these non-merges can be broken down into four categories, listed below.
 		\begin{enumerate}
