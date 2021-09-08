@@ -26,14 +26,6 @@ jsdat <- jsdat_all %>%
   bind_rows(gov_2020) %>%
   # ADD PRESIDENT
   bind_rows(pres_2008_2020) %>%
-  # PARTY EDITS
-  mutate(party_formal = str_squish(party),
-         party = recode_factor(party_formal,
-                               `Democrat` = "D",
-                               `Republican` = "R",
-                               `DFL` = "D"),
-         party = fct_lump_n(party, n = 6)
-  ) %>%
   # VARIABLE RENAME
   mutate(
     candidatevotes = coalesce(candidatevotes, vote_g),
