@@ -88,11 +88,8 @@ jsdat <- jsdat %>%
 # Democrat and Working Families cleaning
 jsdat <- jsdat %>%
   mutate(party = recode(party, # Jaclyn Kavolsky Party Recodes
-                       Indep = "I",
-                       IDP = "I",
-                       L = "Lbt",
-                       Refomr = "Rfm",
-                       DFL = "D",
+                       # Democrats
+                       "DFL" = "D",
                        "D,WF" = "D",
                        "D,Wk Fam" = "D",
                        "D, I, Wk Fam, Women's Equality" = "D",
@@ -111,6 +108,8 @@ jsdat <- jsdat %>%
                        "D,WF,Indep" = "D",
                        "D,Wk Fam" = "D",
                        "D, I, Reform, Wk Fam, Women's Equality" = "D",
+
+                       # Republicans
                        "R, Reform" = "R",
                        "R,C" = "R",
                        "R,C,I" = "R",
@@ -134,16 +133,114 @@ jsdat <- jsdat %>%
                        "Conservative, I, R" = "R",
                        "Conservative, I, R, Reform" = "R",
                        "Conservative, I, R, Reform, Tax Revolt" = "R",
+
+                       # Independents
+                       "Indep" = "I",
+                       "IDP" = "I",
                        "Indep Pty" = "I",
                        "Indep P" = "I",
                        "independent" = "I",
                        "Indp" = "I",
+                       "I (1)" = "I",
+                       "I (2)" = "I",
+                       "I (3)" = "I",
+                       "I - Maine Course" = "I",
+                       "IDEA" = "I",
+                       "IP" = "I",
+                       "Indep P of DE" = "I",
+                       "Indep Pty of OR" = "I",
+                       "Indep for ME" = "I",
+                       "Marijuana" = "I",
+                       "No Slogan Filed" = "I",
+                       "O" = "I",
 
-                       #Jeremiah Recodes
-                       "ACL" = "Amigo Constitution",
-                       "ADB" = "All Day Breakfast",
+                       # Independent American Party
+                       "Indep Amer" = "IAP",
+                       "Independent Amer" = "IAP",
+                       "Independent American" = "IAP",
 
-                       )
+                       # Independent Green
+                       "Indep Grn" = "I Grn",
+
+                       # Independent Reform
+                       "Indep Rfm" = "I Reform",
+
+                       # American Party of SC
+                       "Amer" = "Amer Pty of SC",
+
+                       # Conservative Parties
+                       "Amer Const" = "C",
+                       "CRV" = "C",
+                       "Conserv" = "C",
+
+                       # Constitution
+                       "CNJ" = "Const",
+                       "CPI" = "Const",
+                       "CST" = "Const",
+                       "Con" = "Const",
+                       "Const Pty of FL" = "Const",
+                       "Const Pty of WI" = "Const",
+
+                       # Common Sense
+                       "CMS" = "Common Sense",
+                       "Common Sense Pty" = "Common Sense",
+
+                       # Democratic-Republican
+                       "D-R Pty" = "D-R",
+                       "Democ-Repub" = "D-R",
+
+                       # Economic Growth
+                       "Economic Growth" = "Econ Growth",
+
+                       # For the People
+                       "For The People" = "For the People",
+
+                       # Freedom
+                       "Fdm" = "Freedom",
+
+                       # Legal Marijuana Now
+                       "Legal Marij" = "Legal Marijuana Now",
+                       "Legal Marij Now" = "Legal Marijuana Now",
+                       "Legal Medical Now" = "Legal Marijuana Now",
+                       "Legal marijuana now" = "Legal Marijuana Now",
+
+                       # Libertarian
+                       "L" = "Lbt",
+
+                       # Liberty Union
+                       "Lty U" = "Liberty Union",
+
+                       # Mountain
+                       "Mountain Pty" = "Mountain",
+
+                       # Natural Law Party
+                       "Nlp" = "Natural Law",
+
+                       # Nebraska
+                       "NB" = "Nebraska",
+
+                       # New Independent Party
+                       "New Indep Pty Iowa" = "New Indep Pty",
+
+                       # No Party Affiliation
+                       "NP" = "NPA",
+                       "NSP" = "NPA",
+                       "No Political Pty" = "NPA",
+
+                       # NSA DID 911
+                       "NSA Did 911" = "NSA DID 911",
+
+                       # Reform
+                       "Refomr" = "Rfm",
+
+                       # Tea Party
+                       "NJ Tea Pty" = "Tea Pty"
+                       ),
+         party = replace(party, name == "GRIBBEN, WENDY" & year == 2016, "Grn"),
+         party = replace(party, name == "PERRONE, MICHAEL, JR." & year == 2008, "I Pg"),
+         party = replace(party, name == "GEDDINGS, HAROLD, III" & year == 2014, "Labor"),
+         party = replace(party, name == "MCLAUGHLIN, CURTIS E., JR." & year == 2014, "I")
+
   )
 
 
