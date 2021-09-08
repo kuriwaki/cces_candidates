@@ -39,11 +39,213 @@ jsdat <- jsdat %>%
          vote_g = replace(vote_g, name == "OSSOFF, JON", 2269923),
          vote_g = replace(vote_g, name == "PERDUE, DAVID A.", 2214979))
 
-# Adding "runoff" variable
+# Adding "runoff" variable and removing extraneous candidates
+## Georgia data comes from https://sos.ga.gov/index.php/Elections/current_and_past_elections_results
+## Louisiana data comes from https://voterportal.sos.la.gov/graphical
 jsdat <- jsdat %>%
+  mutate(temp = 0, # Temporary var that ids non-runoff candidates
+         temp = replace(temp, state == "LA" & year == 2020 & dist == 5, 1),
+         temp = replace(temp, name == "LETLOW, LUKE J." & year == 2020 |
+                          name == "HARRIS, LANCE" & year == 2020, 0)) %>%
+  filter(temp == 0 |
+         (name != "BUCKLEY, ALLEN" & year != 2008)) %>%
+  select(-temp) %>%
   mutate(runoff = case_when(
-    state == "GA" & year == 2020 & type == "S" ~ ,
-    state == "LA" & year == & type == "" ~
-  ))
+    state == "GA" & year == 2020 & office == "S" ~ 1, # 2020 Georgia Runoff
+    state == "GA" & year == 2007 & office == "H" & dist == 10 ~ 1,
+    state == "GA" & year == 2008 & office == "S" ~ 1,
+    state == "GA" & year == 2010 & dist == 9 & type == "S" ~ 1,
+    state == "GA" & year == 2017 & dist == 6 & type == "S" ~ 1,
+    state == "LA" & year == 2020 & dist == 5 & type == "G" ~ 1,
+    state == "LA" & year == 2016 & office == "S" ~ 1,
+    state == "LA" & year == 2016 & dist == 3 & type == "G" ~ 1,
+    state == "LA" & year == 2016 & dist == 3 & type == "G" ~ 1,
+    state == "LA" & year == 2014 & office == "S" ~ 1,
+    state == "LA" & year == 2014 & office == "H" & dist == 5 ~ 1,
+    state == "LA" & year == 2014 & office == "H" & dist == 6 ~ 1,
+    state == "LA" & year == 2013 & office == "H" & dist == 5 ~ 1,
+    state == "LA" & year == 2012 & office == "H" & dist == 3 ~ 1,
+    state == "LA" & year == 2006 & office == "H" & dist == 2 ~ 1,
+    TRUE ~ 0
+    )
+  )
+
+# Correcting vote totals to reflect runoffs
+jsdat <- jsdat %>%
+  mutate(vote_g = case_when(
+    year == 2008 & name == "MARTIN, JAMES FRANCIS (JIM)" ~ 909923,
+    year == 2008 & name == "CHAMBLISS, C. SAXBY" ~ 1228033,
+    year == 2020 & name == "LETLOW, LUKE J." ~ 49183,
+    year == 2020 & name == "HARRIS, LANCE" ~ 30124,
+    TRUE ~ vote_g
+    )
+  )
+
+# Karin Housley w_g fix
+jsdat <- jsdat %>%
+  mutate(w_g = replace(w_g, name == "HOUSLEY, KARIN" & year == 2018, 0))
+
+# Democrat and Working Families cleaning
+jsdat <- jsdat %>%
+  mutate(party = recode(party, # Jaclyn Kavolsky Party Recodes
+                       # Democrats
+                       "DFL" = "D",
+                       "D,WF" = "D",
+                       "D,Wk Fam" = "D",
+                       "D, I, Wk Fam, Women's Equality" = "D",
+                       "D, Reform, Wk Fam" = "D",
+                       "D, Reform, Wk Fam, Women's Equality" = "D",
+                       "D, Wk Fam" = "D",
+                       "D, Wk Fam, Women's Equality" = "D",
+                       "D, Women's Equality" = "D",
+                       "D,C,Indep,WF" = "D",
+                       "D,I,WF" = "D",
+                       "D,IDP,WF" = "D",
+                       "D,Indep,WF" = "D",
+                       "D,R" = "D",
+                       "D,WF" = "D",
+                       "D,WF,IDP" = "D",
+                       "D,WF,Indep" = "D",
+                       "D,Wk Fam" = "D",
+                       "D, I, Reform, Wk Fam, Women's Equality" = "D",
+
+                       # Republicans
+                       "R, Reform" = "R",
+                       "R,C" = "R",
+                       "R,C,I" = "R",
+                       "R,C,Indep" = "R",
+                       "R,C,Lbt" = "R",
+                       "R,C,SCC" = "R",
+                       "R,C,Taxp" = "R",
+                       "R,CR" = "R",
+                       "R,CRV" = "R",
+                       "R,CRV,IDP" = "R",
+                       "R,I" = "R",
+                       "R,IDP" = "R",
+                       "R,Indep" = "R",
+                       "R,Lbt" = "R",
+                       "R,Tax" = "R",
+                       "R,Tax,C,Indep" = "R",
+                       "R,Taxp" = "R",
+                       "I, R" = "R",
+                       "Conservative, R" = "R",
+                       "Conservative, R, Reform" = "R",
+                       "Conservative, I, R" = "R",
+                       "Conservative, I, R, Reform" = "R",
+                       "Conservative, I, R, Reform, Tax Revolt" = "R",
+
+                       # Independents
+                       "Indep" = "I",
+                       "IDP" = "I",
+                       "Indep Pty" = "I",
+                       "Indep P" = "I",
+                       "independent" = "I",
+                       "Indp" = "I",
+                       "I (1)" = "I",
+                       "I (2)" = "I",
+                       "I (3)" = "I",
+                       "I - Maine Course" = "I",
+                       "IDEA" = "I",
+                       "IP" = "I",
+                       "Indep P of DE" = "I",
+                       "Indep Pty of OR" = "I",
+                       "Indep for ME" = "I",
+                       "Marijuana" = "I",
+                       "No Slogan Filed" = "I",
+                       "O" = "I",
+
+                       # Independent American Party
+                       "Indep Amer" = "IAP",
+                       "Independent Amer" = "IAP",
+                       "Independent American" = "IAP",
+
+                       # Independent Green
+                       "Indep Grn" = "I Grn",
+
+                       # Independent Reform
+                       "Indep Rfm" = "I Reform",
+
+                       # American Party of SC
+                       "Amer" = "Amer Pty of SC",
+
+                       # Conservative Parties
+                       "Amer Const" = "C",
+                       "CRV" = "C",
+                       "Conserv" = "C",
+
+                       # Constitution
+                       "CNJ" = "Const",
+                       "CPI" = "Const",
+                       "CST" = "Const",
+                       "Con" = "Const",
+                       "Const Pty of FL" = "Const",
+                       "Const Pty of WI" = "Const",
+
+                       # Common Sense
+                       "CMS" = "Common Sense",
+                       "Common Sense Pty" = "Common Sense",
+
+                       # Democratic-Republican
+                       "D-R Pty" = "D-R",
+                       "Democ-Repub" = "D-R",
+
+                       # Economic Growth
+                       "Economic Growth" = "Econ Growth",
+
+                       # For the People
+                       "For The People" = "For the People",
+
+                       # Freedom
+                       "Fdm" = "Freedom",
+
+                       # Legal Marijuana Now
+                       "Legal Marij" = "Legal Marijuana Now",
+                       "Legal Marij Now" = "Legal Marijuana Now",
+                       "Legal Medical Now" = "Legal Marijuana Now",
+                       "Legal marijuana now" = "Legal Marijuana Now",
+
+                       # Libertarian
+                       "L" = "Lbt",
+
+                       # Liberty Union
+                       "Lty U" = "Liberty Union",
+
+                       # Mountain
+                       "Mountain Pty" = "Mountain",
+
+                       # Natural Law Party
+                       "Nlp" = "Natural Law",
+
+                       # Nebraska
+                       "NB" = "Nebraska",
+
+                       # New Independent Party
+                       "New Indep Pty Iowa" = "New Indep Pty",
+
+                       # No Party Affiliation
+                       "NP" = "NPA",
+                       "NSP" = "NPA",
+                       "No Political Pty" = "NPA",
+
+                       # NSA DID 911
+                       "NSA Did 911" = "NSA DID 911",
+
+                       # Reform
+                       "Refomr" = "Rfm",
+
+                       # Tea Party
+                       "NJ Tea Pty" = "Tea Pty"
+                       ),
+         party = replace(party, name == "GRIBBEN, WENDY" & year == 2016, "Grn"),
+         party = replace(party, name == "PERRONE, MICHAEL, JR." & year == 2008, "I Pg"),
+         party = replace(party, name == "GEDDINGS, HAROLD, III" & year == 2014, "Labor"),
+         party = replace(party, name == "MCLAUGHLIN, CURTIS E., JR." & year == 2014, "I")
+
+  )
+
+
 # write
 write_rds(jsdat, "data/intermediate/snyder_2006-2020.rds")
+
+# temporary line to create data for jc party cleanup
+write_dta(jsdat, "data/intermediate/snyder_2006-2020.dta")
