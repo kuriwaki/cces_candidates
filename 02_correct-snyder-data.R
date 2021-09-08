@@ -97,6 +97,23 @@ jsdat <- jsdat %>%
 jsdat <- jsdat %>%
   mutate(w_g = replace(w_g, name == "HOUSLEY, KARIN" & year == 2018, 0))
 
+# fixing blank party entries
+jsdat <- jsdat %>%
+  mutate(party = replace(party, name == "COOPER, ERIC" & state == "IA" & year == 2010, "Lbt"),
+         party = replace(party, name == "HUGHES, GREGORY JAMES" & state == "IA" & year == 2010, "I"),
+         party = replace(party, name == "NARCISSE, JONATHAN R." & state == "IA" & year == 2010, "I"),
+         party = replace(party, name == "ROSENFIELD, DAVID" & state == "IA" & year == 2010, "I"),
+         party = replace(party, name == "BEACHAM, ANDREW R." & state == "KY" & year == 2012, "I"),
+         party = replace(party, name == "VANCE, RANDOLPH S." & state == "KY" & year == 2012, "I"),
+         party = replace(party, name == "MCMASTERS, THOMAS (TOM)" & state == "OH" & year == 2016, "NPA"),
+         party = replace(party, name == "SMITH, RAYBURN DOUGLAS" & state == "PA" & year == 2012, "Lbt"),
+         dist = replace(dist, name == "VANCE, RANDOLPH S.", 6)) %>%
+  mutate(party = case_when(
+    name == "[NONE OF THESE]" ~ "NPA",
+    TRUE ~ party
+  )) %>%
+  filter(party != "")
+
 # party_formal coding
 jsdat <- jsdat %>%
   mutate(party_formal = party) %>%
