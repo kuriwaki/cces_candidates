@@ -17,7 +17,7 @@ fmt_xtab <- function(xtbl, name) {
 
 wri_xtab <- function(tbl, name, dir = "guide/Tables") {
   tbl %>%
-    str_remove("\\\\begin\\{table\\}\\[(H|t)\\]\\n") %>%
+    str_remove("\\\\begin\\{table\\}.*\\n") %>%
     str_remove("\\\\centering\\n") %>%
     str_remove("\\\\caption\\{NA\\}\\n") %>%
     str_remove("\\n\\\\end\\{table\\}") %>%

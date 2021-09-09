@@ -12,7 +12,7 @@ source("07_xtabs-functions.R")
 jsdat <- read_dta("release/candidates_2006-2020.dta")
 # version where labelled class is a factor
 js_fct <- jsdat %>%
-  mutate(party = fct_relevel(as_factor(party), "D", "R", "I", "Lbt", "Grn"))
+  mutate(party = recode_factor(party, D = "D", R = "R", Lbt = "Lbt", Grn = "Grn", .default = "Other"))
 
 # counts JS ----
 js_fct %>% filter(party %in% c("D", "R"), office != "P") %>%  write_numbers("all")
