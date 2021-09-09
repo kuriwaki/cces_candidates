@@ -31,7 +31,7 @@ The candidate-level dataset shares the same values of the respondent-level data,
 \caption{\textbf{Example of Candidate Data Format} \label{tab:cdataexample}}
 \centering
 \footnotesize
-\input{Tables/example_candidates}
+\input{Tables/cands/example_candidates}
 \end{table}
 
 \section{Data Sources and Coverage}
@@ -57,20 +57,20 @@ Although these removal makes the totalvotes be a few votes less than the actual 
 \item \colorbox{yellow}{\texttt{office}}: The office the candidate is running for. Following the Snyder data, we use \texttt{H} for the US House of Representatives, \texttt{S} for the US Senate, and \texttt{G} for Governor. 
 
     \begin{tabularx}{\linewidth}{C}
-    \input{Tables/office_by-cand}
+    \input{Tables/cands/office}
     \end{tabularx}
 			
 
 \item \colorbox{yellow}{\texttt{type}}: The type of election. We use \texttt{G} to denote general election candidates and \texttt{S} to denote special election candidates. Candidates are said to run in special elections if they are running to serve out the term of another legislator. 
 
 \begin{tabularx}{\linewidth}{CCC}
-\input{Tables/type_by-cand_S} & \input{Tables/type_by-cand_H} & \input{Tables/type_by-cand_G}
+\input{Tables/cands/type_S} & \input{Tables/cands/type_H} & \input{Tables/cands/type_G}
 \end{tabularx}
 
 \item \texttt{runoff}: The candidate's election round. In some states (e.g. Georgia, Louisiana), candidates must run in a runoff election to determine the winner. In the case of a runoff election, only the deciding contest is included. Any pre-runoff race is excluded in the data. A 1 denotes that the election the candidate is running in is a runoff election, while a 0 denotes that the election the candidate is running in is not. 
 
 \begin{tabularx}{\linewidth}{CCC}
-\input{Tables/runoff_by-cand_S} & \input{Tables/runoff_by-cand_H} & \input{Tables/runoff_by-cand_G}
+\input{Tables/cands/runoff_S} & \input{Tables/cands/runoff_H} & \input{Tables/cands/runoff_G}
 \end{tabularx}
 
 \item \texttt{name\_snyder}: Standardized candidate name from James M. Snyder.  The syntax is \texttt{[Last name], [First Name] [Middle name] ([Nickname]), [Jr/Sr/I/II/III]}.  Some examples of names are below, to give a sense of the syntax.
@@ -91,7 +91,7 @@ In order to make names comparable across years, Snyder uses the full name, i.e. 
 \begin{adjustwidth}{-4em}{-4em}
 \centering
 \begin{tabularx}{\linewidth}{CCC}
-  \input{Tables/party_by-cand_S} & \input{Tables/party_by-cand_H} &\input{Tables/party_by-cand_G}
+  \input{Tables/cands/party_S} & \input{Tables/cands/party_H} &\input{Tables/cands/party_G}
 \end{tabularx}
 \end{adjustwidth}
 
@@ -104,7 +104,7 @@ In order to make names comparable across years, Snyder uses the full name, i.e. 
 \begin{adjustwidth}{-5em}{-5em}
 \centering
 {\scriptsize
-\input{Tables/party-formal_by-office}
+\input{Tables/cands/party-formal_by-office}
 }
 \end{adjustwidth}
 
@@ -118,7 +118,7 @@ In order to make names comparable across years, Snyder uses the full name, i.e. 
 \end{itemize}
 
     \begin{tabularx}{\linewidth}{CCC}
-    \input{Tables/inc_by-cand_S} & \input{Tables/inc_by-cand_H} & \input{Tables/inc_by-cand_G}
+    \input{Tables/cands/inc_S} & \input{Tables/cands/inc_H} & \input{Tables/cands/inc_G}
     \end{tabularx}
 
 \item \texttt{current\_inc}: Candidate incumbency status for that specific respondent. A 0 means the candidate is not the respondent's current representative, a 1 means the candidate is the respondent's current representative. A candidate could be an incumbent in the district but the not the respondent's current representative if the respondent was redistricted. This variable is only included for respondents with \texttt{inc=1}.
@@ -126,15 +126,15 @@ In order to make names comparable across years, Snyder uses the full name, i.e. 
 \item \texttt{nextup}: The year that a incumbent candidate is up for re-election. This variable can be useful in determining tenure in office for special election candidates, who may not have served a full term. See \texttt{type} for designation of special election candidates. 		
 
 \begin{tabularx}{\linewidth}{C}
-\input{Tables/nextup_by-cand_S}
+\input{Tables/cands/nextup_S}
 \end{tabularx}
 
 \begin{tabularx}{\linewidth}{C}
-\input{Tables/nextup_by-cand_H} 
+\input{Tables/cands/nextup_H} 
 \end{tabularx}
 
 \begin{tabularx}{\linewidth}{C}
-\input{Tables/nextup_by-cand_G}
+\input{Tables/cands/nextup_G}
 \end{tabularx}
 			
 \item \texttt{candidatevotes}: The number of total votes the candidate received. 
@@ -152,13 +152,13 @@ In order to make names comparable across years, Snyder uses the full name, i.e. 
 Presidential candidates win electoral college votes at the state level, but only win office with a majority of the college votes. Because of this ambiguity, we have left this variable missing for Presidential candidates.
 
     \begin{tabularx}{\linewidth}{CCC}
-    \input{Tables/won_by-cand_S} & \input{Tables/won_by-cand_H} & \input{Tables/won_by-cand_G}
+    \input{Tables/cands/won_S} & \input{Tables/cands/won_H} & \input{Tables/cands/won_G}
     \end{tabularx}
 
 The set of tables below show the \emph{party} of the candidate that \emph{won}. 
 
     \begin{tabularx}{\linewidth}{CCC}
-    \input{Tables/party-won_by-cand_S} & \input{Tables/party-won_by-cand_H} & \input{Tables/party-won_by-cand_G}
+    \input{Tables/cands/party-won_S} & \input{Tables/cands/party-won_H} & \input{Tables/cands/party-won_G}
     \end{tabularx}
 
 % \item \texttt{data\_note}: 145 candidates were not included in the election dataset we used to collect the candidate-level variables. We still include these candidates in the supplemental data in case researchers are interested in specific districts or races. The reason for these non-merges can be broken down into four categories, listed below.

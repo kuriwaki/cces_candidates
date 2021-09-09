@@ -19,7 +19,7 @@ fmt_xtab <- function(xtbl, name, long = FALSE, rowname = "year") {
     return()
 }
 
-wri_xtab <- function(tbl, name, dir = "guide/Tables") {
+wri_xtab <- function(tbl, name, dir = "guide/Tables/cands") {
   tbl %>%
     str_remove("\\\\begin\\{table\\}.*\\n") %>%
     str_remove("\\\\centering\\n") %>%

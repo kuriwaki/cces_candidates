@@ -26,11 +26,11 @@ js_fct %>% filter(office == "S", party %in% c("D", "R")) %>% write_numbers("sen"
 
 # party short
 xtabs(~ year + party, js_fct, subset = (office == "G"), drop.unused.levels = TRUE) %>%
-  fmt_xtab("Gov party") %>% wri_xtab("party_by-cand_G")
+  fmt_xtab("Gov party") %>% wri_xtab("party_G")
 xtabs(~ year + party, js_fct, subset = (office == "H"), drop.unused.levels = TRUE) %>%
-  fmt_xtab("House party") %>% wri_xtab("party_by-cand_H")
+  fmt_xtab("House party") %>% wri_xtab("party_H")
 xtabs(~ year + party, js_fct, subset = (office == "S"), drop.unused.levels = TRUE) %>%
-  fmt_xtab("Senate party") %>% wri_xtab("party_by-cand_S")
+  fmt_xtab("Senate party") %>% wri_xtab("party_S")
 
 
 
@@ -47,56 +47,56 @@ jsdat  %>%
   mutate(office = fct_relevel(factor(office), "P", "S", "H", "G")) %>%
   xtabs(~ year + office, .) %>%
   fmt_xtab("office") %>%
-  wri_xtab("office_by-cand")
+  wri_xtab("office")
 
 
 # incumbent
 xtabs(~ year + inc, jsdat, subset = office == "G") %>%
-  fmt_xtab("Gov inc") %>% wri_xtab("inc_by-cand_G")
+  fmt_xtab("Gov inc") %>% wri_xtab("inc_G")
 xtabs(~ year + inc, jsdat, subset = office == "H") %>%
-  fmt_xtab("House inc") %>% wri_xtab("inc_by-cand_H")
+  fmt_xtab("House inc") %>% wri_xtab("inc_H")
 xtabs(~ year + inc, jsdat, subset = office == "S") %>%
-  fmt_xtab("Senate inc") %>% wri_xtab("inc_by-cand_S")
+  fmt_xtab("Senate inc") %>% wri_xtab("inc_S")
 
 
 # special vs. general
 xtabs(~ year + type, jsdat, subset = office == "G") %>%
-  fmt_xtab("Gov type") %>% wri_xtab("type_by-cand_G")
+  fmt_xtab("Gov type") %>% wri_xtab("type_G")
 xtabs(~ year + type, jsdat, subset = office == "H") %>%
-  fmt_xtab("House type") %>% wri_xtab("type_by-cand_H")
+  fmt_xtab("House type") %>% wri_xtab("type_H")
 xtabs(~ year + type, jsdat, subset = office == "S") %>%
-  fmt_xtab("Senate type") %>% wri_xtab("type_by-cand_S")
+  fmt_xtab("Senate type") %>% wri_xtab("type_S")
 
 
 # runoff
 xtabs(~ year + runoff, jsdat, subset = office == "G") %>%
-  fmt_xtab("Gov runoff") %>% wri_xtab("runoff_by-cand_G")
+  fmt_xtab("Gov runoff") %>% wri_xtab("runoff_G")
 xtabs(~ year + runoff, jsdat, subset = office == "H") %>%
-  fmt_xtab("House runoff") %>% wri_xtab("runoff_by-cand_H")
+  fmt_xtab("House runoff") %>% wri_xtab("runoff_H")
 xtabs(~ year + runoff, jsdat, subset = office == "S") %>%
-  fmt_xtab("Senate runoff") %>% wri_xtab("runoff_by-cand_S")
+  fmt_xtab("Senate runoff") %>% wri_xtab("runoff_S")
 
 # nextup
 xtabs(~ year + nextup, jsdat, subset = office == "G") %>%
-  fmt_xtab("Gov nextup") %>% wri_xtab("nextup_by-cand_G")
+  fmt_xtab("Gov nextup") %>% wri_xtab("nextup_G")
 xtabs(~ year + nextup, jsdat, subset = office == "H") %>%
-  fmt_xtab("House nextup") %>% wri_xtab("nextup_by-cand_H")
+  fmt_xtab("House nextup") %>% wri_xtab("nextup_H")
 xtabs(~ year + nextup, jsdat, subset = office == "S") %>%
-  fmt_xtab("Senate nextup") %>% wri_xtab("nextup_by-cand_S")
+  fmt_xtab("Senate nextup") %>% wri_xtab("nextup_S")
 
 # won
 xtabs(~ year + won, jsdat, subset = office == "G") %>%
-  fmt_xtab("Gov won") %>% wri_xtab("won_by-cand_G")
+  fmt_xtab("Gov won") %>% wri_xtab("won_G")
 xtabs(~ year + won, jsdat, subset = office == "H") %>%
-  fmt_xtab("House won") %>% wri_xtab("won_by-cand_H")
+  fmt_xtab("House won") %>% wri_xtab("won_H")
 xtabs(~ year + won, jsdat, subset = office == "S") %>%
-  fmt_xtab("Senate won") %>% wri_xtab("won_by-cand_S")
+  fmt_xtab("Senate won") %>% wri_xtab("won_S")
 
 # winning party
 xtabs(~ year + party, js_fct, subset = (office == "G" & won == 1), drop.unused.levels = TRUE) %>%
-  fmt_xtab("\\\\shortstack{Gov\\\\\\\\party (winners)}") %>% wri_xtab("party-won_by-cand_G")
+  fmt_xtab("\\\\shortstack{Gov\\\\\\\\party (winners)}") %>% wri_xtab("party-won_G")
 xtabs(~ year + party, js_fct, subset = (office == "H" & won == 1), drop.unused.levels = TRUE) %>%
-  fmt_xtab("\\\\shortstack{House\\\\\\\\party (winners)}") %>% wri_xtab("party-won_by-cand_H")
+  fmt_xtab("\\\\shortstack{House\\\\\\\\party (winners)}") %>% wri_xtab("party-won_H")
 xtabs(~ year + party, js_fct, subset = (office == "S" & won == 1), drop.unused.levels = TRUE) %>%
-  fmt_xtab("\\\\shortstack{Senate\\\\\\\\party (winners)}") %>% wri_xtab("party-won_by-cand_S")
+  fmt_xtab("\\\\shortstack{Senate\\\\\\\\party (winners)}") %>% wri_xtab("party-won_S")
 
