@@ -35,9 +35,10 @@ var_labels <- tribble(
   ~alias, ~label,
   "year",  "Year of the general election or CCES",
   "state",     "State two-letter abbreviation",
-  "office", "Office (H = House, S = Senate, G = Governor)",
+  "office", "Office (H = House, S = Senate, G = Governor, P = President)",
   "dist", "Congressional district number, current",
   "dist_up", "Congressional district number in election (for House candidates)",
+  "runoff", "Whether the election is a runoff (if applicable)",
   "nextup", "The next year the winner will be up",
   "party", "Candidate party affiliation (short)",
   "party_formal", "Candidate party affiliation (formal)",
@@ -65,7 +66,7 @@ cand_fmt <- paste_labels(cand)
 release_dir <- "release"
 
 # Clear
-file_delete(dir_ls(release_dir))
+file_delete(dir_ls(release_dir, regexp = "(csv|dta|rds)$"))
 
 # Save
 write_dta(cand_fmt, path(release_dir, "candidates_2006-2020.dta"))

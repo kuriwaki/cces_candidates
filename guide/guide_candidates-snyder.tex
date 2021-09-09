@@ -31,7 +31,7 @@ The candidate-level dataset shares the same values of the respondent-level data,
 \caption{\textbf{Example of Candidate Data Format} \label{tab:cdataexample}}
 \centering
 \footnotesize
-\input{Tables/example_candidates}
+\input{Tables/cands/example_candidates}
 \end{table}
 
 \section{Data Sources and Coverage}
@@ -57,17 +57,21 @@ Although these removal makes the totalvotes be a few votes less than the actual 
 \item \colorbox{yellow}{\texttt{office}}: The office the candidate is running for. Following the Snyder data, we use \texttt{H} for the US House of Representatives, \texttt{S} for the US Senate, and \texttt{G} for Governor. 
 
     \begin{tabularx}{\linewidth}{C}
-    \input{Tables/office_by-cand}
+    \input{Tables/cands/office}
     \end{tabularx}
 			
 
 \item \colorbox{yellow}{\texttt{type}}: The type of election. We use \texttt{G} to denote general election candidates and \texttt{S} to denote special election candidates. Candidates are said to run in special elections if they are running to serve out the term of another legislator. 
 
 \begin{tabularx}{\linewidth}{CCC}
-\input{Tables/type_by-cand_S} & \input{Tables/type_by-cand_H} & \input{Tables/type_by-cand_G}
+\input{Tables/cands/type_S} & \input{Tables/cands/type_H} & \input{Tables/cands/type_G}
 \end{tabularx}
 
 \item \texttt{runoff}: The candidate's election round. In some states (e.g. Georgia, Louisiana), candidates must run in a runoff election to determine the winner. In the case of a runoff election, only the deciding contest is included. Any pre-runoff race is excluded in the data. A 1 denotes that the election the candidate is running in is a runoff election, while a 0 denotes that the election the candidate is running in is not. 
+
+\begin{tabularx}{\linewidth}{CCC}
+\input{Tables/cands/runoff_S} & \input{Tables/cands/runoff_H} & \input{Tables/cands/runoff_G}
+\end{tabularx}
 
 \item \texttt{name\_snyder}: Standardized candidate name from James M. Snyder.  The syntax is \texttt{[Last name], [First Name] [Middle name] ([Nickname]), [Jr/Sr/I/II/III]}.  Some examples of names are below, to give a sense of the syntax.
 
@@ -81,16 +85,32 @@ Although these removal makes the totalvotes be a few votes less than the actual 
 
 In order to make names comparable across years, Snyder uses the full name, i.e. spelling out middle names, as much as possible and goes beyond what is printed on the ballot or the House Clerk document.
 
-\item \texttt{party}: The party affiliation of the candidate. We use the ``short'' or colloquial party name. For example, the Democrat-Farmer-Labor Party in Minnesota is given a \texttt{D} instead of \texttt{DFL}. Candidates who ran on third party tickets in Connecticut and New York are simply given the major party name.   %\skcomment{Note I use the "short party", not the technical party, so DFL is a D and fusion D candidates are also D. }
-
-%\skcomment{We should make names consistent with the respondent-level and candidate level dataset. If the short party name is called \texttt{party} in the candidate level dataset, it should also be called that in the candidate's dataset.}
+\item \texttt{party}: The short party affiliation of the candidate. We use the ``short'' or colloquial party name. For example, the Democrat-Farmer-Labor Party in Minnesota is given a \texttt{D} instead of \texttt{DFL}. Candidates who ran on third party tickets in Connecticut and New York are simply given the major party name.   
 
 
-\begin{tabularx}{\linewidth}{C}
-  \input{Tables/party_by-cand}
+\begin{adjustwidth}{-4em}{-4em}
+\centering
+\begin{tabularx}{\linewidth}{CCC}
+  \input{Tables/cands/party_S} & \input{Tables/cands/party_H} &\input{Tables/cands/party_G}
 \end{tabularx}
+\end{adjustwidth}
+
 
 \item \texttt{party\_formal} The formal party names, for example DFL in Minnesota. Third party candidate names follow what is given in the House Clerk Document. 
+
+
+
+\twocolumn
+\begin{adjustwidth}{-5em}{-5em}
+\centering
+{\scriptsize
+\input{Tables/cands/party-formal_by-office}
+}
+\end{adjustwidth}
+
+\onecolumn
+
+
 
 \item \texttt{inc}: Candidate incumbency status. A 0 means the candidate is not an incumbent, a 1 means the candidate is an incumbent, and a 2 means the candidate is an incumbent that was elected in a special election. 
 \begin{itemize}
@@ -98,12 +118,24 @@ In order to make names comparable across years, Snyder uses the full name, i.e. 
 \end{itemize}
 
     \begin{tabularx}{\linewidth}{CCC}
-    \input{Tables/inc_by-cand_S} & \input{Tables/inc_by-cand_H} & \input{Tables/inc_by-cand_G}
+    \input{Tables/cands/inc_S} & \input{Tables/cands/inc_H} & \input{Tables/cands/inc_G}
     \end{tabularx}
 
 \item \texttt{current\_inc}: Candidate incumbency status for that specific respondent. A 0 means the candidate is not the respondent's current representative, a 1 means the candidate is the respondent's current representative. A candidate could be an incumbent in the district but the not the respondent's current representative if the respondent was redistricted. This variable is only included for respondents with \texttt{inc=1}.
 
 \item \texttt{nextup}: The year that a incumbent candidate is up for re-election. This variable can be useful in determining tenure in office for special election candidates, who may not have served a full term. See \texttt{type} for designation of special election candidates. 		
+
+\begin{tabularx}{\linewidth}{C}
+\input{Tables/cands/nextup_S}
+\end{tabularx}
+
+\begin{tabularx}{\linewidth}{C}
+\input{Tables/cands/nextup_H} 
+\end{tabularx}
+
+\begin{tabularx}{\linewidth}{C}
+\input{Tables/cands/nextup_G}
+\end{tabularx}
 			
 \item \texttt{candidatevotes}: The number of total votes the candidate received. 
 \begin{itemize}
@@ -120,22 +152,22 @@ In order to make names comparable across years, Snyder uses the full name, i.e. 
 Presidential candidates win electoral college votes at the state level, but only win office with a majority of the college votes. Because of this ambiguity, we have left this variable missing for Presidential candidates.
 
     \begin{tabularx}{\linewidth}{CCC}
-    \input{Tables/won_by-cand_S} & \input{Tables/won_by-cand_H} & \input{Tables/won_by-cand_G}
+    \input{Tables/cands/won_S} & \input{Tables/cands/won_H} & \input{Tables/cands/won_G}
     \end{tabularx}
 
 The set of tables below show the \emph{party} of the candidate that \emph{won}. 
 
     \begin{tabularx}{\linewidth}{CCC}
-    \input{Tables/party-won_by-cand_S} & \input{Tables/party-won_by-cand_H} & \input{Tables/party-won_by-cand_G}
+    \input{Tables/cands/party-won_S} & \input{Tables/cands/party-won_H} & \input{Tables/cands/party-won_G}
     \end{tabularx}
 
-\item \texttt{data\_note}: 145 candidates were not included in the election dataset we used to collect the candidate-level variables. We still include these candidates in the supplemental data in case researchers are interested in specific districts or races. The reason for these non-merges can be broken down into four categories, listed below.
-		\begin{enumerate}
-			\item Incorrect Election: Candidates with this code  did not run in the respondent's district or state. This likely occurs because the respondent's information was incorrectly entered. 
-			\item Not on General Election Ballot: Candidates with this code either withdrew from the race, were disqualified, were write-in candidates, did not make it to the included runoff election, or did not receive enough votes to appear on the ballot. 
-			\item Unopposed in Oklahoma: In Oklahoma, unopposed candidates do not appear on the general election ballot. 
-			\item Missing from election data: Candidates with this code were not included in the data we used to merge in the election information. Oftentimes, this category is made up of candidates in races with jungle primaries, such as Louisiana. This also includes all candidates from Washington D.C.. 
-		\end{enumerate}
+% \item \texttt{data\_note}: 145 candidates were not included in the election dataset we used to collect the candidate-level variables. We still include these candidates in the supplemental data in case researchers are interested in specific districts or races. The reason for these non-merges can be broken down into four categories, listed below.
+% 		\begin{enumerate}
+% 			\item Incorrect Election: Candidates with this code  did not run in the respondent's district or state. This likely occurs because the respondent's information was incorrectly entered. 
+% 			\item Not on General Election Ballot: Candidates with this code either withdrew from the race, were disqualified, were write-in candidates, did not make it to the included runoff election, or did not receive enough votes to appear on the ballot. 
+% 			\item Unopposed in Oklahoma: In Oklahoma, unopposed candidates do not appear on the general election ballot. 
+% 			\item Missing from election data: Candidates with this code were not included in the data we used to merge in the election information. Oftentimes, this category is made up of candidates in races with jungle primaries, such as Louisiana. This also includes all candidates from Washington D.C.. 
+% 		\end{enumerate}
 \end{itemize}
 	
 
@@ -185,8 +217,6 @@ Our dataset does not contain information about the gender or race of the candida
 Note that some of this data has been aggregated in the Cumulative Contextual File, located here: \url{https://doi.org/10.7910/DVN/26451}.
 
 
-
-
 Finally, other researchers have collected this data in forthcoming work. ``Separating Race and Party in Congressional
 Elections'' by Bernard Fraga (available at \url{https://www.bernardfraga.com/research}) uses hand-coded race data from Congressional general and primary elections from 2006 - 2020. ``Partisanship and Nationalization in American Elections'' by Sharif Almani and Carlos Algara (\emph{Electoral Studies}) contains county-level partisan election data from the statewide offices of President, Governor, and Senator going back to the Civil War. 
 
@@ -196,6 +226,8 @@ Elections'' by Bernard Fraga (available at \url{https://www.bernardfraga.com/res
 \begin{itemize}
 \item Dataverse 1.0: Initial Release, \skcomment{Enter date of dataverse upload here}.
 \end{itemize}	
+
+
 	
 \end{document}
 

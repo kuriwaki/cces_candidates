@@ -3,25 +3,30 @@
 #' write with comma and percentage point
 
 
-fmt_xtab <- function(xtbl, name) {
+fmt_xtab <- function(xtbl, name, long = FALSE, rowname = "year") {
   tab <- kable(xtbl,
                format = "latex",
                booktabs = TRUE,
+               longtable = long,
                linesep = "",
                format.args = list(big.mark = ',')) %>%
-    add_header_above(header = c("year" = 1, XXXXX = ncol(xtbl))) %>%
+    add_header_above(header = c(rowname = 1, XXXXX = ncol(xtbl))) %>%
     kable_styling(position = "center")
 
-  str_replace(tab, "XXXXX", name)
+  tab %>%
+  str_replace("XXXXX", name) %>%
+    str_replace("rowname", rowname) %>%
+    return()
 }
 
-wri_xtab <- function(tbl, name, dir = "guide/Tables") {
+wri_xtab <- function(tbl, name, dir = "guide/Tables/cands") {
   tbl %>%
-    str_remove("\\\\begin\\{table\\}\\[(H|t)\\]\\n") %>%
+    str_remove("\\\\begin\\{table\\}.*\\n") %>%
     str_remove("\\\\centering\\n") %>%
     str_remove("\\\\caption\\{NA\\}\\n") %>%
     str_remove("\\n\\\\end\\{table\\}") %>%
     str_replace("\\\\begin\\{tabular\\}", "\\\\footnotesize\\\\begin{tabular}[t]") %>%
+    str_replace_all("longtable", "supertabular") %>%
     write_lines(glue("{dir}/{name}.tex"))
 }
 

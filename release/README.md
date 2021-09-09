@@ -1,0 +1,1 @@
+This folder contains the final data to be relased and uploaded to dataverse. See the dataverse for the final file.

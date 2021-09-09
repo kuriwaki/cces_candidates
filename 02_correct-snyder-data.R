@@ -284,8 +284,8 @@ jsdat <- jsdat %>%
       "Work Fam" = "Wk Fam",
       "Working Families" = "Wk Fam"
     ),
-    party_formal = replace(party, name == "PERRONE, MICHAEL, JR." & year == 2008, "I Pg"),
-    party_formal = replace(party, name == "GEDDINGS, HAROLD, III" & year == 2014, "Labor"),
+    party_formal = replace(party_formal, name == "PERRONE, MICHAEL, JR." & year == 2008, "I Pg"),
+    party_formal = replace(party_formal, name == "GEDDINGS, HAROLD, III" & year == 2014, "Labor")
   )
 
 # party coding
