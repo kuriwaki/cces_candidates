@@ -9,7 +9,7 @@
 *.rds
 
 # Jim's data
-data/snyder
+data/snyder/*.dta
 
 
 # custom data
