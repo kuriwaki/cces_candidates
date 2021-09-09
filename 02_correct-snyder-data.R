@@ -348,6 +348,25 @@ jsdat <- jsdat %>%
     )
   )
 
+# remove triple counted fusion candidates ------
+entries_fusion <- jsdat %>%
+  ungroup() %>%
+  filter((party == "D" & str_detect(party_formal, "D.*(Wk Fam|WF)")) |
+           (party == "R" & str_detect(party_formal, "R.*(C|Indep)")))
+
+cands_fusion <- jsdat %>%
+  ungroup() %>%
+  semi_join(distinct(entries_fusion, year, office, state, dist, type, name)) %>%
+  mutate(drop = !str_detect(party_formal, ",")) # we will flag the candidates to DROP. This is candidates who are NOT combined counts.
+
+# Drop the non-combined candidates
+entries_to_drop <- filter(cands_fusion, drop)
+
+jsdat <- jsdat %>%
+  ungroup() %>%
+  anti_join(entries_to_drop,
+            by = c("year", "state", "office", "dist", "type", "runoff", "party_formal", "name"))
+
 
 
 # write
