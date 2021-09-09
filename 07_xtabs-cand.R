@@ -6,7 +6,7 @@ library(kableExtra)
 library(tidyverse)
 
 
-source("07_xtabs-functions.R")
+source("00b_xtabs-functions.R")
 
 # data ---
 jsdat <- read_dta("release/candidates_2006-2020.dta")
