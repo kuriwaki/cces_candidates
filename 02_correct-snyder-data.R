@@ -57,8 +57,8 @@ jsdat <- jsdat %>%
     temp = replace(temp, name == "LETLOW, LUKE J." & year == 2020 |
       name == "HARRIS, LANCE" & year == 2020, 0)
   ) %>%
-  filter(temp == 0 |
-    (name != "BUCKLEY, ALLEN" & year != 2008)) %>%
+  filter(temp == 0,
+    name != "BUCKLEY, ALLEN" | year != 2008) %>%
   select(-temp) %>%
   mutate(runoff = case_when(
     state == "GA" & year == 2020 & office == "S" ~ 1, # 2020 Georgia Runoff
@@ -353,8 +353,13 @@ jsdat <- jsdat %>%
   filter(name != "SCHWEIDEL, JOEL",
          name != "CARLSON, ELAINE SUE",
          name != "BEARDSLEY, MICHAEL",
-         name != "WELCH, PETER F." | party == "R",
+         name != "WELCH, PETER F." | party != "R",
+         name != "WELCH, PETER F." | party_formal != "D" | year != 2008
   )
+
+# WELCH, PETER F. party formal correction
+jsdat <- jsdat %>%
+  mutate(party_formal = replace(party_formal, name == "WELCH, PETER F." & year == 2008, "D"))
 
 # removing entries without names
 jsdat <- jsdat %>%
@@ -376,7 +381,7 @@ jsdat <- jsdat %>%
          u_g = replace(u_g, name == "MELANCON, CHARLES J. (CHARLIE), JR." & office == "H" & year == 2006, 0),
          vote_g = replace(vote_g, name == "JINDAL, BOBBY" & office == "G" & year == 2007, 699275),
          u_g = replace(u_g, name == "JINDAL, BOBBY" & office == "G" & year == 2007, 0),
-         vote_g = replace(vote_g, name == "GAIERO, THEODORE J., JR." & office == "H" & year == 2008, 114),
+         vote_g = replace(vote_g, name == "GAIERO, THEODORE J., JR." & office == "H" & year == 2008, 114)
          )
 
 # write
