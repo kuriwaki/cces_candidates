@@ -64,13 +64,15 @@ Although these removal makes the totalvotes be a few votes less than the actual 
 \item \colorbox{yellow}{\texttt{type}}: The type of election. We use \texttt{G} to denote general election candidates and \texttt{S} to denote special election candidates. Candidates are said to run in special elections if they are running to serve out the term of another legislator. 
 
 \begin{tabularx}{\linewidth}{CCC}
-\input{Tables/cands/type_S} & \input{Tables/cands/type_H} & \input{Tables/cands/type_G}
+    \textbf{Senate} & \textbf{House} & \textbf{Governor}\\
+    \input{Tables/cands/type_S} & \input{Tables/cands/type_H} & \input{Tables/cands/type_G}
 \end{tabularx}
 
 \item \texttt{runoff}: The candidate's election round. In some states (e.g. Georgia, Louisiana), candidates must run in a runoff election to determine the winner. In the case of a runoff election, only the deciding contest is included. Any pre-runoff race is excluded in the data. A 1 denotes that the election the candidate is running in is a runoff election, while a 0 denotes that the election the candidate is running in is not. 
 
 \begin{tabularx}{\linewidth}{CCC}
-\input{Tables/cands/runoff_S} & \input{Tables/cands/runoff_H} & \input{Tables/cands/runoff_G}
+    \textbf{Senate} & \textbf{House} & \textbf{Governor}\\
+    \input{Tables/cands/runoff_S} & \input{Tables/cands/runoff_H} & \input{Tables/cands/runoff_G}
 \end{tabularx}
 
 \item \texttt{name\_snyder}: Standardized candidate name from James M. Snyder.  The syntax is \texttt{[Last name], [First Name] [Middle name] ([Nickname]), [Jr/Sr/I/II/III]}.  Some examples of names are below, to give a sense of the syntax.
@@ -91,6 +93,7 @@ In order to make names comparable across years, Snyder uses the full name, i.e. 
 \begin{adjustwidth}{-4em}{-4em}
 \centering
 \begin{tabularx}{\linewidth}{CCC}
+\textbf{Senate} & \textbf{House} & \textbf{Governor}\\
   \input{Tables/cands/party_S} & \input{Tables/cands/party_H} &\input{Tables/cands/party_G}
 \end{tabularx}
 \end{adjustwidth}
@@ -118,6 +121,7 @@ In order to make names comparable across years, Snyder uses the full name, i.e. 
 \end{itemize}
 
     \begin{tabularx}{\linewidth}{CCC}
+    \textbf{Senate} & \textbf{House} & \textbf{Governor}\\
     \input{Tables/cands/inc_S} & \input{Tables/cands/inc_H} & \input{Tables/cands/inc_G}
     \end{tabularx}
 
@@ -126,38 +130,59 @@ In order to make names comparable across years, Snyder uses the full name, i.e. 
 \item \texttt{nextup}: The year that a incumbent candidate is up for re-election. This variable can be useful in determining tenure in office for special election candidates, who may not have served a full term. See \texttt{type} for designation of special election candidates. 		
 
 \begin{tabularx}{\linewidth}{C}
+\textbf{Senate}\\
 \input{Tables/cands/nextup_S}
 \end{tabularx}
 
 \begin{tabularx}{\linewidth}{C}
+\textbf{House}\\
 \input{Tables/cands/nextup_H} 
 \end{tabularx}
 
 \begin{tabularx}{\linewidth}{C}
+\textbf{Governor}\\
 \input{Tables/cands/nextup_G}
 \end{tabularx}
-			
+
 \item \texttt{candidatevotes}: The number of total votes the candidate received. 
 \begin{itemize}
 \item For candidates running on multiple party tickets, this will be the \emph{sum} of all of their votes.  For example, in 2016, Rep. Rosa L. DeLauro (CT-03) ran as a Democrat and also ran as a Working Families Party candidate. She won 192,274 votes in the former and 21,298 votes in the latter, so her \texttt{candidatevotes} is the total, 213,572.
 \item  Florida and Oklahoma do not report the vote count for a House candidate if she won unopposed. In these cases, we have the vote count as \texttt{NA} but have the candidate winning (\texttt{won == 1}).
 \end{itemize}
 %\skcomment{Maybe we call this \texttt{candidatevotes}?  That is consistent with MEDSL's naming system, and I think a lot of people now use MEDSL.}
-				
 
-\item \texttt{totalvotes}: Total votes for all candidates in the general election included in the Snyder data. 
+Therefore, the data for such corner cases look like:
+
+\begin{table}[!h]
+\centering
+\footnotesize
+\input{Tables/cands/example_candidatevotes}
+\end{table}
+
+
+\item \texttt{totalvotes}: Total votes for all candidates in the general election included in the Snyder data.  
 
 \item \texttt{won}: Candidate won the general election. A 1 means the candidate won the general election, and a 0 means the candidate lost the general election. 
 
 Presidential candidates win electoral college votes at the state level, but only win office with a majority of the college votes. Because of this ambiguity, we have left this variable missing for Presidential candidates.
 
     \begin{tabularx}{\linewidth}{CCC}
+    \textbf{Senate} & \textbf{House} & \textbf{Governor}\\
     \input{Tables/cands/won_S} & \input{Tables/cands/won_H} & \input{Tables/cands/won_G}
     \end{tabularx}
+
+Some of the years have more than 435 candidates winning in the House each year because they count special elections held that year too. Here are the counts only for General Elections.
+
+\begin{tabularx}{\linewidth}{CCC}
+    \textbf{Senate} & \textbf{House} & \textbf{Governor}\\
+    \input{Tables/cands/won_S_gen} & \input{Tables/cands/won_H_gen} & \input{Tables/cands/won_G_gen}
+    \end{tabularx}
+
 
 The set of tables below show the \emph{party} of the candidate that \emph{won}. 
 
     \begin{tabularx}{\linewidth}{CCC}
+    \textbf{Senate} & \textbf{House} & \textbf{Governor}\\
     \input{Tables/cands/party-won_S} & \input{Tables/cands/party-won_H} & \input{Tables/cands/party-won_G}
     \end{tabularx}
 
