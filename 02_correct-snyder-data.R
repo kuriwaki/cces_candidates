@@ -397,8 +397,11 @@ jsdat <- jsdat %>%
 # remove triple counted fusion candidates ------
 entries_fusion_pre18 <- jsdat %>%
   ungroup() %>%
-  filter((party == "D" & str_detect(party_formal, "D.*(Wk Fam|WF)")) |
-           (party == "R" & str_detect(party_formal, "R.*(C|Indep)")))
+  # double counted fusion
+  filter(!(name == "KING, PETER T. (PETE)" & party_formal == "R,Tax" & year == 2012 & state == "NY")) %>%
+  # keep the sum version of fusion
+  filter((party == "D" & str_detect(party_formal, "D.+(Wk Fam|WF)")) |
+           (party == "R" & str_detect(party_formal, "R.+(C|Indep|Tax)")))
 
 cands_fusion_pre18 <- jsdat %>%
   ungroup() %>%
@@ -408,7 +411,17 @@ cands_fusion_pre18 <- jsdat %>%
 
 
 # Drop the non-combined candidates
-entries_to_drop <- filter(cands_fusion_pre18, drop)
+entries_to_drop <- filter(cands_fusion_pre18, drop) %>%
+  add_row(name = "KING, PETER T. (PETE)",
+          party_formal = "R,Tax",
+          office = "H",
+          state = "NY",
+          dist = 2,
+          type = "G",
+          year = 2012,
+          runoff = NA,
+          nextup = 2014
+          )
 
 jsdat <- jsdat %>%
   ungroup() %>%
