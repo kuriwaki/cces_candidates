@@ -288,6 +288,46 @@ jsdat <- jsdat %>%
     party_formal = replace(party_formal, name == "GEDDINGS, HAROLD, III" & year == 2014, "Labor")
   )
 
+# Fusion 2018 ----
+
+cand_level_vars <- c("year", "office", "state", "dist", "type", "runoff", "nextup", "name")
+
+# recode fusion people post 2018-2020 as fusion by summing their votes
+entries_fusion_post18 <- jsdat %>%
+  ungroup() %>%
+  filter(year %in% c(2018, 2020), state %in% c("NY", "CT", "SC")) %>%
+  mutate(party_formal = fct_relevel(party_formal, "D", "R")) %>%
+  arrange(party_formal) %>%
+  group_by(across(all_of(cand_level_vars))) %>%
+  select(party_formal, inc, vote_g, w_g) %>%
+  # add votes, concatenate party, and take w_g
+  summarize(
+    vote_g = as.integer(sum(vote_g)),
+    w_g = as.integer(any(w_g == 1)),
+    inc = as.integer(any(inc == 1)),
+    party_formal = str_c(as.character(party_formal), collapse = ", "),
+    nparties = n(),
+    .groups = "drop"
+  ) %>%
+  filter(nparties >= 2) %>%
+  select(-nparties) %>%
+  mutate(
+    party = replace(party_formal,
+                    str_sub(party_formal, 1, 1) == "D",
+                    "D"),
+    party = replace(party,
+                    str_sub(party_formal, 1, 1) == "R",
+                    "R")
+  )
+
+jsdat <- jsdat %>%
+  # drop all candidates whose names match with the fusion list
+  anti_join(entries_fusion_post18, by = cand_level_vars) %>%
+  # stack the summarized versions back in
+  bind_rows(entries_fusion_post18)
+
+
+
 # party coding
 jsdat <- jsdat %>%
   mutate(
@@ -316,6 +356,12 @@ jsdat <- jsdat %>%
       # Republicans
       "R, Reform" = "R",
       "R,C" = "R",
+      "R, C" = "R",
+      "R, C, Reform" = "R",
+      "R, C, I, Reform" = "R",
+      "R, C, Independence" = "R",
+      "R, Const, Independence" = "R",
+      "R, I" = "R",
       "R,C,I" = "R",
       "R,C,Indep" = "R",
       "R,C,Lbt" = "R",
@@ -349,23 +395,25 @@ jsdat <- jsdat %>%
   )
 
 # remove triple counted fusion candidates ------
-entries_fusion <- jsdat %>%
+entries_fusion_pre18 <- jsdat %>%
   ungroup() %>%
   filter((party == "D" & str_detect(party_formal, "D.*(Wk Fam|WF)")) |
            (party == "R" & str_detect(party_formal, "R.*(C|Indep)")))
 
-cands_fusion <- jsdat %>%
+cands_fusion_pre18 <- jsdat %>%
   ungroup() %>%
-  semi_join(distinct(entries_fusion, year, office, state, dist, type, name)) %>%
+  semi_join(distinct(entries_fusion_pre18, year, office, state, dist, type, name)) %>%
   mutate(drop = !str_detect(party_formal, ",")) # we will flag the candidates to DROP. This is candidates who are NOT combined counts.
 
+
+
 # Drop the non-combined candidates
-entries_to_drop <- filter(cands_fusion, drop)
+entries_to_drop <- filter(cands_fusion_pre18, drop)
 
 jsdat <- jsdat %>%
   ungroup() %>%
   anti_join(entries_to_drop,
-            by = c("year", "state", "office", "dist", "type", "runoff", "party_formal", "name"))
+            by = c(cand_level_vars, "party_formal"))
 
 
 
