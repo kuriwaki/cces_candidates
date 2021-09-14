@@ -9,7 +9,11 @@ library(tidyverse)
 source("00b_xtabs-functions.R")
 
 # data ---
-jsdat <- read_dta("release/candidates_2006-2020.dta")
+jsdat <- read_dta("release/candidates_2006-2020.dta") %>%
+  mutate(won_by_type = str_c(type, won, sep = "-"),
+         wonparty_by_type = str_c(type, won, sep = "-"))
+
+
 # version where labelled class is a factor
 js_fct <- jsdat %>%
   mutate(party = recode_factor(party, D = "D", R = "R", Lbt = "Lbt", Grn = "Grn", .default = "Oth"))
@@ -86,11 +90,20 @@ xtabs(~ year + nextup, jsdat, subset = office == "S") %>%
 
 # won
 xtabs(~ year + won, jsdat, subset = office == "G") %>%
-  fmt_xtab("Gov won") %>% wri_xtab("won_G")
+    fmt_xtab("Gov won") %>% wri_xtab("won_G")
 xtabs(~ year + won, jsdat, subset = office == "H") %>%
   fmt_xtab("House won") %>% wri_xtab("won_H")
 xtabs(~ year + won, jsdat, subset = office == "S") %>%
   fmt_xtab("Senate won") %>% wri_xtab("won_S")
+
+# GEnerals -- won
+xtabs(~ year + won, jsdat, subset = (office == "G" & type == "G")) %>%
+  fmt_xtab("Gov won (generals)") %>% wri_xtab("won_G_gen")
+xtabs(~ year + won, jsdat, subset = (office == "H" & type == "G")) %>%
+  fmt_xtab("House won (generals)") %>% wri_xtab("won_H_gen")
+xtabs(~ year + won, jsdat, subset = (office == "S" & type == "G")) %>%
+  fmt_xtab("Senate won (generals)") %>% wri_xtab("won_S_gen")
+
 
 # winning party
 xtabs(~ year + party, js_fct, subset = (office == "G" & won == 1), drop.unused.levels = TRUE) %>%
