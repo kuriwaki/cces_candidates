@@ -104,7 +104,6 @@ xtabs(~ year + won, jsdat, subset = (office == "H" & type == "G")) %>%
 xtabs(~ year + won, jsdat, subset = (office == "S" & type == "G")) %>%
   fmt_xtab("\\\\shortstack{won\\\\\\\\ (generals)}") %>% wri_xtab("won_S_gen")
 
-
 # winning party
 xtabs(~ year + party, js_fct, subset = (office == "G" & won == 1), drop.unused.levels = TRUE) %>%
   fmt_xtab("\\\\shortstack{party\\\\\\\\ (winners)}") %>% wri_xtab("party-won_G")
@@ -113,3 +112,7 @@ xtabs(~ year + party, js_fct, subset = (office == "H" & won == 1), drop.unused.l
 xtabs(~ year + party, js_fct, subset = (office == "S" & won == 1), drop.unused.levels = TRUE) %>%
   fmt_xtab("\\\\shortstack{party\\\\\\\\ (winners)}") %>% wri_xtab("party-won_S")
 
+# jsdat %>%
+#   filter(name_snyder %in% c("DELAURO, ROSA L.", "DEMINGS, VALDEZ B. (VAL)"), year == 2018) %>%
+#   select(year, office, state, dist, party, party_formal, name_snyder, candidatevotes) %>%
+#   kbl(booktabs = TRUE, format = "latex")

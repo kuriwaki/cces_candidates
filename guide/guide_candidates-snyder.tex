@@ -150,9 +150,17 @@ In order to make names comparable across years, Snyder uses the full name, i.e. 
 \item  Florida and Oklahoma do not report the vote count for a House candidate if she won unopposed. In these cases, we have the vote count as \texttt{NA} but have the candidate winning (\texttt{won == 1}).
 \end{itemize}
 %\skcomment{Maybe we call this \texttt{candidatevotes}?  That is consistent with MEDSL's naming system, and I think a lot of people now use MEDSL.}
-				
 
-\item \texttt{totalvotes}: Total votes for all candidates in the general election included in the Snyder data. 
+Therefore, the data for such corner cases look like:
+
+\begin{table}[!h]
+\centering
+\footnotesize
+\input{Tables/cands/example_candidatevotes}
+\end{table}
+
+
+\item \texttt{totalvotes}: Total votes for all candidates in the general election included in the Snyder data.  
 
 \item \texttt{won}: Candidate won the general election. A 1 means the candidate won the general election, and a 0 means the candidate lost the general election. 
 
