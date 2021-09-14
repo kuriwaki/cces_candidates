@@ -4,9 +4,10 @@ library(haven)
 # raw
 jsdat_raw <- read_dta("data/snyder/2021-07-29 sen_gov_house_2006_2020.dta")
 
+# Changes, additions ---
 
-# issue 7
 jsdat <- jsdat_raw %>%
+  # https://github.com/kuriwaki/cces_candidates/issues/7: same day special
   mutate(
     type = replace(
       x = type,
@@ -18,7 +19,16 @@ jsdat <- jsdat_raw %>%
       list = (year == 2006 & state == "TX" & dist == 22 & nextup == 2008),
       values = "G"
     )
-  )
+  ) %>%
+  # https://github.com/kuriwaki/cces_candidates/issues/21: missing election
+  add_row(state = "OK", year = 2016, office = "H", dist = 1,
+          type = "G", nextup = 2018,
+          party = "R",
+          name = "BRIDENSTINE, JAMES FREDERICK (JIM)", inc = 1,
+          w_g = 1, u_g = 1,
+          vote_g = NA)
+
+
 
 # Senate dist issue
 jsdat <- jsdat %>%

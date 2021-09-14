@@ -116,3 +116,8 @@ xtabs(~ year + party, js_fct, subset = (office == "S" & won == 1), drop.unused.l
 #   filter(name_snyder %in% c("DELAURO, ROSA L.", "DEMINGS, VALDEZ B. (VAL)"), year == 2018) %>%
 #   select(year, office, state, dist, party, party_formal, name_snyder, candidatevotes) %>%
 #   kbl(booktabs = TRUE, format = "latex")
+# jsdat %>%
+#   filter(name_snyder %in% c("BRIDENSTINE, JAMES FREDERICK (JIM)"), year == 2016) %>%
+#   select(year, office, state, dist, party, party_formal, name_snyder, candidatevotes) %>%
+#   kbl(booktabs = TRUE, format = "latex")
+
