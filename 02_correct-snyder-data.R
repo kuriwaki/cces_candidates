@@ -57,8 +57,8 @@ jsdat <- jsdat %>%
     temp = replace(temp, name == "LETLOW, LUKE J." & year == 2020 |
       name == "HARRIS, LANCE" & year == 2020, 0)
   ) %>%
-  filter(temp == 0 |
-    (name != "BUCKLEY, ALLEN" & year != 2008)) %>%
+  filter(temp == 0,
+    name != "BUCKLEY, ALLEN" | year != 2008) %>%
   select(-temp) %>%
   mutate(runoff = case_when(
     state == "GA" & year == 2020 & office == "S" ~ 1, # 2020 Georgia Runoff
@@ -288,7 +288,7 @@ jsdat <- jsdat %>%
     party_formal = replace(party_formal, name == "GEDDINGS, HAROLD, III" & year == 2014, "Labor")
   )
 
-# Fusion 2018 ----
+# Fusion 2018 - some removals ----
 
 cand_level_vars <- c("year", "office", "state", "dist", "type", "runoff", "nextup", "name")
 
@@ -394,7 +394,9 @@ jsdat <- jsdat %>%
     )
   )
 
-# remove triple counted fusion candidates ------
+
+# REMOVALS -----
+# remove triple counted fusion candidates
 entries_fusion_pre18 <- jsdat %>%
   ungroup() %>%
   # double counted fusion
@@ -410,7 +412,7 @@ cands_fusion_pre18 <- jsdat %>%
 
 
 
-# Drop the non-combined candidates
+# Drop the non-combined candidates ------
 entries_to_drop <- filter(cands_fusion_pre18, drop) %>%
   add_row(name = "KING, PETER T. (PETE)",
           party_formal = "R,Tax",
@@ -429,6 +431,42 @@ jsdat <- jsdat %>%
             by = c(cand_level_vars, "party_formal"))
 
 
+# removing extraneous observations ------
+jsdat <- jsdat %>%
+  filter(name != "SCHWEIDEL, JOEL",
+         name != "CARLSON, ELAINE SUE",
+         name != "BEARDSLEY, MICHAEL",
+         name != "WELCH, PETER F." | party != "R",
+         name != "WELCH, PETER F." | party_formal != "D" | year != 2008
+  )
+
+# WELCH, PETER F. party formal correction
+jsdat <- jsdat %>%
+  mutate(party_formal = replace(party_formal, name == "WELCH, PETER F." & year == 2008, "D"))
+
+
+# removing entries without names
+jsdat <- jsdat %>%
+  filter(name != "" | !is.na(vote_g))
+
+# adding in vote totals
+jsdat <- jsdat %>%
+  mutate(vote_g = replace(vote_g, name == "JINDAL, BOBBY" & office == "H" & year == 2006, 130508),
+         u_g = replace(u_g, name == "JINDAL, BOBBY" & office == "H" & year == 2006, 0),
+         vote_g = replace(vote_g, name == "MCCRERY, JAMES O. (JIM)" & office == "H" & year == 2006, 77078),
+         u_g = replace(u_g, name == "MCCRERY, JAMES O. (JIM)" & office == "H" & year == 2006, 0),
+         vote_g = replace(vote_g, name == "ALEXANDER, RODNEY M." & office == "H" & year == 2006, 78211),
+         u_g = replace(u_g, name == "ALEXANDER, RODNEY M." & office == "H" & year == 2006, 0),
+         vote_g = replace(vote_g, name == "BOUSTANY, CHARLES W., JR." & office == "H" & year == 2006, 113720),
+         u_g = replace(u_g, name == "BOUSTANY, CHARLES W., JR." & office == "H" & year == 2006, 0),
+         vote_g = replace(vote_g, name == "BAKER, RICHARD HUGH" & office == "H" & year == 2006, 94658),
+         u_g = replace(u_g, name == "BAKER, RICHARD HUGH" & office == "H" & year == 2006, 0),
+         vote_g = replace(vote_g, name == "MELANCON, CHARLES J. (CHARLIE), JR." & office == "H" & year == 2006, 75023),
+         u_g = replace(u_g, name == "MELANCON, CHARLES J. (CHARLIE), JR." & office == "H" & year == 2006, 0),
+         vote_g = replace(vote_g, name == "JINDAL, BOBBY" & office == "G" & year == 2007, 699275),
+         u_g = replace(u_g, name == "JINDAL, BOBBY" & office == "G" & year == 2007, 0),
+         vote_g = replace(vote_g, name == "GAIERO, THEODORE J., JR." & office == "H" & year == 2008, 114)
+         )
 
 # write
 write_rds(jsdat, "data/intermediate/snyder_2006-2020.rds")
