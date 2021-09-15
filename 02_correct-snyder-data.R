@@ -462,19 +462,12 @@ jsdat <- jsdat %>%
 # adding in vote totals
 jsdat <- jsdat %>%
   mutate(vote_g = replace(vote_g, name == "JINDAL, BOBBY" & office == "H" & year == 2006, 130508),
-         u_g = replace(u_g, name == "JINDAL, BOBBY" & office == "H" & year == 2006, 0),
          vote_g = replace(vote_g, name == "MCCRERY, JAMES O. (JIM)" & office == "H" & year == 2006, 77078),
-         u_g = replace(u_g, name == "MCCRERY, JAMES O. (JIM)" & office == "H" & year == 2006, 0),
          vote_g = replace(vote_g, name == "ALEXANDER, RODNEY M." & office == "H" & year == 2006, 78211),
-         u_g = replace(u_g, name == "ALEXANDER, RODNEY M." & office == "H" & year == 2006, 0),
          vote_g = replace(vote_g, name == "BOUSTANY, CHARLES W., JR." & office == "H" & year == 2006, 113720),
-         u_g = replace(u_g, name == "BOUSTANY, CHARLES W., JR." & office == "H" & year == 2006, 0),
          vote_g = replace(vote_g, name == "BAKER, RICHARD HUGH" & office == "H" & year == 2006, 94658),
-         u_g = replace(u_g, name == "BAKER, RICHARD HUGH" & office == "H" & year == 2006, 0),
          vote_g = replace(vote_g, name == "MELANCON, CHARLES J. (CHARLIE), JR." & office == "H" & year == 2006, 75023),
-         u_g = replace(u_g, name == "MELANCON, CHARLES J. (CHARLIE), JR." & office == "H" & year == 2006, 0),
          vote_g = replace(vote_g, name == "JINDAL, BOBBY" & office == "G" & year == 2007, 699275),
-         u_g = replace(u_g, name == "JINDAL, BOBBY" & office == "G" & year == 2007, 0),
          vote_g = replace(vote_g, name == "GAIERO, THEODORE J., JR." & office == "H" & year == 2008, 114)
          )
 
