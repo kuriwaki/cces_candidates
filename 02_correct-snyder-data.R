@@ -468,7 +468,23 @@ jsdat <- jsdat %>%
          vote_g = replace(vote_g, name == "BAKER, RICHARD HUGH" & office == "H" & year == 2006, 94658),
          vote_g = replace(vote_g, name == "MELANCON, CHARLES J. (CHARLIE), JR." & office == "H" & year == 2006, 75023),
          vote_g = replace(vote_g, name == "JINDAL, BOBBY" & office == "G" & year == 2007, 699275),
-         vote_g = replace(vote_g, name == "GAIERO, THEODORE J., JR." & office == "H" & year == 2008, 114)
+         vote_g = replace(vote_g, name == "GAIERO, THEODORE J., JR." & office == "H" & year == 2008, 114),
+         vote_g = replace(vote_g, name == "SPEIER, KAREN (JACKIE)" & type == "S" & year == 2008, 66279),
+         vote_g = replace(vote_g, name == "DJOU, CHARLES KONG" & type == "S" & year == 2010, 67610),
+         vote_g = replace(vote_g, name == "PAYNE, DONALD M. (DON), JR." & type == "S" & year == 2012, 166413),
+         vote_g = replace(vote_g, name == "SCALISE, STEPHEN J. (STEVE)" & type == "G" & year == 2012, 193496),
+         vote_g = replace(vote_g, name == "RICHMOND, CEDRIC L." & type == "G" & year == 2012, 158501),
+         vote_g = replace(vote_g, name == "FLEMING, JOHN C., JR." & type == "G" & year == 2012, 187894),
+         vote_g = replace(vote_g, name == "ALEXANDER, RODNEY M." & type == "G" & year == 2012, 202536),
+         vote_g = replace(vote_g, name == "CASSIDY, WILLIAM (BILL)" & type == "G" & year == 2012, 243553),
+         vote_g = replace(vote_g, name == "SCALISE, STEPHEN J. (STEVE)" & type == "G" & year == 2014, 189250),
+         vote_g = replace(vote_g, name == "RICHMOND, CEDRIC L." & type == "G" & year == 2014, 152201),
+         vote_g = replace(vote_g, name == "BOUSTANY, CHARLES W., JR." & type == "G" & year == 2014, 185867),
+         vote_g = replace(vote_g, name == "FLEMING, JOHN C., JR." & type == "G" & year == 2014, 152683),
+         vote_g = replace(vote_g, name == "SCALISE, STEPHEN J. (STEVE)" & type == "G" & year == 2016, 243645),
+         vote_g = replace(vote_g, name == "RICHMOND, CEDRIC L." & type == "G" & year == 2016, 198289),
+         vote_g = replace(vote_g, name == "ABRAHAM, RALPH LEE" & type == "G" & year == 2016, 208345),
+         vote_g = replace(vote_g, name == "GRAVES, GARRET" & type == "G" & year == 2016, 207483)
          )
 
 # write
