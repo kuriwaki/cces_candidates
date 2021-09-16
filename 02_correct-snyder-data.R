@@ -51,10 +51,10 @@ jsdat <- jsdat %>%
   filter(temp == 0) %>%
   select(-temp) %>%
   mutate(
-    vote_g = replace(vote_g, name == "LOEFFLER, KELLY", 2195841),
-    vote_g = replace(vote_g, name == "WARNOCK, RAPHAEL GAMALIEL", 2289113),
-    vote_g = replace(vote_g, name == "OSSOFF, JON", 2269923),
-    vote_g = replace(vote_g, name == "PERDUE, DAVID A.", 2214979)
+    vote_g = replace(vote_g, year == 2020 & state == "GA" & office == "S" & name == "LOEFFLER, KELLY", 2195841),
+    vote_g = replace(vote_g, year == 2020 & state == "GA" & office == "S" & name == "WARNOCK, RAPHAEL GAMALIEL", 2289113),
+    vote_g = replace(vote_g, year == 2020 & state == "GA" & office == "S" & name == "OSSOFF, JON", 2269923),
+    vote_g = replace(vote_g, year == 2020 & state == "GA" & office == "S" & name == "PERDUE, DAVID A.", 2214979)
   )
 
 # Adding "runoff" variable and removing extraneous candidates
