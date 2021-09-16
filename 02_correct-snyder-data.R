@@ -108,6 +108,10 @@ jsdat <- jsdat %>%
 jsdat <- jsdat %>%
   mutate(w_g = replace(w_g, name == "HOUSLEY, KARIN" & year == 2018, 0))
 
+# removing Ellen Brickley
+jsdat <- jsdat %>%
+  filter(name != "BRICKLEY, ELLEN")
+
 # removing entries without names
 jsdat <- jsdat %>%
   filter(name != "" | !is.na(vote_g))
@@ -141,7 +145,9 @@ jsdat <- jsdat %>%
          vote_g = replace(vote_g, name == "MURPHY, GREGORY F. (GREG)" & type == "S" & year == 2019, 70407),
          vote_g = replace(vote_g, name == "BISHOP, DAN" & type == "S" & year == 2019, 96573),
          vote_g = replace(vote_g, name == "KELLER, FREDERICK B. (FRED)" & type == "S" & year == 2019, 90000),
-         vote_g = replace(vote_g, name == "LETLOW, JULIA" & type == "S" & year == 2021, 67203)
+         vote_g = replace(vote_g, name == "LETLOW, JULIA" & type == "S" & year == 2021, 67203),
+         vote_g = replace(vote_g, name == "ROSSANO, TIMOTHY" & year == 2014, 12),
+         vote_g = replace(vote_g, name == "JINDAL, BOBBY" & office == "G" & year == 2011, 673239)
          )
 
 # addressing issues 9, 10, 13, 14, 16, 17, 18, 19, 20

@@ -18,7 +18,7 @@ pres_2008_2020 <- read_csv("data/intermediate/2008-2020_pres.csv",
   )
 
 # fixing blank party entries
-jsdat <- jsdat %>%
+jsdat_all <- jsdat_all %>%
   mutate(party = replace(party, name == "COOPER, ERIC" & state == "IA" & year == 2010, "Lbt"),
          party = replace(party, name == "HUGHES, GREGORY JAMES" & state == "IA" & year == 2010, "I"),
          party = replace(party, name == "NARCISSE, JONATHAN R." & state == "IA" & year == 2010, "I"),
@@ -35,7 +35,7 @@ jsdat <- jsdat %>%
   filter(party != "")
 
 # party_formal coding
-jsdat <- jsdat %>%
+jsdat_all <- jsdat_all %>%
   mutate(party_formal = party) %>%
   mutate(
     party_formal = recode(party_formal,
@@ -213,7 +213,7 @@ jsdat <- jsdat %>%
 cand_level_vars <- c("year", "office", "state", "dist", "type", "runoff", "nextup", "name")
 
 # recode fusion people post 2018-2020 as fusion by summing their votes
-entries_fusion_post18 <- jsdat %>%
+entries_fusion_post18 <- jsdat_all %>%
   ungroup() %>%
   filter(year %in% c(2018, 2020), state %in% c("NY", "CT", "SC")) %>%
   mutate(party_formal = fct_relevel(party_formal, "D", "R")) %>%
@@ -240,7 +240,7 @@ entries_fusion_post18 <- jsdat %>%
                     "R")
   )
 
-jsdat <- jsdat %>%
+jsdat_all <- jsdat_all %>%
   # drop all candidates whose names match with the fusion list
   anti_join(entries_fusion_post18, by = cand_level_vars) %>%
   # stack the summarized versions back in
@@ -249,7 +249,7 @@ jsdat <- jsdat %>%
 
 
 # party coding
-jsdat <- jsdat %>%
+jsdat_all <- jsdat_all %>%
   mutate(
     party = recode(party,
                    # Democrats
@@ -317,7 +317,7 @@ jsdat <- jsdat %>%
 
 # REMOVALS -----
 # remove triple counted fusion candidates
-entries_fusion_pre18 <- jsdat %>%
+entries_fusion_pre18 <- jsdat_all %>%
   ungroup() %>%
   # double counted fusion
   filter(!(name == "KING, PETER T. (PETE)" & party_formal == "R,Tax" & year == 2012 & state == "NY")) %>%
@@ -325,7 +325,7 @@ entries_fusion_pre18 <- jsdat %>%
   filter((party == "D" & str_detect(party_formal, "D.+(Wk Fam|WF)")) |
            (party == "R" & str_detect(party_formal, "R.+(C|Indep|Tax)")))
 
-cands_fusion_pre18 <- jsdat %>%
+cands_fusion_pre18 <- jsdat_all %>%
   ungroup() %>%
   semi_join(distinct(entries_fusion_pre18, year, office, state, dist, type, name)) %>%
   mutate(drop = !str_detect(party_formal, ",")) # we will flag the candidates to DROP. This is candidates who are NOT combined counts.
@@ -345,14 +345,14 @@ entries_to_drop <- filter(cands_fusion_pre18, drop) %>%
           nextup = 2014
   )
 
-jsdat <- jsdat %>%
+jsdat_all <- jsdat_all %>%
   ungroup() %>%
   anti_join(entries_to_drop,
             by = c(cand_level_vars, "party_formal"))
 
 
 # removing extraneous observations ------
-jsdat <- jsdat %>%
+jsdat_all <- jsdat_all %>%
   filter(name != "SCHWEIDEL, JOEL",
          name != "CARLSON, ELAINE SUE",
          name != "BEARDSLEY, MICHAEL",
@@ -361,13 +361,13 @@ jsdat <- jsdat %>%
   )
 
 # WELCH, PETER F. party formal correction
-jsdat <- jsdat %>%
+jsdat_all <- jsdat_all %>%
   mutate(party_formal = replace(party_formal, name == "WELCH, PETER F." & year == 2008, "D"))
 
 
 
 # filter, stack, modify ------
-jsdat <- jsdat_all %>%
+jsdat_all <- jsdat_all %>%
   # ONLY keep three offices
   filter(office %in% c("S", "H", "G", "P")) %>%
   # ADD GOVERNOR
@@ -390,4 +390,4 @@ jsdat <- jsdat_all %>%
 
 
 # Save -----
-write_rds(jsdat, "data/intermediate/candidates_2006-2020.rds")
+write_rds(jsdat_all, "data/intermediate/candidates_2006-2020.rds")
