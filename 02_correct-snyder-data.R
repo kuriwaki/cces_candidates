@@ -38,6 +38,8 @@ jsdat <- jsdat %>%
   mutate(
     dist = replace(dist, state == "AL" & office == "S" & type == "S" & year == 2017, 2),
     dist = replace(dist, state == "AZ" & office == "S" & type == "S" & year == 2020, 3),
+    dist = replace(dist, state == "GA" & office == "S" & type == "S" & year == 2020, 3),
+    nextup = replace(nextup, state == "GA" & office == "S" & type == "S" & year == 2020, 2022),
     dist = replace(dist, state == "LA" & office == "H" & name == "LETLOW, JULIA", 5)
   )
 
@@ -45,8 +47,7 @@ jsdat <- jsdat %>%
 jsdat <- jsdat %>%
   mutate(
     temp = ifelse(state == "GA" & year == 2020 & type == "S", 1, 0),
-    temp = replace(temp, name == "LOEFFLER, KELLY" |
-      name == "WARNOCK, RAPHAEL GAMALIEL", 0)
+    temp = replace(temp, name == "LOEFFLER, KELLY" | name == "WARNOCK, RAPHAEL GAMALIEL", 0)
   ) %>%
   filter(temp == 0) %>%
   select(-temp) %>%
