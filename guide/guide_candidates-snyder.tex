@@ -77,18 +77,82 @@ Although these removal makes the totalvotes be a few votes less than the actual 
     \input{Tables/cands/runoff_S} & \input{Tables/cands/runoff_H} & \input{Tables/cands/runoff_G}
 \end{tabularx}
 
-\item \texttt{name\_snyder}: Standardized candidate name from James M. Snyder.  The syntax is \texttt{[Last name], [First Name] [Middle name] ([Nickname]), [Jr/Sr/I/II/III]}.  Some examples of names are below, to give a sense of the syntax.
+\item \texttt{name\_snyder}: Standardized candidate name following Jim Snyder's coding rules. The
+specifics of this coding rules are important for overtime tracking because
+\textbf{name and state uniquely identify a unique person} across all his
+Congressional candidate data (at least 1950 to the present). The syntax
+is
+
+\texttt{{[}Last\ name{]},\ {[}First\ Name{]}\ {[}Middle\ name{]}\ ({[}Nickname{]}),\ {[}Jr./Sr./I/II/III{]}}
+
+For example:
 
 \begin{itemize}
-	\item[] \texttt{SEWELL, TERRYCINA ANDREA (TERRI)}: commonly known as Terri Sewell (AL)
-	\item[] \texttt{GRASSLEY, CHARLES ERNEST (CHUCK)}: commonly known as Chuck Grassley (IA)
-	\item[] \texttt{CORNYN, JOHN, III}: commonly known as John Cornyn (TX)
-	\item[] \texttt{KENNEDY, JOSEPH P. (JOE), III}: commonly known as Joe Kennedy (MA)
-	\item[] \texttt{WASSERMAN SCHULTZ, DEBBIE}: note the last name is not hyphenated and is two words
+\tightlist
+\item
+  \texttt{SEWELL,\ TERRYCINA\ ANDREA\ (TERRI)}: commonly known as Terri
+  Sewell (AL)
+\item
+  \texttt{GRASSLEY,\ CHARLES\ ERNEST\ (CHUCK)}: commonly known as Chuck
+  Grassley (IA)
+\item
+  \texttt{CORNYN,\ JOHN,\ III}: commonly known as John Cornyn (TX)
+\item
+  \texttt{KENNEDY,\ JOSEPH\ P.\ (JOE),\ III}: commonly known as Joe
+  Kennedy (MA)
+\item
+  \texttt{KELLY,\ GEORGE\ J.\ (MIKE),\ JR.}, commonly known as Mike
+  Kelly (PA). Note the use of periods for abbreviation and comma before
+  the JR.
+\item
+  \texttt{WASSERMAN\ SCHULTZ,\ DEBBIE}: note the last name is not
+  hyphenated and is two words
+\item
+  \texttt{JACKSON\ LEE,\ SHEILA}: note that the last name is not Lee, so
+  we use this instead of ``LEE, SHEILA JACKSON''
 \end{itemize}
 
-In order to make names comparable across years, Snyder uses the full name, i.e. spelling out middle names, as much as possible and goes beyond what is printed on the ballot or the House Clerk document.
+Note that these names are \emph{different} from other official names (1)
+on the ballot, (2) on the Clerk of the House report, or the (3) FEC. Any
+of these sources can disagree on the formatting of the names or whether
+to abbreviate a middle name.
 
+The Snyder formalization solves some shortcomings in the official data
+above. Candidates may report different style names in the ballot vs.~the
+FEC or they may have multiple FEC IDs at the same time. More commonly, a
+House representative who then runs for higher office like Senate will
+often get a separate FEC ID, even though they are the same person. In
+theses cases, the Snyder formalization of ID'ing people by their full
+name and state is the most reliable.
+
+Therefore, it is important in our formalizatioon to spell out nicknames
+and distinguish between hyphenated last names to the extent that it
+uniquely identifies a person within a state. The same person's name
+should be formatted exactly the same way, and conversely, two different
+people with near-identical last names should somehow be given
+\textbf{different} names. For example, if a John Smith ran for Congress
+in 1980 in Ohio and then a \emph{separate, unrelated} John Smith ran
+again in Ohio in 2020. Then to distinguish the two different people, we
+would need to find \emph{something} like a middle name or suffix to
+distinguish the name in characters.
+
+One shortcoming of the Snyder formalization is that it may be
+\textbf{too} rigid. Whether or not something is abbreviated can be
+determined on a coding rule decided early on. If a person's name
+changes, e.g.~through marriage or divorce, the old name must be kept.
+For example:
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{BIDEN,\ JOSEPH\ R.,\ JR.} has his middle name abbreviated,
+  even though it is known (Robinette).
+\item
+  \texttt{MACK,\ MARY\ BONO} (R-CA, 1998-2012) married to Connie Mack IV
+  (R-FL, 2001-2003) during 2007-2013. They separated in 2013 and now
+  goes by Mary Bono, but in the data she will be coded by the above
+  name.
+\end{itemize}
 \item \texttt{party}: The short party affiliation of the candidate. We use the ``short'' or colloquial party name. For example, the Democrat-Farmer-Labor Party in Minnesota is given a \texttt{D} instead of \texttt{DFL}. Candidates who ran on third party tickets in Connecticut and New York are simply given the major party name.   
 
 
@@ -117,8 +181,9 @@ In order to make names comparable across years, Snyder uses the full name, i.e. 
 
 
 
-\item \texttt{inc}: Candidate incumbency status. A 0 means the candidate is not an incumbent, a 1 means the candidate is an incumbent, and a 2 means the candidate is an incumbent that was elected in a special election. 
+\item \texttt{inc}: Candidate incumbency status. A 0 means the candidate is not an incumbent, a 1 means the candidate is an incumbent, and a 2 means the candidate is an incumbent that was elected in a special election, and 3 indicates an U.S. Senator who was appointed by the Governor.
 \begin{itemize}
+\item District numberings do not matter; Conor Lamb who won a special election to PA-18 in March 2018 is still an incumbent when he ran in November 2018 for the re-drawn PA-17.
 \item This may differ from the CES incumbency variable in some redistricting cases when two incumbents were forced to run against each other. For example, in 2012 Betty Sutton (OH-13) and Jim Renacci (OH-16), both House incumbents, were forced to run in OH-16. While the CES incumbency variable (HouseCandIncumbent) lists only Sutton as the incumbent, this dataset will list both Sutton and Renacci as incumbents. 
 % This is why we include the variable  \texttt{current\_inc} below.  
 \end{itemize}
