@@ -7,7 +7,9 @@ jsdat_all <- read_rds("data/intermediate/snyder_2006-2020.rds")
 
 # 2020 state exec
 gov_2020 <- read_csv("data/intermediate/2020_gov.csv",
-                     show_col_types = FALSE)
+                     show_col_types = FALSE) %>%
+  mutate(party_formal = party) # this was basically what I was entering
+
 # president
 pres_2008_2020 <- read_csv("data/intermediate/2008-2020_pres.csv",
                            show_col_types = FALSE) %>%
@@ -306,12 +308,7 @@ jsdat_all <- jsdat_all %>%
                    "SCC" = "R"
     ),
     party = replace(party, name == "GRIBBEN, WENDY" & year == 2016, "Grn"),
-    party = replace(party, name == "MCLAUGHLIN, CURTIS E., JR." & year == 2014, "I"),
-    party = case_when(
-      party == "D" | party == "R" | party == "I" | party == "Lbt" |
-        party == "Grn" ~ party,
-      TRUE ~ "Other"
-    )
+    party = replace(party, name == "MCLAUGHLIN, CURTIS E., JR." & year == 2014, "I")
   )
 
 
@@ -374,6 +371,8 @@ jsdat_all <- jsdat_all %>%
   bind_rows(gov_2020) %>%
   # ADD PRESIDENT
   bind_rows(pres_2008_2020) %>%
+  # BULK EDIT PARTY SHORT
+  mutate(party = replace(party, !party %in% c("D", "R",  "I",  "Lbt","Grn"), "Other")) %>%
   # VARIABLE RENAME
   mutate(
     candidatevotes = coalesce(candidatevotes, vote_g),
