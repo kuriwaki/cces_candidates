@@ -4,7 +4,7 @@
 % Author setting
 \usepackage{authblk}
 
-\title{\large\textbf{Guide to the Congressional and Gubernatorial Candidates, 2006-2020}}
+\title{\large\textbf{Data on Congressional and Gubernatorial Candidates, 2006-2020}}
 
 \author[1]{\normalsize Jeremiah Cha}
 \author[2]{\normalsize Shiro Kuriwaki}
@@ -119,7 +119,8 @@ In order to make names comparable across years, Snyder uses the full name, i.e. 
 
 \item \texttt{inc}: Candidate incumbency status. A 0 means the candidate is not an incumbent, a 1 means the candidate is an incumbent, and a 2 means the candidate is an incumbent that was elected in a special election. 
 \begin{itemize}
-\item This may differ from the CES incumbency variable in some redistricting cases when two incumbents were forced to run against each other. For example, in 2012 Betty Sutton (OH-13) and Jim Renacci (OH-16), both House incumbents, were forced to run in OH-16. While the CES incumbency variable (HouseCandIncumbent) lists only Sutton as the incumbent, this dataset will list both Sutton and Renacci as incumbents. This is why we include the variable  \texttt{current\_inc} below.  
+\item This may differ from the CES incumbency variable in some redistricting cases when two incumbents were forced to run against each other. For example, in 2012 Betty Sutton (OH-13) and Jim Renacci (OH-16), both House incumbents, were forced to run in OH-16. While the CES incumbency variable (HouseCandIncumbent) lists only Sutton as the incumbent, this dataset will list both Sutton and Renacci as incumbents. 
+% This is why we include the variable  \texttt{current\_inc} below.  
 \end{itemize}
 
     \begin{tabularx}{\linewidth}{CCC}
@@ -127,7 +128,7 @@ In order to make names comparable across years, Snyder uses the full name, i.e. 
     \input{Tables/cands/inc_S} & \input{Tables/cands/inc_H} & \input{Tables/cands/inc_G}
     \end{tabularx}
 
-\item \texttt{current\_inc}: Candidate incumbency status for that specific respondent. A 0 means the candidate is not the respondent's current representative, a 1 means the candidate is the respondent's current representative. A candidate could be an incumbent in the district but the not the respondent's current representative if the respondent was redistricted. This variable is only included for respondents with \texttt{inc=1}.
+% \item \texttt{current\_inc}: Candidate incumbency status for that specific respondent. A 0 means the candidate is not the respondent's current representative, a 1 means the candidate is the respondent's current representative. A candidate could be an incumbent in the district but the not the respondent's current representative if the respondent was redistricted. This variable is only included for respondents with \texttt{inc=1}.
 
 \item \texttt{nextup}: The year that a incumbent candidate is up for re-election. This variable can be useful in determining tenure in office for special election candidates, who may not have served a full term. See \texttt{type} for designation of special election candidates. 		
 
