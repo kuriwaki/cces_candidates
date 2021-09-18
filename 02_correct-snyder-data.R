@@ -40,6 +40,8 @@ jsdat <- jsdat %>%
     dist = replace(dist, state == "AZ" & office == "S" & type == "S" & year == 2020, 3),
     dist = replace(dist, state == "GA" & office == "S" & type == "S" & year == 2020, 3),
     nextup = replace(nextup, state == "GA" & office == "S" & type == "S" & year == 2020, 2022),
+    type = replace(type, state == "DE" & office == "S" & year == 2010, "S"),
+    type = replace(type, state == "WY" & office == "S" & year == 2008 & dist == 1, "S"),
     dist = replace(dist, state == "LA" & office == "H" & name == "LETLOW, JULIA", 5)
   )
 
