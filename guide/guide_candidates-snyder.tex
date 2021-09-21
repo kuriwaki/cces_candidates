@@ -19,13 +19,12 @@
 \begin{document}
 \maketitle 
 
-%\jccomment{We should extend this to 2020 and recalculate the race total}
-Between 2006-2021 alone, there were \input{Ns/all_dists}\unskip \ races for Congress and Governor in the general election, in which \input{Ns/all_cands}\unskip \ Democratic and Republican candidates ran for office.  Here we provide a \textbf{candidate level} dataset that includes new data, such as incumbency, general election vote, party, and the election result, from historical candidate level datasets compiled by James M. Snyder. There is one row for every candidate in each election they ran in. 
+Between 2006-2021 alone, there were \input{Ns/all_dists}\unskip \ races for Congress and Governor in the general election, in which \input{Ns/all_cands}\unskip \ Democratic and Republican candidates ran for office.  Here we provide a \textbf{candidate level} dataset that includes new data, such as incumbency, general election vote, party, and the election result, from historical candidate level datasets compiled by James M. Snyder, Jr. There is one row for every candidate in each election they ran in. 
 
 
 \section{Examples, Unique Identifiers, and Counts}
 
-The candidate-level dataset shares the same values of the respondent-level data, but is more compact because there is only one row per candidate, as shown in Table \ref{tab:cdataexample}.
+The candidate-level dataset shares the same values as the respondent-level data but is more compact because there is only one row per candidate, as shown in Table \ref{tab:cdataexample}.
 
 \begin{table}[!h]
 \caption{\textbf{Example of Candidate Data Format} \label{tab:cdataexample}}
@@ -36,15 +35,14 @@ The candidate-level dataset shares the same values of the respondent-level data,
 
 \section{Data Sources and Coverage}
 
-Most of the candidate-level data is a subset of the data collected by James M. Snyder. Vote counts and candidate listings of Congress are entered from the House Clerk's Official Election Reports (\url{https://history.house.gov/Institution/Election-Statistics/Election-Statistics/}).  
+Most of the candidate-level data is a subset of the data collected by James M. Snyder, Jr. Vote counts and candidate listings of Congress are entered from the Official Election Statistics compiled by the House Clerk (\url{https://history.house.gov/Institution/Election-Statistics/Election-Statistics/}).  
 
-Election results for the state office of Governor are collected from statements of votes by the Secretary of State of each state. We include the odd-year elections in Virginia, New Jersey, Kentucky, Mississippi, and Louisiana.
+Election results for the state office of the Governor are collected from statements of votes by the Secretary of State of each state. We include the odd-year elections in Virginia, New Jersey, Kentucky, Mississippi, and Louisiana.
 
-The Presidential vote count is taken from the dataset compiled by the MIT Election Data Science Lab (\url{https://doi.org/10.7910/DVN/42MVDX}), which in turn mostly sources from the House Clerk's document.
+Presidential vote counts are taken from the dataset compiled by the MIT Election Data Science Lab (\url{https://doi.org/10.7910/DVN/42MVDX}), which in turn mostly sources from the Official Election Statistics by the House Clerk. 
 
-Incumbency is collected by a programmatic count of whether the name is repeated across years, and across manual inspection of the biography of each candidate.
+Incumbency is collected by a programmatic count of whether the name is repeated across years, and by manual inspection of the biography of each candidate.
 
-%\jccomment{There may be other things Jim uses to exclude certain candidates - these were the most obvious.}
 This dataset excludes candidates who receive less than ten votes in their general election and those who identify Blank or Miscellaneous as their party.
 We also exclude overvotes, undervotes, and invalid votes.
 Although these removals make the \texttt{totalvotes} be a few votes less than the actual turnout, we made this choice uniformly because states vary in their reporting protocol for such votes. That is, given that some states report overvotes while others exclude them entirely in their official counts, it is more internally consistent to exclude them for all states.
@@ -56,14 +54,14 @@ Although these removals make the \texttt{totalvotes} be a few votes less than th
 
 \begin{itemize}[leftmargin=*]
 
-\item \colorbox{yellow}{\texttt{office}}: The office the candidate is running for. Following the Snyder data, we use \texttt{H} for the US House of Representatives, \texttt{S} for the US Senate, and \texttt{G} for Governor. 
+\item \texttt{office}: The office the candidate is running for. Following the Snyder data, we use \texttt{H} for the US House of Representatives, \texttt{S} for the US Senate, and \texttt{G} for Governor. 
 
     \begin{tabularx}{\linewidth}{C}
     \input{Tables/cands/office}
     \end{tabularx}
 			
 
-\item \colorbox{yellow}{\texttt{type}}: The type of election. We use \texttt{G} to denote general election candidates and \texttt{S} to denote special election candidates. Candidates are said to run in special elections if they are running to serve out the term of another legislator. 
+\item \texttt{type}: The type of election. We use \texttt{G} to denote general election candidates and \texttt{S} to denote special election candidates. Candidates are said to run in special elections if they are running to serve out the term of another legislator. 
 
 \begin{tabularx}{\linewidth}{CCC}
     \textbf{Senate} & \textbf{House} & \textbf{Governor}\\
@@ -77,7 +75,7 @@ Although these removals make the \texttt{totalvotes} be a few votes less than th
     \input{Tables/cands/runoff_S} & \input{Tables/cands/runoff_H} & \input{Tables/cands/runoff_G}
 \end{tabularx}
 
-\item \texttt{name\_snyder}: Standardized candidate name following Jim Snyder's coding rules. The
+\item \texttt{name\_snyder}: Standardized candidate name following Snyder coding rules. The
 specifics of this coding rules are important for overtime tracking because
 \textbf{name and state uniquely identify a unique person} across all his
 Congressional candidate data (at least 1950 to the present). The syntax
@@ -125,7 +123,7 @@ often get a separate FEC ID, even though they are the same person. In
 theses cases, the Snyder formalization of ID'ing people by their full
 name and state is the most reliable.
 
-Therefore, it is important in our formalizatioon to spell out nicknames
+Therefore, it is important in our formalization to spell out nicknames
 and distinguish between hyphenated last names to the extent that it
 uniquely identifies a person within a state. The same person's name
 should be formatted exactly the same way, and conversely, two different
@@ -181,11 +179,11 @@ For example:
 
 
 
-\item \texttt{inc}: Candidate incumbency status. A 0 means the candidate is not an incumbent, a 1 means the candidate is an incumbent, and a 2 means the candidate is an incumbent that was elected in a special election, and 3 indicates an U.S. Senator who was appointed by the Governor.
+\item \texttt{inc}: Candidate incumbency status. A 0 means the candidate is not an incumbent, a 1 means the candidate is an incumbent, and a 2 means the candidate is an incumbent that was elected in a special election, and 3 indicates a U.S. Senator who was appointed by the Governor.
 \begin{itemize}
 \item District numberings do not matter; Conor Lamb who won a special election to PA-18 in March 2018 is still an incumbent when he ran in November 2018 for the re-drawn PA-17.
 \item This may differ from the CES incumbency variable in some redistricting cases when two incumbents were forced to run against each other. For example, in 2012 Betty Sutton (OH-13) and Jim Renacci (OH-16), both House incumbents, were forced to run in OH-16. While the CES incumbency variable (HouseCandIncumbent) lists only Sutton as the incumbent, this dataset will list both Sutton and Renacci as incumbents. 
-% This is why we include the variable  \texttt{current\_inc} below.  
+  
 \end{itemize}
 
     \begin{tabularx}{\linewidth}{CCC}
@@ -193,9 +191,7 @@ For example:
     \input{Tables/cands/inc_S} & \input{Tables/cands/inc_H} & \input{Tables/cands/inc_G}
     \end{tabularx}
 
-% \item \texttt{current\_inc}: Candidate incumbency status for that specific respondent. A 0 means the candidate is not the respondent's current representative, a 1 means the candidate is the respondent's current representative. A candidate could be an incumbent in the district but the not the respondent's current representative if the respondent was redistricted. This variable is only included for respondents with \texttt{inc=1}.
-
-\item \texttt{nextup}: The year that a incumbent candidate is up for re-election. This variable can be useful in determining tenure in office for special election candidates, who may not have served a full term. See \texttt{type} for designation of special election candidates. 		
+\item \texttt{nextup}: The year that an incumbent candidate is up for re-election. This variable can be useful in determining tenure in office for special election candidates, who may not have served a full term. See \texttt{type} for designation of special election candidates. 		
 
 \begin{tabularx}{\linewidth}{C}
 \textbf{Senate}\\
@@ -239,7 +235,7 @@ Presidential candidates win electoral college votes at the state level, but only
     \input{Tables/cands/won_S} & \input{Tables/cands/won_H} & \input{Tables/cands/won_G}
     \end{tabularx}
 
-Some of the years have more than 435 candidates winning in the House each year because they count special elections held that year too. Here are the counts only for General Elections.
+Some of the years have more than 435 candidates winning in the House each year because they count special elections held that year too. Here are the counts for only general elections.
 
 \begin{tabularx}{\linewidth}{CCC}
     \textbf{Senate} & \textbf{House} & \textbf{Governor}\\
@@ -297,7 +293,7 @@ Our dataset does not contain information about the gender or race of the candida
 \caption*{\footnotesize Note that the 2013 common content also includes the gender of House members.}
 \bigskip
 
-%\skcomment{I commented out "for current.." because that's not what the column says. I also delted the odd year rows and used booktabs for table formatting}
+%\skcomment{I commented out "for current.." because that's not what the column says. I also deleted the odd year rows and used booktabs for table formatting}
 
 \footnotesize
 \singlespacing
