@@ -47,7 +47,7 @@ Incumbency is collected by a programmatic count of whether the name is repeated 
 %\jccomment{There may be other things Jim uses to exclude certain candidates - these were the most obvious.}
 This dataset excludes candidates who receive less than ten votes in their general election and those who identify Blank or Miscellaneous as their party.
 We also exclude overvotes, undervotes, and invalid votes.
-Although these removal makes the totalvotes be a few votes less than the actual turnout, we made this choice uniformly because states vary in their reporting protocol for such votes. That is, given that some states report overvotes while others exclude them entirely in their official counts, it is more internally consistent to exclude them for all states.
+Although these removals make the \texttt{totalvotes} be a few votes less than the actual turnout, we made this choice uniformly because states vary in their reporting protocol for such votes. That is, given that some states report overvotes while others exclude them entirely in their official counts, it is more internally consistent to exclude them for all states.
 
 \clearpage
 \section{Variable Descriptions}
@@ -217,7 +217,6 @@ For example:
 \item For candidates running on multiple party tickets, this will be the \emph{sum} of all of their votes.  For example, in 2016, Rep. Rosa L. DeLauro (CT-03) ran as a Democrat and also ran as a Working Families Party candidate. She won 192,274 votes in the former and 21,298 votes in the latter, so her \texttt{candidatevotes} is the total, 213,572.
 \item  Florida and Oklahoma do not report the vote count for a House candidate if she won unopposed. In these cases, we have the vote count as \texttt{NA} but have the candidate winning (\texttt{won == 1}).
 \end{itemize}
-%\skcomment{Maybe we call this \texttt{candidatevotes}?  That is consistent with MEDSL's naming system, and I think a lot of people now use MEDSL.}
 
 Therefore, the data for such corner cases look like:
 
@@ -227,8 +226,9 @@ Therefore, the data for such corner cases look like:
 \input{Tables/cands/example_candidatevotes}
 \end{table}
 
+\item \texttt{totalvotes}: Total votes for all candidates in the general election included in the Snyder data. 
 
-\item \texttt{totalvotes}: Total votes for all candidates in the general election included in the Snyder data.  
+Note that only deciding elections are included in the data, meaning this reflects the total turnout in the second round for elections that went to runoff. 
 
 \item \texttt{won}: Candidate won the general election. A 1 means the candidate won the general election, and a 0 means the candidate lost the general election. 
 

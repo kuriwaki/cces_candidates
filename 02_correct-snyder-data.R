@@ -28,8 +28,6 @@ jsdat <- jsdat_raw %>%
           w_g = 1, u_g = 1,
           vote_g = NA)
 
-
-
 # Senate dist issue
 jsdat <- jsdat %>%
   group_by(state, year, office) %>%
@@ -156,6 +154,18 @@ jsdat <- jsdat %>%
          vote_g = replace(vote_g, name == "ROSSANO, TIMOTHY" & year == 2014 & state == "FL", 12),
          vote_g = replace(vote_g, name == "JINDAL, BOBBY" & office == "G" & year == 2011 & state == "LA", 673239)
          )
+
+# addressing issue 25: TX-23 special election runoff
+jsdat <- jsdat %>%
+  filter(
+    !(year == 2006 & state == "TX" & dist == 23 & vote_g < 24594)
+  ) %>%
+  mutate(type = replace(type, year == 2006 & state == "TX" & dist == 23, "S"),
+         runoff = replace(runoff, year == 2006 & state == "TX" & dist == 23, 1),
+         vote_g = replace(vote_g, year == 2006 & state == "TX" & dist == 23 & party == "R", 32217),
+         vote_g = replace(vote_g, year == 2006 & state == "TX" & dist == 23 & party == "D", 38256),
+         w_g = replace(w_g, year == 2006 & state == "TX" & dist == 23 & party == "R", 0),
+         w_g = replace(w_g, year == 2006 & state == "TX" & dist == 23 & party == "D", 1))
 
 # addressing issues 9, 10, 13, 14, 16, 17, 18, 19, 20
 house_append <- read.csv("data/intermediate/cand_house_append.csv")
