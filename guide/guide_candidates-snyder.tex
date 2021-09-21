@@ -22,7 +22,7 @@
 Between 2006-2021 alone, there were \input{Ns/all_dists}\unskip \ races for Congress and Governor in the general election, in which \input{Ns/all_cands}\unskip \ Democratic and Republican candidates ran for office.  Here we provide a \textbf{candidate level} dataset that includes new data, such as incumbency, general election vote, party, and the election result, from historical candidate level datasets compiled by James M. Snyder, Jr. There is one row for every candidate in each election they ran in. 
 
 
-\section{Examples, Unique Identifiers, and Counts}
+% \section{Examples, Unique Identifiers, and Counts}
 
 The candidate-level dataset shares the same values as the respondent-level data but is more compact because there is only one row per candidate, as shown in Table \ref{tab:cdataexample}.
 
@@ -48,10 +48,8 @@ This dataset excludes candidates who receive less than ten votes in their genera
 We also exclude overvotes, undervotes, and invalid votes.
 Although these removals make the \texttt{totalvotes} be a few votes less than the actual turnout, we made this choice uniformly because states vary in their reporting protocol for such votes. That is, given that some states report overvotes while others exclude them entirely in their official counts, it is more internally consistent to exclude them for all states.
 
-\clearpage
-\section{Variable Descriptions}
-
-\subsection{Candidate Variables}
+% \clearpage
+\section{Variable Descriptions and Tabulations}
 
 \begin{itemize}[leftmargin=*]
 
@@ -129,14 +127,14 @@ and distinguish between hyphenated last names to the extent that it
 uniquely identifies a person within a state. The same person's name
 should be formatted exactly the same way, and conversely, two different
 people with near-identical last names should somehow be given
-\textbf{different} names. For example, if a John Smith ran for Congress
+{different} names. For example, if a John Smith ran for Congress
 in 1980 in Ohio and then a \emph{separate, unrelated} John Smith ran
 again in Ohio in 2020. Then to distinguish the two different people, we
-would need to find \emph{something} like a middle name or suffix to
+would need to find {something} like a middle name or suffix to
 distinguish the name in characters.
 
 One shortcoming of the Snyder formalization is that it may be
-\textbf{too} rigid. Whether or not something is abbreviated can be
+{too} rigid. Whether or not something is abbreviated can be
 determined on a coding rule decided early on. If a person's name
 changes, e.g.~through marriage or divorce, the old name must be kept.
 For example:
@@ -306,7 +304,7 @@ Our dataset does not contain information about the gender or race of the candida
 		4. \url{https://doi.org/10.7910/DVN/IAOZOU}\\
 \end{table}
 
-Note that some of this data has been aggregated in the Cumulative Contextual File, located here: \url{https://doi.org/10.7910/DVN/26451}.
+% Note that some of this data has been aggregated in the Cumulative Contextual File, located here: \url{https://doi.org/10.7910/DVN/26451}.
 
 
 Finally, other researchers have collected this data in forthcoming work. ``Separating Race and Party in Congressional
@@ -316,7 +314,7 @@ Elections'' by Bernard Fraga (available at \url{https://www.bernardfraga.com/res
 \section{Version History}
 
 \begin{itemize}
-\item Dataverse 1.0: Initial Release, \skcomment{Enter date of dataverse upload here}.
+\item Dataverse 1.0: Initial Release.
 \end{itemize}	
 
 
