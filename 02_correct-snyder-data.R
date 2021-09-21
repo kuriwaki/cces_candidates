@@ -104,9 +104,17 @@ jsdat <- jsdat %>%
     TRUE ~ vote_g
   ))
 
-# Oregon 2018 Gov winner fix
+# Fix Oregon 2018 Gov winner
 jsdat <- jsdat %>%
   mutate(w_g = replace(w_g, year == 2018 & state == "OR" & office == "G" & name == "BUEHLER, KNUTE", 0))
+
+# Fix Rhode Island 2006 Gov results
+jsdat <- jsdat %>%
+  mutate(w_g = replace(w_g, year == 2006 & state == "RI" & office == "G" & name == "CARCIERI, DONALD L.", 1),
+         w_g = replace(w_g, year == 2006 & state == "RI" & office == "G" & name == "FOGARTY, CHARLES J.", 0),
+         vote_g = replace(vote_g, year == 2006 & state == "RI" & office == "G" & name == "CARCIERI, DONALD L.", 197306),
+         vote_g = replace(vote_g, year == 2006 & state == "RI" & office == "G" & name == "FOGARTY, CHARLES J.", 189503),
+         )
 
 # Karin Housley w_g fix
 jsdat <- jsdat %>%
