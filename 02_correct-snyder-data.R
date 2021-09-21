@@ -114,6 +114,11 @@ jsdat <- jsdat %>%
 jsdat <- jsdat %>%
   filter(name != "BRICKLEY, ELLEN")
 
+# NC-09 election fraud case
+jsdat <- jsdat %>%
+  mutate(w_g = replace(w_g, office == "H" & year == 2018 & state == "NC" & dist == 9 & type == "G", NA))
+
+
 # removing entries without names
 jsdat <- jsdat %>%
   filter(name != "" | !is.na(vote_g))
