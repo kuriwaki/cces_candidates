@@ -37,7 +37,8 @@ The candidate-level dataset shares the same values as the respondent-level data 
 
 Most of the candidate-level data is a subset of the data collected by James M. Snyder, Jr. Vote counts and candidate listings of Congress are entered from the Official Election Statistics compiled by the House Clerk (\url{https://history.house.gov/Institution/Election-Statistics/Election-Statistics/}).  
 
-Election results for the state office of the Governor are collected from statements of votes by the Secretary of State of each state. We include the odd-year elections in Virginia, New Jersey, Kentucky, Mississippi, and Louisiana.
+Election results for the state office of the Governor are collected from statements of votes by the Secretary of State of each state. We include the odd-year elections in Virginia, New Jersey, Kentucky, Mississippi, and Louisiana. 
+Recall elections (Wisconsin 2012, California 2021) are not included.
 
 Presidential vote counts are taken from the dataset compiled by the MIT Election Data Science Lab (\url{https://doi.org/10.7910/DVN/42MVDX}), which in turn mostly sources from the Official Election Statistics by the House Clerk. 
 
@@ -249,6 +250,8 @@ The set of tables below show the \emph{party} of the candidate that \emph{won}.
     \textbf{Senate} & \textbf{House} & \textbf{Governor}\\
     \input{Tables/cands/party-won_S} & \input{Tables/cands/party-won_H} & \input{Tables/cands/party-won_G}
     \end{tabularx}
+
+The NC-09 House race in 2018 is listed having no winner because it was later overturned for voterfile. A special election was held in 2019.
 
 % \item \texttt{data\_note}: 145 candidates were not included in the election dataset we used to collect the candidate-level variables. We still include these candidates in the supplemental data in case researchers are interested in specific districts or races. The reason for these non-merges can be broken down into four categories, listed below.
 % 		\begin{enumerate}

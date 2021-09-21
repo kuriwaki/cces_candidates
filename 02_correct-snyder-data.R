@@ -104,6 +104,18 @@ jsdat <- jsdat %>%
     TRUE ~ vote_g
   ))
 
+# Fix Oregon 2018 Gov winner
+jsdat <- jsdat %>%
+  mutate(w_g = replace(w_g, year == 2018 & state == "OR" & office == "G" & name == "BUEHLER, KNUTE", 0))
+
+# Fix Rhode Island 2006 Gov results
+jsdat <- jsdat %>%
+  mutate(w_g = replace(w_g, year == 2006 & state == "RI" & office == "G" & name == "CARCIERI, DONALD L.", 1),
+         w_g = replace(w_g, year == 2006 & state == "RI" & office == "G" & name == "FOGARTY, CHARLES J.", 0),
+         vote_g = replace(vote_g, year == 2006 & state == "RI" & office == "G" & name == "CARCIERI, DONALD L.", 197306),
+         vote_g = replace(vote_g, year == 2006 & state == "RI" & office == "G" & name == "FOGARTY, CHARLES J.", 189503),
+         )
+
 # Karin Housley w_g fix
 jsdat <- jsdat %>%
   mutate(w_g = replace(w_g, year == 2018 & state == "MN" & name == "HOUSLEY, KARIN", 0))
@@ -111,6 +123,11 @@ jsdat <- jsdat %>%
 # removing Ellen Brickley
 jsdat <- jsdat %>%
   filter(name != "BRICKLEY, ELLEN")
+
+# NC-09 election fraud case
+jsdat <- jsdat %>%
+  mutate(w_g = replace(w_g, office == "H" & year == 2018 & state == "NC" & dist == 9 & type == "G", NA))
+
 
 # removing entries without names
 jsdat <- jsdat %>%
@@ -164,9 +181,7 @@ jsdat <- jsdat %>%
 
 # addressing issues 9, 10, 13, 14, 16, 17, 18, 19, 20
 house_append <- read.csv("data/intermediate/cand_house_append.csv")
-
-jsdat <- jsdat %>%
-  bind_rows(., house_append)
+jsdat <- bind_rows(jsdat, house_append)
 
 # write
 write_rds(jsdat, "data/intermediate/snyder_2006-2020.rds")
