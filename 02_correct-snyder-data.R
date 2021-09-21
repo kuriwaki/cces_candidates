@@ -104,6 +104,10 @@ jsdat <- jsdat %>%
     TRUE ~ vote_g
   ))
 
+# Oregon 2018 Gov winner fix
+jsdat <- jsdat %>%
+  mutate(w_g = replace(w_g, year == 2018 & state == "OR" & office == "G" & name == "BUEHLER, KNUTE", 0))
+
 # Karin Housley w_g fix
 jsdat <- jsdat %>%
   mutate(w_g = replace(w_g, year == 2018 & state == "MN" & name == "HOUSLEY, KARIN", 0))
