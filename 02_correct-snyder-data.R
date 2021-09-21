@@ -169,9 +169,7 @@ jsdat <- jsdat %>%
 
 # addressing issues 9, 10, 13, 14, 16, 17, 18, 19, 20
 house_append <- read.csv("data/intermediate/cand_house_append.csv")
-
-jsdat <- jsdat %>%
-  bind_rows(., house_append)
+jsdat <- bind_rows(jsdat, house_append)
 
 # write
 write_rds(jsdat, "data/intermediate/snyder_2006-2020.rds")
