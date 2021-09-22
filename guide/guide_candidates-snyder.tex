@@ -13,7 +13,7 @@
 \affil[2]{\footnotesize Department of Political Science, Stanford University}
 
 
-\date{\normalsize September 2021}
+\date{\normalsize v1.0 (September 2021)}
 	
 
 \begin{document}
@@ -23,7 +23,7 @@
 \begin{minipage}{0.85\linewidth}
 \emph{Please cite as: }
 
-Cha, Jeremiah, Shiro Kuriwaki, and James M. Snyder, Jr. (2021). ``Standardized Candidate Information and Election Results for U.S. General Elections.'' Harvard Dataverse. \textsc{doi}: \href{https://doi.org/10.7910/DVN/DGDRDT}{\texttt{10.7910/DVN/DGDRDT}}.
+Cha, Jeremiah, Shiro Kuriwaki, and James M. Snyder, Jr. (2021). ``A Standardization of Candidates in American Elections.'' Harvard Dataverse. \textsc{doi}: \href{https://doi.org/10.7910/DVN/DGDRDT}{\texttt{10.7910/DVN/DGDRDT}}.
 \end{minipage}
 \end{center}
 \smallskip
@@ -53,15 +53,16 @@ Most of the candidate-level data -- names and incumbency status -- is a subset o
 Election results for the state office of the Governor are collected from statements of votes by the Secretary of State of each state. We include the odd-year elections in Virginia, New Jersey, Kentucky, Mississippi, and Louisiana. 
 Recall elections (Wisconsin 2012, California 2021) are not included.
 
-Presidential vote counts are taken from the dataset compiled by the MIT Election Data Science Lab (\url{https://doi.org/10.7910/DVN/42MVDX}), which in turn mostly sources from the Official Election Statistics by the House Clerk. 
+Presidential vote counts are taken from the data compiled by the MIT Election Data Science Lab (\url{https://doi.org/10.7910/DVN/42MVDX}), which in turn mostly sources from the Official Election Statistics by the House Clerk. 
 
-Incumbency is collected by a programmatic count of whether the name is repeated across years, and by manual inspection of the biography of each candidate.
+Incumbency is determined by a programmatic count of whether the name is repeated across years, and by manual inspection of the biography of each candidate.
 
 This dataset excludes candidates who receive less than ten votes in their general election and those who identify Blank or Miscellaneous as their party.
 We also exclude overvotes, undervotes, and invalid votes.
 Although these removals make the \texttt{totalvotes} be a few votes less than the actual turnout, we made this choice uniformly because states vary in their reporting protocol for such votes. That is, given that some states report overvotes while others exclude them entirely in their official counts, it is more internally consistent to exclude them for all states.
 
-A Github repository 
+Our code for recoding and editing the data is open-source at a Github repository, \url{https://github.com/kuriwaki/cces_candidates}.
+
 
 \section{Unique Identifiers}
 
@@ -310,14 +311,12 @@ The NC-09 House race in 2018 is listed having no winner because it was later ove
 
 
 
-\section{Related Work}
+\section{Related Work and Extensions}
 
 The MIT Election Data Science Lab (\url{https://dataverse.harvard.edu/dataverse/medsl\_election\_returns}) produces similar election results. Their data goes back as far as 1976. However, the data does not include incumbency status, and the names are taken as officially reported rather than standardized to match across years.
 
 
-
-
-\section{Extensions: Race, Gender, and Primary Elections}
+% \section{Extensions: Race, Gender, and Primary Elections}
 
 Our dataset does not contain information about the gender or race of the candidates. We hope to work collect that data and combine other sources of data in the future.  In the meantime there are several related data sources users can rely on. First, Numerous years in the CES have data available on candidate race and gender for interested researchers. Please see the table below for further information regarding the availability of such information by year and where it can be located. 
 
@@ -357,11 +356,16 @@ Our dataset does not contain information about the gender or race of the candida
 Finally, other researchers have collected this data in forthcoming work. ``Separating Race and Party in Congressional
 Elections'' by Bernard Fraga (available at \url{https://www.bernardfraga.com/research}) uses hand-coded race data from Congressional general and primary elections from 2006 - 2020. ``Partisanship and Nationalization in American Elections'' by Sharif Almani and Carlos Algara (\emph{Electoral Studies}, doi: \href{https://doi.org/10.7910/DVN/DGUMFI}{\texttt{10.7910/DVN/DGUMFI}}) contains county-level partisan election data from the statewide offices of President, Governor, and Senator going back to the Civil War. 
 
+\section{Reporting Errors and Suggesting Improvements}
+
+If you find any errors in the data, ambiguities, confusing descriptions in the guide, please do not hesitate to contact us. The preferred method is to open a ``Issue'' at \url{https://github.com/kuriwaki/cces_candidates/issues}, which we monitor. Otherwise, please email us at \href{mailto:jsnyder@gov.harvard.edu}{\texttt{jsnyder@gov.harvard.edu}} or the others.
+
+
 
 \section{Version History}
 
 \begin{itemize}
-\item Dataverse 1.0: Initial Release.
+\item Dataverse v1.0: Initial Release.
 \end{itemize}	
 
 
