@@ -35,6 +35,8 @@ Our dataset contains one row per candidate in each election they ran in:
 
 As shown, we create a comprehensive record of the candidates and their elections results. We also collect their incumbency status, and created  same standardized name format so the same candidate running in different years and different offices are uniquely identified.
 
+\newpage
+
 \section{Data Sources and Coverage}
 
 Most of the candidate-level data -- names and incumbency status -- is a subset of the data collected and manually coded by James M. Snyder, Jr. Vote counts and candidate listings of Congress are entered from the Official Election Statistics compiled by the House Clerk (\url{https://history.house.gov/Institution/Election-Statistics/Election-Statistics/}).  
@@ -57,30 +59,42 @@ To identify a single election, group by \texttt{year, state, office, dist, } and
 % \clearpage
 \section{Variable Descriptions and Tabulations}
 
-\begin{itemize}[leftmargin=*]
 
-\item \texttt{office}: The office the candidate is running for. Following the Snyder data, we use \texttt{H} for the US House of Representatives, \texttt{S} for the US Senate, and \texttt{G} for Governor. 
+
+\subsection*{\texttt{office}}
+
+The office the candidate is running for. Following the Snyder data, we use \texttt{H} for the US House of Representatives, \texttt{S} for the US Senate, and \texttt{G} for Governor. 
+
 
     \begin{tabularx}{\linewidth}{C}
     \input{Tables/cands/office}
     \end{tabularx}
 			
 
-\item \texttt{type}: The type of election. We use \texttt{G} to denote general election candidates and \texttt{S} to denote special election candidates. Candidates are said to run in special elections if they are running to serve out the term of another legislator. 
+\subsection*{\texttt{type}}
 
+The type of election. We use \texttt{G} to denote general election candidates and \texttt{S} to denote special election candidates. Candidates are said to run in special elections if they are running to serve out the term of another legislator. 
+\begin{table}[!h]
 \begin{tabularx}{\linewidth}{CCC}
     \textbf{Senate} & \textbf{House} & \textbf{Governor}\\
     \input{Tables/cands/type_S} & \input{Tables/cands/type_H} & \input{Tables/cands/type_G}
 \end{tabularx}
+\end{table}
 
-\item \texttt{runoff}: The candidate's election round. In some states (e.g. Georgia, Louisiana), candidates must run in a runoff election to determine the winner. In the case of a runoff election (e.g. in the 2020 Georgia Senate elections, the November elections are \textit{excluded} while the January contests are \textit{included}), only the deciding contest is included. Any pre-runoff race is excluded in the data. A 1 denotes that the election the candidate is running in is a runoff election, while a 0 denotes that the election the candidate is running in is not. 
+\subsection*{\texttt{runoff}}
 
+The candidate's election round. In some states (e.g. Georgia, Louisiana), candidates must run in a runoff election to determine the winner. In the case of a runoff election (e.g. in the 2020 Georgia Senate elections, the November elections are \textit{excluded} while the January contests are \textit{included}), only the deciding contest is included. Any pre-runoff race is excluded in the data. A 1 denotes that the election the candidate is running in is a runoff election, while a 0 denotes that the election the candidate is running in is not. 
+\begin{table}[!h]
 \begin{tabularx}{\linewidth}{CCC}
     \textbf{Senate} & \textbf{House} & \textbf{Governor}\\
     \input{Tables/cands/runoff_S} & \input{Tables/cands/runoff_H} & \input{Tables/cands/runoff_G}
 \end{tabularx}
+\end{table}
 
-\item \texttt{name\_snyder}: Standardized candidate name following Snyder coding rules. The
+\subsection*{\texttt{name\_snyder}}
+
+
+Standardized candidate name following Snyder coding rules. The
 specifics of this coding rules are important for overtime tracking because
 \textbf{name and state uniquely identify a unique person} across all his
 Congressional candidate data (at least 1950 to the present). The syntax
@@ -156,9 +170,15 @@ For example:
   goes by Mary Bono, but in the data she will be coded by the above
   name.
 \end{itemize}
-\item \texttt{party}: The short party affiliation of the candidate. We use the ``short'' or colloquial party name. For example, the Democrat-Farmer-Labor Party in Minnesota is given a \texttt{D} instead of \texttt{DFL}. Candidates who ran on third party tickets in Connecticut and New York are simply given the major party name.   
 
 
+\newpage
+
+
+\subsection*{\texttt{party}} 
+
+The short party affiliation of the candidate. We use the ``short'' or colloquial party name. For example, the Democrat-Farmer-Labor Party in Minnesota is given a \texttt{D} instead of \texttt{DFL}. Candidates who ran on third party tickets in Connecticut and New York are simply given the major party name.   
+\begin{table}[!h]
 \begin{adjustwidth}{-4em}{-4em}
 \centering
 \begin{tabularx}{\linewidth}{CCC}
@@ -166,11 +186,13 @@ For example:
   \input{Tables/cands/party_S} & \input{Tables/cands/party_H} &\input{Tables/cands/party_G}
 \end{tabularx}
 \end{adjustwidth}
+\end{table}
 
 
-\item \texttt{party\_formal} The formal party names, for example DFL in Minnesota. Third party candidate names follow what is given in the House Clerk Document. 
+\FloatBarrier 
 
-
+\subsection*{\texttt{party\_formal}}
+The formal party names, for example DFL in Minnesota. Third party candidate names follow what is given in the House Clerk Document. 
 
 \twocolumn
 \begin{adjustwidth}{-5em}{-5em}
@@ -184,11 +206,13 @@ For example:
 
 
 
-\item \texttt{inc}: Candidate incumbency status. A 0 means the candidate is not an incumbent, a 1 means the candidate is an incumbent, and a 2 means the candidate is an incumbent that was elected in a special election, and 3 indicates a U.S. Senator who was appointed by the Governor.
+\subsection*{\texttt{inc}}
+
+Candidate incumbency status. A 0 means the candidate is not an incumbent, a 1 means the candidate is an incumbent, and a 2 means the candidate is an incumbent that was elected in a special election, and 3 indicates a U.S. Senator who was appointed by the Governor.
 \begin{itemize}
 \item District numberings do not matter; Conor Lamb who won a special election to PA-18 in March 2018 is still an incumbent when he ran in November 2018 for the re-drawn PA-17.
 \item This may differ from the CES incumbency variable in some redistricting cases when two incumbents were forced to run against each other. For example, in 2012 Betty Sutton (OH-13) and Jim Renacci (OH-16), both House incumbents, were forced to run in OH-16. While the CES incumbency variable (HouseCandIncumbent) lists only Sutton as the incumbent, this dataset will list both Sutton and Renacci as incumbents. 
-  
+
 \end{itemize}
 
     \begin{tabularx}{\linewidth}{CCC}
@@ -196,7 +220,9 @@ For example:
     \input{Tables/cands/inc_S} & \input{Tables/cands/inc_H} & \input{Tables/cands/inc_G}
     \end{tabularx}
 
-\item \texttt{nextup}: The year that an incumbent candidate is up for re-election. This variable can be useful in determining tenure in office for special election candidates, who may not have served a full term. See \texttt{type} for designation of special election candidates. 		
+\subsection*{\texttt{nextup}}
+
+The year that an incumbent candidate is up for re-election. This variable can be useful in determining tenure in office for special election candidates, who may not have served a full term. See \texttt{type} for designation of special election candidates. 		
 
 \begin{tabularx}{\linewidth}{C}
 \textbf{Senate}\\
@@ -213,7 +239,9 @@ For example:
 \input{Tables/cands/nextup_G}
 \end{tabularx}
 
-\item \texttt{candidatevotes}: The number of total votes the candidate received. 
+\subsection*{\texttt{candidatevotes}} 
+
+The number of total votes the candidate received. 
 \begin{itemize}
 \item For candidates running on multiple party tickets, this will be the \emph{sum} of all of their votes.  For example, in 2016, Rep. Rosa L. DeLauro (CT-03) ran as a Democrat and also ran as a Working Families Party candidate. She won 192,274 votes in the former and 21,298 votes in the latter, so her \texttt{candidatevotes} is the total, 213,572.
 \item  Florida and Oklahoma do not report the vote count for a House candidate if she won unopposed. In these cases, we have the vote count as \texttt{NA} but have the candidate winning (\texttt{won == 1}).
@@ -227,11 +255,14 @@ Therefore, the data for such corner cases look like:
 \input{Tables/cands/example_candidatevotes}
 \end{table}
 
-\item \texttt{totalvotes}: Total votes for all candidates in the general election included in the Snyder data. 
+\subsection*{\texttt{totalvotes}}
+
+Total votes for all candidates in the general election included in the Snyder data. 
 
 Note that only deciding elections are included in the data, meaning this reflects the total turnout in the second round for elections that went to runoff. 
 
-\item \texttt{won}: Candidate won the general election. A 1 means the candidate won the general election, and a 0 means the candidate lost the general election. 
+\subsection*{\texttt{won}} 
+Candidate won the general election. A 1 means the candidate won the general election, and a 0 means the candidate lost the general election. 
 
 Presidential candidates win electoral college votes at the state level, but only win office with a majority of the college votes. Because of this ambiguity, we have left this variable missing for Presidential candidates.
 
@@ -264,7 +295,6 @@ The NC-09 House race in 2018 is listed having no winner because it was later ove
 % 			\item Unopposed in Oklahoma: In Oklahoma, unopposed candidates do not appear on the general election ballot. 
 % 			\item Missing from election data: Candidates with this code were not included in the data we used to merge in the election information. Oftentimes, this category is made up of candidates in races with jungle primaries, such as Louisiana. This also includes all candidates from Washington D.C.. 
 % 		\end{enumerate}
-\end{itemize}
 	
 
 
