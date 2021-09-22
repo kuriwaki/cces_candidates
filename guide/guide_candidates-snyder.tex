@@ -4,7 +4,7 @@
 % Author setting
 \usepackage{authblk}
 
-\title{\large\textbf{Standardized Candidate Information and Election Results:\\U.S. Congressional and Governor Elections}}
+\title{\large\textbf{Standardized Candidate Information and Election Results for U.S. General Elections}}
 
 \author[1]{\normalsize Jeremiah Cha}
 \author[2]{\normalsize Shiro Kuriwaki}
@@ -19,12 +19,21 @@
 \begin{document}
 \maketitle 
 
-Between 2006-2021 alone, there were \input{Ns/all_dists}\unskip \ races for Congress and Governor in the general election, in which \input{Ns/all_cands}\unskip \ Democratic and Republican candidates ran for office.  Here we provide a {candidate level} dataset that includes new data, such as incumbency, general election vote, party, and the election result.  
-While there exist several datasets that compile these election results, few standardized them such that (1) the same candidate is named the same way across years and offices, (2) the incumbency status of the candidate is known, and (3) elections of different offices and years are put together into a single file.
+\begin{center}
+\begin{minipage}{0.85\linewidth}
+\emph{Please cite as: }
+
+Cha, Jeremiah, Shiro Kuriwaki, and James M. Snyder, Jr. (2021). ``Standardized Candidate Information and Election Results for U.S. General Elections.'' Harvard Dataverse. \textsc{doi}: \href{https://doi.org/10.7910/DVN/DGDRDT}{\texttt{10.7910/DVN/DGDRDT}}.
+\end{minipage}
+\end{center}
+\smallskip
+
+Between 2006-2021 alone, there were \input{Ns/all_dists}\unskip \ races for Congress and Governor in the general election, in which \input{Ns/all_cands}\unskip \ Democratic and Republican candidates ran for office.  
+While there exist several datasets that compile these election results, few include (1) standardized candidate names across years and offices, (2) candidate's incumbency status, and (3) elections for different offices and years combined into a single file.
 
 % \section{Examples, Unique Identifiers, and Counts}
 
-Our dataset contains one row per candidate in each election they ran in:
+Here we provide a {candidate level} dataset that is comprehensive for the years 2006-2020 and standardized, such as incumbency, general election vote, party, and the election result.  For example:
 
 \begin{table}[!h]
 \caption{\textbf{Example of Candidate Data Format} \label{tab:cdataexample}}
