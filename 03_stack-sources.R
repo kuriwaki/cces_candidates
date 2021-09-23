@@ -361,7 +361,10 @@ jsdat_all <- jsdat_all %>%
 jsdat_all <- jsdat_all %>%
   mutate(party_formal = replace(party_formal, name == "WELCH, PETER F." & year == 2008, "D"))
 
+# ROMNEY Fix
 
+jsdat_all <- jsdat_all %>%
+  mutate(name = replace(name, name == "MITT, ROMNEY", "ROMNEY, MITT"))
 
 # filter, stack, modify ------
 jsdat_all <- jsdat_all %>%
