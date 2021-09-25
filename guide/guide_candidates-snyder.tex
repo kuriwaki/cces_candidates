@@ -227,7 +227,7 @@ The short party affiliation of the candidate. We use the ``short'' or colloquial
 \FloatBarrier 
 
 \subsection*{\texttt{party\_formal}}
-The formal party names, for example DFL in Minnesota. Third party candidate names follow what is given in the House Clerk Document. 
+The formal names of candidate's party affiliation, for example DFL in Minnesota. Third party candidate names follow what is given in the House Clerk document or state SOS reports (for Governors), with some minor abbreviations and standardizations.
 
 \twocolumn
 \begin{adjustwidth}{-2em}{-2em}
@@ -245,7 +245,7 @@ The formal party names, for example DFL in Minnesota. Third party candidate name
 
 Candidate incumbency status. A 0 means the candidate is not an incumbent, a 1 means the candidate is an incumbent, and a 2 means the candidate is an incumbent that was elected in a special election, and 3 indicates a U.S. Senator who was appointed by the Governor.
 \begin{itemize}
-\item District numberings do not matter; Conor Lamb who won a special election to PA-18 in March 2018 is still an incumbent when he ran in November 2018 for the re-drawn PA-17.
+\item District numberings do not matter for determining incumbency. For example, Conor Lamb who won a special election to PA-18 in March 2018 is still an incumbent when he ran in November 2018 for the re-drawn PA-17.
 \item This may differ from the CES incumbency variable in some redistricting cases when two incumbents were forced to run against each other. For example, in 2012 Betty Sutton (OH-13) and Jim Renacci (OH-16), both House incumbents, were forced to run in OH-16. While the CES incumbency variable (HouseCandIncumbent) lists only Sutton as the incumbent, this dataset will list both Sutton and Renacci as incumbents. 
 
 \end{itemize}
@@ -310,9 +310,9 @@ The total distribution for a candidate's votes looks as follows:
 
 \subsection*{\texttt{totalvotes}}
 
-Total votes for all candidates in the general election included in the Snyder data. 
+Total votes for all candidates in each election. This is the sum of \texttt{candidatevotes}. It does not include undervotes, overvotes, scattered votes or votes for candidates with less than 10 votes.  Also note that only deciding elections are included in the data (see \texttt{runoff}). Therefore for runoff elections, \texttt{totalvotes} reflects the total turnout in the second round, which often has lower turnout than the November election.
 
-Note that only deciding elections are included in the data, meaning this reflects the total turnout in the second round for elections that went to runoff. 
+
 
 \subsection*{\texttt{won}} 
 Candidate won the general election. A 1 means the candidate won the general election, and a 0 means the candidate lost the general election. 
@@ -406,7 +406,7 @@ If you find any errors or ambiguities, please do not hesitate to contact us. The
 \section{Version History}
 
 \begin{itemize}
-\item Dataverse v1.0: Initial Release.
+\item Dataverse v1.0: Initial Dataverse Release (2021-09-27).
 \end{itemize}	
 
 
