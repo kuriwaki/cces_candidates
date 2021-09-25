@@ -107,6 +107,8 @@ The type of election. We use \texttt{G} to denote general election candidates an
 \end{tabularx}
 \end{table}
 
+\FloatBarrier
+
 \subsection*{\texttt{runoff}}
 
 The candidate's election round. In some states (e.g. Georgia, Louisiana), candidates must run in a runoff election to determine the winner. In the case of a runoff election (e.g. in the 2020 Georgia Senate elections, the November elections are \textit{excluded} while the January contests are \textit{included}), only the deciding contest is included. Any pre-runoff race is excluded in the data. A 1 denotes that the election the candidate is running in is a runoff election, while a 0 denotes that the election the candidate is running in is not. 
@@ -116,6 +118,9 @@ The candidate's election round. In some states (e.g. Georgia, Louisiana), candid
     \input{Tables/cands/runoff_S} & \input{Tables/cands/runoff_H} & \input{Tables/cands/runoff_G}
 \end{tabularx}
 \end{table}
+
+
+\FloatBarrier
 
 \subsection*{\texttt{name\_snyder}}
 
@@ -200,6 +205,8 @@ For example:
 
 \newpage
 
+\FloatBarrier
+
 
 \subsection*{\texttt{party}} 
 
@@ -246,6 +253,10 @@ Candidate incumbency status. A 0 means the candidate is not an incumbent, a 1 me
     \input{Tables/cands/inc_S} & \input{Tables/cands/inc_H} & \input{Tables/cands/inc_G}
     \end{tabularx}
 
+
+\FloatBarrier
+
+
 \subsection*{\texttt{nextup}}
 
 The year that an incumbent candidate is up for re-election. This variable can be useful in determining tenure in office for special election candidates, who may not have served a full term. See \texttt{type} for designation of special election candidates. 		
@@ -264,6 +275,8 @@ The year that an incumbent candidate is up for re-election. This variable can be
 \textbf{Governor}\\
 \input{Tables/cands/nextup_G}
 \end{tabularx}
+
+\FloatBarrier
 
 \subsection*{\texttt{candidatevotes}} 
 
