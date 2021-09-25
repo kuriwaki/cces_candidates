@@ -4,39 +4,39 @@
 % Author setting
 \usepackage{authblk}
 
-\title{\large\textbf{A Standardization of Candidates in American General Elections}}
+\title{\Large\textbf{Candidates in American General Elections}}
 
 \author[1]{\normalsize Jeremiah Cha}
 \author[2]{\normalsize Shiro Kuriwaki}
 \author[1]{\normalsize James M. Snyder, Jr.}
 \affil[1]{\footnotesize Department of Government, Harvard University.}
 \affil[2]{\footnotesize Department of Political Science, Stanford University}
+% \affil[*]{\url{https://github.com/kuriwaki/cces_candidates} or email \href{mailto:shirokuriwaki@gmail.com}{\texttt{shirokuriwaki@gmail.com}}}
 
 
-\date{\normalsize v1.0 (September 2021)}
+\date{\vspace{-0.2in} \normalsize v1.0 (September 2021)}
 	
 
 \begin{document}
 \maketitle 
 
+\vspace{-0.2in}
+
 \begin{center}
 \begin{minipage}{0.85\linewidth}
 \emph{Please cite as: }
 
-Cha, Jeremiah, Shiro Kuriwaki, and James M. Snyder, Jr. (2021). ``A Standardization of Candidates in American Elections.'' Harvard Dataverse. \textsc{doi}: \href{https://doi.org/10.7910/DVN/DGDRDT}{\texttt{10.7910/DVN/DGDRDT}}.
+Cha, Jeremiah, Shiro Kuriwaki, and James M. Snyder, Jr. (2021). ``Candidates in American General Elections.'' Harvard Dataverse. \textsc{doi}: \href{https://doi.org/10.7910/DVN/DGDRDT}{\texttt{10.7910/DVN/DGDRDT}}.
 \end{minipage}
 \end{center}
 \smallskip
 
-Between 2006 and 2021 alone, there were \input{Ns/all_dists}\unskip \ races for Congress and Governor in the general election, in which \input{Ns/all_cands}\unskip \ Democratic and Republican candidates ran for office.  
-While several datasets compile these election results, few include (1) standardized candidate names across years and offices, (2) candidate incumbency status, and (3) elections for different offices and years combined into a single file.
+Between 2006 and 2020 alone, there were over 4,000 races for Congress and Governor in the general election, in which \input{Ns/all_cands}\unskip \ Democratic and Republican candidates ran for office.  
+While many existing efforts compile these election results, few include standardized candidate names across years and offices, candidate incumbency status, and elections for different offices and years combined into a single file.
 
-% \section{Examples, Unique Identifiers, and Counts}
-
-We provide a candidate-level dataset that is comprehensive for Presidential, Congressional and gubernatorial contests between 2006 and 2020 with standardized names for each unique candidate. We also include variables for party, incumbency, vote totals, and election results. For example:
+We provide a candidate-level dataset that is comprehensive for Presidential, Congressional and gubernatorial contests between 2006 and 2020 with standardized names for each unique candidate. We also record party, incumbency, vote totals, and election results. For example:
 
 \begin{table}[!h]
-\caption{\textbf{Example of Candidate Data Format} \label{tab:cdataexample}}
 \centering
 \footnotesize
 \input{Tables/cands/example_candidates}
@@ -399,7 +399,7 @@ Elections'' by Bernard Fraga (available at \url{https://www.bernardfraga.com/res
 
 \section{Reporting Errors and Suggesting Improvements}
 
-If you find any errors in the data, ambiguities, confusing descriptions in the guide, please do not hesitate to contact us. The preferred method is to open a ``Issue'' at \url{https://github.com/kuriwaki/cces_candidates/issues}, which we monitor. Otherwise, please email us at \href{mailto:jsnyder@gov.harvard.edu}{\texttt{jsnyder@gov.harvard.edu}} or the others.
+If you find any errors or ambiguities, please do not hesitate to contact us. The preferred method is to open a ``Issue'' at \url{https://github.com/kuriwaki/cces_candidates/issues}, which we monitor. Otherwise, please email us at \href{mailto:jeremiahcha@g.harvard.edu}{\texttt{jeremiahcha@g.harvard.edu}}, \href{mailto:shirokuriwaki@gmail.com}{\texttt{shirokuriwaki@gmail.com}}, or \href{mailto:jsnyder@gov.harvard.edu}{\texttt{jsnyder@gov.harvard.edu}}.
 
 
 
