@@ -111,7 +111,9 @@ The type of election. We use \texttt{G} to denote general election candidates an
 
 \subsection*{\texttt{runoff}}
 
-The candidate's election round. In some states (e.g. Georgia, Louisiana), candidates must run in a runoff election to determine the winner. In the case of a runoff election (e.g. in the 2020 Georgia Senate elections, the November elections are \textit{excluded} while the January contests are \textit{included}), only the deciding contest is included. Any pre-runoff race is excluded in the data. A 1 denotes that the election the candidate is running in is a runoff election, while a 0 denotes that the election the candidate is running in is not. 
+The candidate's election round. In some states (e.g. Louisiana), if no candidate receives over 50 percent of the vote, the top two candidates must run in a runoff election again to determine the winner. 
+In such a case, \emph{only the deciding contest is included}. For example, in the 2020 Georgia Senate elections, both the general and special election went to a runoff because no candidate got over 50 percent of the vote in either race. Therefore, we exclude the November election results and include the January runoff. 
+A runoff variable with a value of 1 denotes that the election the candidate is running in is a runoff election, while a 0 denotes that the election is not. A missing value is given for the vast majority of states in which no such runoff option is available, and a candidate can win by plurality.
 \begin{table}[!h]
 \begin{tabularx}{\linewidth}{CCC}
     \textbf{Senate} & \textbf{House} & \textbf{Governor}\\
