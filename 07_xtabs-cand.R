@@ -24,9 +24,54 @@ js_fct %>% filter(office == "G", party %in% c("D", "R")) %>% write_numbers("gov"
 js_fct %>% filter(office == "H", party %in% c("D", "R")) %>% write_numbers("house")
 js_fct %>% filter(office == "S", party %in% c("D", "R")) %>% write_numbers("sen")
 
+# summaries
 
-# main xtab
+js_fct %>%
+  group_by(office) %>%
+  summarize(
+    dists = n_distinct(dist),
+    maxdist = max(dist, na.rm = TRUE)
+  )
 
+js_fct %>%
+  mutate(office = fct_relevel(office, "H", "S", "G", "P")) %>%
+  group_by(office) %>%
+  summarize(
+    min = min(candidatevotes, na.rm = TRUE),
+    q10 = quantile(candidatevotes, 0.10, na.rm = TRUE),
+    q25 = quantile(candidatevotes, 0.25, na.rm = TRUE),
+    median = median(candidatevotes, na.rm = TRUE),
+    q75 = quantile(candidatevotes, 0.75, na.rm = TRUE),
+    q90 = quantile(candidatevotes, 0.90, na.rm = TRUE),
+    max = max(candidatevotes, na.rm = TRUE)
+  ) %>%
+  kbl(col.names = c("Office", "Minimum", "10th Quantile", "25th", "50th", "75th", "90th", "Maximum"),
+      digits = 0,
+      booktabs = TRUE,
+      format.args = list(big.mark = ","),
+      format = "latex") %>%
+  column_spec(2:8, monospace = TRUE) %>%
+  write_lines("guide/Tables/cands/candidatevotes_sum.tex")
+
+options(knitr.kable.NA = '')
+
+jsdat %>%
+  mutate(office = fct_relevel(office, "H", "S", "G", "P")) %>%
+  group_by(office) %>%
+  summarize(
+    min = min(dist, na.rm = TRUE),
+    max = max(dist, na.rm = TRUE),
+    n_distinct = n_distinct(dist)
+  ) %>%
+  mutate(across(everything(), ~ replace(.x, is.infinite(.x),  NA))) %>%
+  kbl(col.names = c("Office", "Minimum", "Maximum", "Distinct Values"),
+      digits = 0,
+      booktabs = TRUE,
+      format.args = list(big.mark = ","),
+      format = "latex") %>%
+  write_lines("guide/Tables/cands/dist_sum.tex")
+
+# xtabs -------
 
 # party short
 xtabs(~ year + party, js_fct, subset = (office == "G"), drop.unused.levels = TRUE) %>%

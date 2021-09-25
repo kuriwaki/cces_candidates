@@ -83,7 +83,19 @@ The office the candidate is running for. Following the Snyder data, we use \text
 
 \subsection*{\texttt{dist}}
 
-The district the candidate is running for. For U.S. Senate candidates, the district variable denotes the class of the particular Senate seat (e.g. Dianne Feinstein has a \texttt{dist} value of 1 since her seat is part of Senate Class I). 
+The district the candidate is running for. U.S. House races in at-large districts are numbered 1 instead of 0 or ``-AL''. 
+
+ For U.S. Senate candidates, the district variable denotes the class of the particular Senate seat (e.g. Dianne Feinstein has a \texttt{dist} value of 1 since her seat is part of Senate Class I). 
+
+\begin{table}[!h]
+\centering
+\footnotesize
+\input{Tables/cands/dist_sum}
+\end{table}
+
+
+
+
 
 \subsection*{\texttt{type}}
 
@@ -268,6 +280,18 @@ Therefore, the data for such corner cases look like:
 \footnotesize
 \input{Tables/cands/example_candidatevotes}
 \end{table}
+
+
+The total distribution for a candidate's votes looks as follows:
+
+\begin{table}[!h]
+\centering
+\footnotesize
+\input{Tables/cands/candidatevotes_sum}
+\end{table}
+
+
+\FloatBarrier
 
 \subsection*{\texttt{totalvotes}}
 
