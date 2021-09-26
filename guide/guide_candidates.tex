@@ -132,7 +132,7 @@ A runoff variable with a value of 1 denotes that the election the candidate is r
 
 
 Standardized candidate name following Snyder coding rules. The
-specifics of this coding rules are important for overtime tracking because
+specifics of these coding rules are important for overtime tracking because
 \textbf{name and state uniquely identify a unique person} across all his
 Congressional candidate data (at least 1950 to the present). The syntax
 is
@@ -173,9 +173,9 @@ to abbreviate a middle name. The same candidate in the same election year may
 even have different formats in each of these sources.
 
 The Snyder formalization solves some shortcomings in the official data
-above. Candidates may report different style names in the ballot vs.~the
+above. Candidates may report different style names on the ballot vs.~the
 FEC or they may have multiple FEC IDs at the same time. More commonly, a
-House representative who then runs for higher office like Senate will
+House representative who then runs for higher office like the Senate will
 often get a separate FEC ID, even though they are the same person. In
 theses cases, the Snyder formalization of identifying people by their full
 name and state is the most reliable.
@@ -187,7 +187,7 @@ should be formatted exactly the same way, and conversely, two different
 people with near-identical last names should somehow be given
 {different} names. For example, if a John Smith ran for Congress
 in 1980 in Ohio and then a \emph{separate, unrelated} John Smith ran
-again in Ohio in 2020. Then to distinguish the two different people, we
+again in Ohio in 2020. To distinguish the two different people, we
 would need to find {something} like a middle name or suffix to
 distinguish the name in characters.
 
@@ -204,7 +204,7 @@ For example:
   even though it is known (Robinette).
 \item
   \texttt{MACK,\ MARY\ BONO} (R-CA, 1998-2012) married to Connie Mack IV
-  (R-FL, 2001-2003) during 2007-2013. They separated in 2013 and now
+  (R-FL, 2001-2003) during 2007-2013. They separated in 2013 and she now
   goes by Mary Bono, but in the data she will be coded by the above
   name.
 \end{itemize}
@@ -248,10 +248,10 @@ The formal name of the candidate's party affiliation, for example DFL in Minneso
 
 \subsection*{\texttt{inc}}
 
-The incumbency status of the candidate. A 0 means the candidate is not an incumbent, a 1 means the candidate is an incumbent, and a 2 means the candidate is an incumbent that was elected in a special election, and 3 indicates a U.S. Senator who was appointed by the Governor.
+The incumbency status of the candidate. A 0 means the candidate is not an incumbent, a 1 means the candidate is an incumbent, a 2 means the candidate is an incumbent that was elected in a special election, and 3 indicates a U.S. Senator who was appointed by the Governor.
 \begin{itemize}
 \item District numberings do not matter for determining incumbency. For example, Conor Lamb who won a special election to PA-18 in March 2018 is still an incumbent when he ran in November 2018 for the re-drawn PA-17.
-\item This may differ from the CES incumbency variable in some redistricting cases when two incumbents were forced to run against each other. For example, in 2012 Betty Sutton (OH-13) and Jim Renacci (OH-16), both House incumbents, were forced to run in OH-16. While the CES incumbency variable (HouseCandIncumbent) lists only Sutton as the incumbent, this dataset will list both Sutton and Renacci as incumbents. 
+\item This may differ from \textbf{the CES incumbency variable} in some redistricting cases when two incumbents were forced to run against each other. For example, in 2012 Betty Sutton (OH-13) and Jim Renacci (OH-16), both House incumbents, were forced to run in OH-16. While the CES incumbency variable (HouseCandIncumbent) lists only Sutton as the incumbent, this dataset will list both Sutton and Renacci as incumbents. 
 
 \end{itemize}
 
@@ -344,7 +344,7 @@ The set of tables below show the \emph{party} of the candidate that \emph{won}.
     \input{Tables/cands/party-won_S} & \input{Tables/cands/party-won_H} & \input{Tables/cands/party-won_G}
     \end{tabularx}
 
-The NC-09 House race in 2018 is listed having no winner because it was later overturned for voterfile. A special election was held in 2019.
+The NC-09 House race in 2018 is listed as having no winner because it was later overturned. A special election was held in 2019.
 
 % \item \texttt{data\_note}: 145 candidates were not included in the election dataset we used to collect the candidate-level variables. We still include these candidates in the supplemental data in case researchers are interested in specific districts or races. The reason for these non-merges can be broken down into four categories, listed below.
 % 		\begin{enumerate}
