@@ -64,9 +64,11 @@ Our code for recoding and editing the data is open-source in a Github repository
 
 \section{Unique Identifiers}
 
-To identify a single election, group by \texttt{year, state, office, dist, } and \texttt{type} (General vs. Special).  To identify a single candidate across office and time, group by \texttt{state, name\_snyder}. 
+To identify a single election, group by \texttt{year}, \texttt{state}, \texttt{office}, \texttt{dist}, and \texttt{type} (General vs. Special).  To isolate the set of candidates who won a seat in an election cycle, group by subset by \texttt{year}, \texttt{state}, \texttt{office}, and \texttt{type}, then subset by \texttt{won}.
 
-Note that some candidates (e.g. Mitt Romney) run in multiple states. For these candidates, group by \texttt{name\_snyder}. 
+To identify a single candidate across office and time, group by \texttt{state} and  \texttt{name\_snyder}. 
+As we discuss in detail in this documentation, the candidate names are standardized (by Snyder's coding) so that the same candidate has the same spelling across years and office.
+In very rare instances, a candidate for a major party runs for office two different states. For example, Mitt Romney ran for Governor of Massachusetts, President, and U.S. Senator from Utah. For these candidates, group by \texttt{name\_snyder}. 
 % \clearpage
 \section{Variable Descriptions and Tabulations}
 
@@ -133,7 +135,7 @@ specifics of this coding rules are important for overtime tracking because
 Congressional candidate data (at least 1950 to the present). The syntax
 is
 
-\texttt{{[}Last\ name{]},\ {[}First\ Name{]}\ {[}Middle\ name{]}\ ({[}Nickname{]}),\ {[}Jr./Sr./I/II/III{]}}
+\texttt{{[}Last\ name{]},\ {[}First\ Name{]}\ {[}Middle\ name{]}\ ({[}Nickname{]}),\ {[}JR./SR./I/II/III{]}}
 
 For example:
 
@@ -151,7 +153,7 @@ For example:
   \texttt{KENNEDY,\ JOSEPH\ P.\ (JOE),\ III}: commonly known as Joe
   Kennedy (MA)
 \item
-  \texttt{KELLY,\ GEORGE\ J.\ (MIKE),\ JR.}, commonly known as Mike
+  \texttt{KELLY,\ GEORGE\ J.\ (MIKE),\ JR.}: commonly known as Mike
   Kelly (PA). Note the use of periods for abbreviation and comma before
   the JR.
 \item
@@ -159,20 +161,21 @@ For example:
   hyphenated and is two words
 \item
   \texttt{JACKSON\ LEE,\ SHEILA}: note that the last name is not Lee, so
-  we use this instead of ``LEE, SHEILA JACKSON''
+  we use this instead of ``Lee, Sheila Jackson''
 \end{itemize}
 
-Note that these names are \emph{different} from other official names (1)
+Note that these names are \emph{different} from other names (1)
 on the ballot, (2) on the Clerk of the House report, or the (3) FEC. Any
 of these sources can disagree on the formatting of the names or whether
-to abbreviate a middle name.
+to abbreviate a middle name. The same candidate in the same election year may 
+even have different formats in each of these sources.
 
 The Snyder formalization solves some shortcomings in the official data
 above. Candidates may report different style names in the ballot vs.~the
 FEC or they may have multiple FEC IDs at the same time. More commonly, a
 House representative who then runs for higher office like Senate will
 often get a separate FEC ID, even though they are the same person. In
-theses cases, the Snyder formalization of ID'ing people by their full
+theses cases, the Snyder formalization of identifying people by their full
 name and state is the most reliable.
 
 Therefore, it is important in our formalization to spell out nicknames
