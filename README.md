@@ -1,29 +1,35 @@
-# Candidate and Official Election Results for Federal and Statewide elections, 2006-2020
+# Candidates in American General Elections
 
-Shiro Kuriwaki
+Jeremiah Cha, Shiro Kuriwaki, and James M. Snyder, Jr.
 
 <!-- badges: start -->
+[![](<https://img.shields.io/badge/Dataverse DOI-10.7910/DVN/DGDRDT-orange>)](https://www.doi.org/10.7910/DVN/DGDRDT)
 <!-- badges: end -->
+
+
+
 
 The goal of cces_candidates is to serve as a standardized interface for U.S. candidate metadata with a particular application to merging with the CES / CCES.
 
 Although these data formally only cover 2006 and onwards, the coding rules are written so that they are mostly consistent with a historical database mainly constructed by Jim Snyder.
 
+See the [Dataverse guide/codebook](https://dataverse.harvard.edu/file.xhtml?fileId=5200343&version=1.0) for a complete guide. The following notes are all included in the guide.
+
 ## Script and data organizations
 
 - Internal data are either from internal Stata files (only shared internally for now)
-- Scripts in the single digits (`01` - `09`) are meant for the candidates data
-- Scripts in the 10s (`11` - `19`) are meant for the CCES merge.
+- Scripts in the single digits (`01` - `07`) are meant for the candidates data
+- Scripts in the 10s  will be reserved for the CCES merge.
 
 
 
 ## Candidate Data Format
 
 
-Candidate data is stored in "long" (as opposed to wide) format, with each row representing a candidate in a particular race. Each row is represented by `office`, `state`, `dist`,  and `candidatename`.
+Candidate data is stored in "long" (as opposed to wide) format, with each row representing a candidate in a particular race. Each row is represented by `year`, `office`, `state`, `dist`, `type`,  and `name_snyder`.
 
 
-A combination of `state` and `candidatename` uniquely identifies a candidate. Note that we do not use `office` or `party` here, because that can change across time. For example, House members run to become Senators, and in rare occasions candidates change their party (e.g. Charlie Crist, Kyrsten Sinema).
+A combination of `state` and `name_snyder` uniquely identifies a candidate. Note that we do not use `office` or `party` here, because that can change across time. For example, House members run to become Senators, and in rare occasions candidates change their party (e.g. Charlie Crist, Kyrsten Sinema).
 
 
 
@@ -45,13 +51,7 @@ A combination of `state` and `candidatename` uniquely identifies a candidate. No
 
 ### State and State codes
 
-The variable `st` refers to the two letter code given by R's `state.abb` and the variable `state` is the spelled out name given by R's `state.name`.
-
-|`st` | `state` | 
-|-----|---------|
-|`"AK"` |`"Alaska"` | 
-|`"WY"` | `"Wyoming"`|
-
+The variable `state` refers to the two letter code given by R's `state.abb`.
 
 ### District and Senate Class (`dist`)
 
@@ -68,15 +68,8 @@ The Senate class is important for distinguishing different seats in the same yea
 
 (there is no class 1 Senate seat in Georgia)
 
-### Congressional Districts (`cd`)
 
-`cd` refers to the State - Congressional district number combination, combined with a hyphen. Single-digit districts must have a leading zero. At-large states should be numbered `01` instead of `00` or `-AL`. For example:
-
-- `CA-34`: California's 34th Congressional district
-- `CA-01`: California's 1st Congressional district (leading 0)
-- `AK-01`: Alaska's at large Congressional district 
-
-### Special Elections and Runoff Elections
+### Special Elections and Runoff Elections (`type`, `runoff`)
 
 A "normal" special election, when an incumbent retires or dies before their term is up, can be listed as `1`. A general election that happens on the first Tuesday of November for a seat where the term is up is listed as `0`.
 
@@ -89,10 +82,10 @@ In **Louisiana** for Non-Presidential elections, starting from 1977, there is a 
 
 - For example in November 2014, neither Bill Cassidy (R) and incumbent Mary Landrieu (D) got a majority in the first round, with 5 other Democrat or Republican candidates on the ballot. A runoff was held in December with the two candidates and Cassidy won with 55 percent of the vote. In 2020, Cassidy won 59 percent of the jungle primary vote and won re-election outright.
 
-We code these as `type = G` or `type = R` for the runoff (if applicable), and treat these as separate rows. We check the Clerk and state SOS results for those elections.
+We code these as `type = G` or `runoff = 1` for the runoff (if applicable), and treat these as separate rows. We check the Clerk and state SOS results for those elections.
 
 
-### Candidate Names (`candidatename`) 
+### Candidate Names (`name_snyder`) 
 
 Standardized candidate name following Jim Snyder's coding rules. The specifics of this variable are important for overtime tracking because __name and state uniquely identify a unique person__ across all his Congressional candidate data (at least 1950 to the present). The syntax is 
 
@@ -163,8 +156,11 @@ For candidates running on multiple party tickets, this will be the _sum_ of all 
 
 In some states, notably Florida, if a congressional district is uncontested by one of the major parties, the winner's vote count is __not reported__ by the Secretary of State. Votes here should be listed as blank.
 
+
+For all other variables, see the guide.
+
 ## Related Datasets and Data Sources
 
 - The Clerk of the House [Official Election Returns](https://history.house.gov/Institution/Election-Statistics/) is the authoritative source for vote counts and party affiliations for `P`, `S`, `H`.  It does not include `inc` or the standardized name.
-- The MIT Election Data Science Lab [Dataverse](https://dataverse.harvard.edu/dataverse/medsl_election_returns) compiles this Clerk information in csv [`P`](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/PEJ5QU), [`S`](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/PEJ5QU), [`H`](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/IG0UN2) (only till 2018 as of June 2021). It has information on special elections but not `inc`. 
+- The MIT Election Data Science Lab [Dataverse](https://dataverse.harvard.edu/dataverse/medsl_election_returns) compiles this Clerk information in csv [`President`](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/PEJ5QU), [`Senate`](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/PEJ5QU), [`House`](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/IG0UN2) (only till 2018 as of June 2021). It has information on special elections but not `inc`. 
 - State executive offices (`G`, Secretary of State, AG, etc..) are taken from official statements of the vote of the Secretary of State. I have collected the list of URLs for each state at [`sec-state_statement-of-votes.csv`](links/sec-state_statement-of-votes.csv)
