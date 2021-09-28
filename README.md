@@ -17,7 +17,7 @@ See the [Dataverse guide/codebook](https://dataverse.harvard.edu/file.xhtml?file
 
 ## Script and data organizations
 
-- Internal data are either from internal Stata files (only shared internally for now)
+- Internal data are from internal Stata files (only shared internally for now). In some instances, a small csv is stored in the repo.
 - Scripts in the single digits (`01` - `07`) are meant for the candidates data
 - Scripts in the 10s  will be reserved for the CCES merge.
 
@@ -71,18 +71,18 @@ The Senate class is important for distinguishing different seats in the same yea
 
 ### Special Elections and Runoff Elections (`type`, `runoff`)
 
-A "normal" special election, when an incumbent retires or dies before their term is up, can be listed as `1`. A general election that happens on the first Tuesday of November for a seat where the term is up is listed as `0`.
+A "normal" special election, when an incumbent retires or dies before their term is up, can be listed as `type = "S"`. (For non-normal specials, see Louisiana below). A general election that happens on the first Tuesday of November for a seat where the term is up is listed as `type = "G"`.
 
 
 "[T]wo states --- Georgia and Louisiana --- require runoff elections in a general election when no candidate receives a majority of the vote. In every other state, a candidate can win a general election with a plurality of the vote." (Ballotpedia).  
 
 Several corner cases are worth enumerating:
 
-In **Louisiana** for Non-Presidential elections, starting from 1977, there is a jungle primary in the first **November election**, when all 49 states have their general elections ([Ballotpedia](https://ballotpedia.org/Jungle_primary)).  Unless a candidate wins with the majority of the vote, the top two candidates go to a runoff often in December. I am still deliberating how to code this. 
+In **Louisiana** for Non-Presidential elections, starting from 1977, there is a jungle primary in the first **November election**, when all 49 states have their general elections ([Ballotpedia](https://ballotpedia.org/Jungle_primary)).  Unless a candidate wins with the majority of the vote, the top two candidates go to a runoff often in December. We currently call this `type = "G"` but `runoff = 1` if it is a runoff round.
 
 - For example in November 2014, neither Bill Cassidy (R) and incumbent Mary Landrieu (D) got a majority in the first round, with 5 other Democrat or Republican candidates on the ballot. A runoff was held in December with the two candidates and Cassidy won with 55 percent of the vote. In 2020, Cassidy won 59 percent of the jungle primary vote and won re-election outright.
 
-We code these as `type = G` or `runoff = 1` for the runoff (if applicable), and treat these as separate rows. We check the Clerk and state SOS results for those elections.
+We chose to store only the _deciding round_ of the race so that there is only one candidate set for each winning candidate. For example in the 2014 election with Cassidy above, we deliberately delete the first round result from our data. We may revisit this decision.
 
 
 ### Candidate Names (`name_snyder`) 
@@ -144,7 +144,6 @@ Write-in votes, when officially reported, are coded ____.
 
 1 if the candidate won that race, 0 otherwise. For President, 1 if the candidate won the electoral college votes in that _state_, rather than the office. 
 
-If the election was effectively a primary or a race where no one candidate won outright (and a runoff was held later), then the winner of that first stage election gets a value of ___.
 
 
 ### Vote count (`candidatevotes`)
