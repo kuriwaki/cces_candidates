@@ -42,4 +42,11 @@ cand <- cand %>%
     name_snyder = replace(name_snyder, name_snyder == "CEASAR, RON" & state == "LA", "CAESAR, RON")
   )
 
+# Fixing Issue # 30 "Corrections on incumbency"
+cand <- cand %>%
+  mutate(
+    inc = replace(inc, name_snyder == "BREWER, JANICE (JAN)" & state == "AZ" & office == "G" & year == 2010, 1),
+    inc = replace(inc, name_snyder == "MURRAY, JULIANNE E." & state == "DE" & office == "G" & year == 2020, 0)
+  )
+
 write_rds(cand, "data/intermediate/candidates_2006-2020.rds")
