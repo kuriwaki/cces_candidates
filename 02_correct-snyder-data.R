@@ -3,6 +3,7 @@ library(haven)
 
 # raw
 jsdat_raw <- read_dta("data/snyder/2021-07-29 sen_gov_house_2006_2020.dta")
+js1990_raw <- read_dta("data/snyder/2022-09-30 tmp_gov_sen_house_1990_2020.dta")
 
 # Changes, additions ---
 
