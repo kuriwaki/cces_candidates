@@ -10,8 +10,8 @@ pres_raw <- get_dataframe_by_name(file = "1976-2020-president.tab",
                                   .f = read_csv)
 
 # Recode party, variable names, etc..
-pres_fmt <- pres_raw %>%
-  filter(year >= 2006) %>%
+pres_fmt <- pres_raw |>
+  filter(year >= 2006) |>
   transmute(
     year,
     state = state_po,
@@ -20,7 +20,7 @@ pres_fmt <- pres_raw %>%
     party = recode(party_simplified, REPUBLICAN = "R", DEMOCRAT = "D", LIBERTARIAN = "Lbt", GREEN = "Grn", OTHER = "Other"),
     party_formal = recode(str_to_title(party_detailed), Republican = "R", Democrat = "D", Libertarian = "Lbt", Green = "Grn"),
     candidatevotes
-  ) %>%
+  ) |>
   mutate(
     party = replace(party, (writein), "W-I"),
     name = recode(
@@ -38,8 +38,8 @@ pres_fmt <- pres_raw %>%
       str_detect(name, "TRUMP") & year == 2020 ~ 1,
       TRUE ~ 0
     )
-  ) %>%
-  select(-writein, -candidate) %>%
+  ) |>
+  select(-writein, -candidate) |>
   relocate(year, state,
            party, party_formal,
            name,
@@ -50,8 +50,8 @@ pres_fmt <- pres_raw %>%
 # drop
 # - candidates with less than 10 votes
 # - blank votes, overvotes, scatterings, etc..
-pres_sel <- pres_fmt %>%
-  filter(candidatevotes >= 10) %>%
+pres_sel <- pres_fmt |>
+  filter(candidatevotes >= 10) |>
   filter(!is.na(party_formal))
 
 

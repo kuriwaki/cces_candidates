@@ -17,7 +17,7 @@ It is a bundle (rda) of three items
 It looks like
 
 ```
-> rc_key %>% select(year, case_id, st, dist, cand, name, party)
+> rc_key |> select(year, case_id, st, dist, cand, name, party)
 # A tibble: 2,580,768 x 7
     year case_id st     dist  cand name                 party
    <dbl>   <dbl> <chr> <int> <int> <chr>                <chr>

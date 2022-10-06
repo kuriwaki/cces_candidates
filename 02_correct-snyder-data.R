@@ -6,7 +6,7 @@ jsdat_raw <- read_dta("data/snyder/2021-07-29 sen_gov_house_2006_2020.dta")
 
 # Changes, additions ---
 
-jsdat <- jsdat_raw %>%
+jsdat <- jsdat_raw |>
   # https://github.com/kuriwaki/cces_candidates/issues/7: same day special
   mutate(
     type = replace(
@@ -19,7 +19,7 @@ jsdat <- jsdat_raw %>%
       list = (year == 2006 & state == "TX" & dist == 22 & nextup == 2008),
       values = "G"
     )
-  ) %>%
+  ) |>
   # https://github.com/kuriwaki/cces_candidates/issues/21: missing election
   add_row(state = "OK", year = 2016, office = "H", dist = 1,
           type = "G", nextup = 2018,
@@ -29,10 +29,10 @@ jsdat <- jsdat_raw %>%
           vote_g = NA)
 
 # Senate dist issue
-jsdat <- jsdat %>%
-  group_by(state, year, office) %>%
-  arrange(dist) %>%
-  fill(dist, .direction = "down") %>%
+jsdat <- jsdat |>
+  group_by(state, year, office) |>
+  arrange(dist) |>
+  fill(dist, .direction = "down") |>
   mutate(
     dist = replace(dist, state == "AL" & office == "S" & type == "S" & year == 2017, 2),
     dist = replace(dist, state == "AZ" & office == "S" & type == "S" & year == 2020, 3),
@@ -44,13 +44,13 @@ jsdat <- jsdat %>%
   )
 
 # Fixing 2020 Georgia Special candidates
-jsdat <- jsdat %>%
+jsdat <- jsdat |>
   mutate(
     temp = ifelse(state == "GA" & year == 2020 & type == "S", 1, 0),
     temp = replace(temp, name == "LOEFFLER, KELLY" | name == "WARNOCK, RAPHAEL GAMALIEL", 0)
-  ) %>%
-  filter(temp == 0) %>%
-  select(-temp) %>%
+  ) |>
+  filter(temp == 0) |>
+  select(-temp) |>
   mutate(
     vote_g = replace(vote_g, year == 2020 & state == "GA" & office == "S" & name == "LOEFFLER, KELLY", 2195841),
     vote_g = replace(vote_g, year == 2020 & state == "GA" & office == "S" & name == "WARNOCK, RAPHAEL GAMALIEL", 2289113),
@@ -61,16 +61,16 @@ jsdat <- jsdat %>%
 # Adding "runoff" variable and removing extraneous candidates
 ## Georgia data comes from https://sos.ga.gov/index.php/Elections/current_and_past_elections_results
 ## Louisiana data comes from https://voterportal.sos.la.gov/graphical
-jsdat <- jsdat %>%
+jsdat <- jsdat |>
   mutate(
     temp = 0, # Temporary var that ids non-runoff candidates
     temp = replace(temp, state == "LA" & year == 2020 & dist == 5, 1),
     temp = replace(temp, name == "LETLOW, LUKE J." & year == 2020 |
       name == "HARRIS, LANCE" & year == 2020, 0)
-  ) %>%
+  ) |>
   filter(temp == 0,
-    name != "BUCKLEY, ALLEN" | year != 2008) %>%
-  select(-temp) %>%
+    name != "BUCKLEY, ALLEN" | year != 2008) |>
+  select(-temp) |>
   mutate(runoff = case_when(
     state == "GA" & year == 2020 & office == "S" ~ 1, # 2020 Georgia Runoff
     state == "GA" & year == 2007 & office == "H" & dist == 10 ~ 1,
@@ -88,14 +88,14 @@ jsdat <- jsdat %>%
     state == "LA" & year == 2012 & office == "H" & dist == 3 ~ 1,
     state == "LA" & year == 2006 & office == "H" & dist == 2 ~ 1,
     TRUE ~ 0
-  )) %>%
+  )) |>
   mutate(runoff = case_when(
     state == "GA" | state == "LA" ~ runoff,
     TRUE ~ NA_real_
   ))
 
 # Correcting vote totals to reflect runoffs
-jsdat <- jsdat %>%
+jsdat <- jsdat |>
   mutate(vote_g = case_when(
     year == 2008 & state == "GA" & name == "MARTIN, JAMES FRANCIS (JIM)" ~ 909923,
     year == 2008 & state == "GA" & name == "CHAMBLISS, C. SAXBY" ~ 1228033,
@@ -105,11 +105,11 @@ jsdat <- jsdat %>%
   ))
 
 # Fix Oregon 2018 Gov winner
-jsdat <- jsdat %>%
+jsdat <- jsdat |>
   mutate(w_g = replace(w_g, year == 2018 & state == "OR" & office == "G" & name == "BUEHLER, KNUTE", 0))
 
 # Fix Rhode Island 2006 Gov results
-jsdat <- jsdat %>%
+jsdat <- jsdat |>
   mutate(w_g = replace(w_g, year == 2006 & state == "RI" & office == "G" & name == "CARCIERI, DONALD L.", 1),
          w_g = replace(w_g, year == 2006 & state == "RI" & office == "G" & name == "FOGARTY, CHARLES J.", 0),
          vote_g = replace(vote_g, year == 2006 & state == "RI" & office == "G" & name == "CARCIERI, DONALD L.", 197306),
@@ -117,24 +117,24 @@ jsdat <- jsdat %>%
          )
 
 # Karin Housley w_g fix
-jsdat <- jsdat %>%
+jsdat <- jsdat |>
   mutate(w_g = replace(w_g, year == 2018 & state == "MN" & name == "HOUSLEY, KARIN", 0))
 
 # removing Ellen Brickley
-jsdat <- jsdat %>%
+jsdat <- jsdat |>
   filter(name != "BRICKLEY, ELLEN")
 
 # NC-09 election fraud case
-jsdat <- jsdat %>%
+jsdat <- jsdat |>
   mutate(w_g = replace(w_g, office == "H" & year == 2018 & state == "NC" & dist == 9 & type == "G", NA))
 
 
 # removing entries without names
-jsdat <- jsdat %>%
+jsdat <- jsdat |>
   filter(name != "" | !is.na(vote_g))
 
 # adding in vote totals
-jsdat <- jsdat %>%
+jsdat <- jsdat |>
   mutate(vote_g = replace(vote_g, name == "JINDAL, BOBBY" & office == "H" & year == 2006 & state == "LA", 130508),
          vote_g = replace(vote_g, name == "MCCRERY, JAMES O. (JIM)" & office == "H" & year == 2006 & state == "LA", 77078),
          vote_g = replace(vote_g, name == "ALEXANDER, RODNEY M." & office == "H" & year == 2006 & state == "LA", 78211),
@@ -168,10 +168,10 @@ jsdat <- jsdat %>%
          )
 
 # addressing issue 25: TX-23 special election runoff
-jsdat <- jsdat %>%
+jsdat <- jsdat |>
   filter(
     !(year == 2006 & state == "TX" & office == "H" & dist == 23 & vote_g < 24594)
-  ) %>%
+  ) |>
   mutate(type = replace(type, year == 2006 & state == "TX" & dist == 23, "S"),
          runoff = replace(runoff, year == 2006 & state == "TX" & dist == 23, 1),
          vote_g = replace(vote_g, year == 2006 & state == "TX" & dist == 23 & party == "R", 32217),

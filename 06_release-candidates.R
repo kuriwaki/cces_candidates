@@ -25,7 +25,7 @@ order_candvars <- c("year", "state",
                     "name_snyder", "inc",
                     "candidatevotes", "totalvotes", "won")
 
-cand <- cand_raw %>%
+cand <- cand_raw |>
   relocate(!!!order_candvars)
 
 # what are the columns -----

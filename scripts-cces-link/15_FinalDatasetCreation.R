@@ -16,13 +16,13 @@ jim_data <- filter(jim_data, name != "")
 
 # As of right now rc_key has both pre and post observations, leading there to be lots of duplicates.
 # We want to only keep everyone once unless they moved between pre and post.
-rc_key<- rc_key  %>%
+rc_key<- rc_key  |>
   distinct_at(vars(-dataset), .keep_all = TRUE)
 
-sc_key<- sc_key  %>%
+sc_key<- sc_key  |>
   distinct_at(vars(-dataset, -dist, -dist_up), .keep_all = TRUE)
 
-gc_key<- gc_key  %>%
+gc_key<- gc_key  |>
   distinct_at(vars(-dataset,-dist, -dist_up), .keep_all = TRUE)
 
 # Need to make sure not incorrectly merging on district for senate and governor
@@ -257,7 +257,7 @@ problem_cands_total$TwoLastNamesError[is.na(problem_cands_total$TwoLastNamesErro
 problem_cands_total <- problem_cands_total[problem_cands_total$SpellingMistake == 0 & problem_cands_total$TwoLastNamesError == 0, ]
 
 # Limit the data to vaiables we need
-problem_cands_total <- problem_cands_total %>%
+problem_cands_total <- problem_cands_total |>
   select(year, st, dist_up, cong, cong_up, office, namelast, Reason.for.Not.Merging, NotonGeneralBallot, votes_ifmissing, inc_ifmissing, Notes)
 problem_cands_total$dist_up[problem_cands_total$office == "S" | problem_cands_total$office == "G"] <- NA
 
@@ -268,7 +268,7 @@ problem_cands_total$dist_up[problem_cands_total$office == "S" | problem_cands_to
 fulldata2 <- left_join(fulldata, problem_cands_total, by = c("st", "office", "dist_up", "namelast", "year", "cong", "cong_up"))
 
 # Limit the data to vaiables we need
-fulldata2 <- fulldata2 %>%
+fulldata2 <- fulldata2 |>
   select(case_id, year, dataset, st, dist, dist_up, cong, cong_up, cand, 
          name.y, name_cces, namelast, party.y, 
          inc, 
@@ -279,24 +279,24 @@ fulldata2 <- fulldata2 %>%
 
 
 # Rename some variables
-fulldata2 <- fulldata2 %>%
+fulldata2 <- fulldata2 |>
   rename(
     name = name.y,
     party = party.y,
     issue = Reason.for.Not.Merging,
     not_on_general = NotonGeneralBallot,
-  ) %>%
+  ) |>
   mutate(
     inc = replace(inc, inc_ifmissing == 1, 1),
     inc = replace(inc, inc_ifmissing == 0, 0),
     office = replace(office, is.na(office), "H"),
-  ) %>%
+  ) |>
   as_tibble()
 
 # Make a column explaining the issues with non-merging candidates
 fulldata2$data_note <- NA
 
-fulldata2 <- fulldata2 %>%
+fulldata2 <- fulldata2 |>
   mutate(
     data_note = replace(data_note, issue == "Candidate ran in Minnesota, Not Massachusettes", "Incorrect Candidate Match"),
     data_note = replace(data_note, issue == "candidate withdrew from the race after the primary", "Not on General Election Ballot"),
@@ -333,7 +333,7 @@ fulldata2 <- fulldata2 %>%
     data_note = replace(data_note, issue == "dropped out of the race", "Not on General Election Ballot"),
     data_note = replace(data_note, issue == "not on general election ballot", "Not on General Election Ballot"),
     data_note = replace(data_note, issue == "not on the general election ballot", "Not on General Election Ballot")
-  ) %>%
+  ) |>
   as_tibble()
 
 
@@ -354,7 +354,7 @@ fulldata2$inc[fulldata2$data_note == "Candidate Missing from Election Data" & fu
 
 
 # Limit the data to variables we need
-fulldata2 <- fulldata2 %>%
+fulldata2 <- fulldata2 |>
   select(case_id, year, dataset, st, dist, dist_up, cand, name, name_cces, namelast, 
          party, party_short, inc, vote_g, totalvotes, w_g, office, data_note, house_dist, house_distup)
 
@@ -366,14 +366,14 @@ fulldata2 <- fulldata2 %>%
 # jim_data$type[jim_data$year == 2010 & jim_data$office == "G" & jim_data$st == "UT"] <- "S"
 
 # Reorder some variables
-fulldata2 <- fulldata2 %>%
-  relocate(year, dataset, case_id, st, dist, dist_up, office) %>%
+fulldata2 <- fulldata2 |>
+  relocate(year, dataset, case_id, st, dist, dist_up, office) |>
   rename(votes = vote_g,
          name_snyder = name)
 
 fulldata3 <- select(fulldata2,  -name_cces)
 
-fulldata3 <- fulldata3  %>%
+fulldata3 <- fulldata3  |>
   distinct_at(vars(-dataset), .keep_all = TRUE)
 
 
@@ -407,7 +407,7 @@ data_post <- bind_rows(data_post2, data_post3, data_post4)
 elections <- haven::read_dta("~/Dropbox/CCES_candidates/Input/js_us_house_1980_2016.dta")
 
 # Load in the 2018 data
-elections2018 <- jim_data %>% filter(year == 2018) %>% rename(state=st, dist=dist_up)
+elections2018 <- jim_data |> filter(year == 2018) |> rename(state=st, dist=dist_up)
 
 # Bind the two and only keep the House
 elections_total <- bind_rows(elections, elections2018)
@@ -437,15 +437,15 @@ elections_total$name[elections_total$name=="THOMPSON, MIKE"] <- "THOMPSON, C. MI
 
 
 # Rename some variables and only keep one row per candidate
-elections_total <- elections_total  %>%
-  distinct(name, year,.keep_all = TRUE)  %>%
-  rename(name_snyder = name) %>%
+elections_total <- elections_total  |>
+  distinct(name, year,.keep_all = TRUE)  |>
+  rename(name_snyder = name) |>
   arrange(name_snyder, year)
 
 # Generate a lagged district varaible. Need to do it this more complicated way so we only keep consecutive terms
-elections_total <- elections_total %>%
-  group_by(name_snyder, group = cumsum(c(TRUE, diff(year) != 2))) %>%
-  mutate(lag_dist = lag(dist)) %>%
+elections_total <- elections_total |>
+  group_by(name_snyder, group = cumsum(c(TRUE, diff(year) != 2))) |>
+  mutate(lag_dist = lag(dist)) |>
   select(-group)
 
 # The elections data doesn't have special elections so need to fill these in ourselves. 
@@ -460,8 +460,8 @@ elections_total$lag_dist[elections_total$name_snyder == "BROUN, PAUL COLLINS" & 
 
 
 # Only keep incumbents and 2006 on
-elections_total <- elections_total %>% 
-  filter(inc > 0, year > 2004) %>% 
+elections_total <- elections_total |> 
+  filter(inc > 0, year > 2004) |> 
   select(name_snyder, year, lag_dist, office)
 
 
@@ -488,20 +488,20 @@ total_pre$dist_up[!is.na(total_pre$house_distup)] <- total_pre$house_distup[!is.
 rmv_vars <- c("group", "lag_dist", "namelast", "house_dist", "house_distup")
 order_vars <- c("year", "dataset", "case_id", "st", "dist", "dist_up", "office", "cand", "name_snyder", "inc", "current_inc")
 
-final_pre <- total_pre %>%
-  select(-c(!!!rmv_vars)) %>%
+final_pre <- total_pre |>
+  select(-c(!!!rmv_vars)) |>
   rename(party_formal = party,
          party = party_short,
          candidatevotes = votes,
-         won   =  w_g) %>% 
+         won   =  w_g) |> 
   relocate(!!!order_vars)
 
-final_post <- total_post %>%
-  select(-c(!!!rmv_vars)) %>%
+final_post <- total_post |>
+  select(-c(!!!rmv_vars)) |>
   rename(party_formal = party,
          party = party_short,
          candidatevotes = votes,
-         won   =  w_g) %>% 
+         won   =  w_g) |> 
   relocate(!!!order_vars)
 
 
@@ -513,10 +513,10 @@ sc_key$office <- "S"
 gc_key$office <- "G"
 rc_key <- bind_rows(rc_key, sc_key, gc_key)
 
-rc_key <- rc_key %>%
+rc_key <- rc_key |>
   rename(house_dist = dist,
-         house_distup = dist_up)  %>% 
-  select(case_id, year, dataset, office, cand, house_dist, house_distup) %>% 
+         house_distup = dist_up)  |> 
+  select(case_id, year, dataset, office, cand, house_dist, house_distup) |> 
   filter(str_detect(dataset, "_post")) 
 
 final_post <- inner_join(final_post, rc_key, by = c("case_id", "year", "cand", "office"))
@@ -525,12 +525,12 @@ final_post$dist[!is.na(final_post$house_dist)] <- final_post$house_dist[!is.na(f
 final_post$dist_up[!is.na(final_post$house_distup)] <- final_post$house_distup[!is.na(final_post$house_distup)]
 
 
-final_post <- final_post %>%
-  select(-dataset.x, -house_dist, -house_distup, -st, -dist)%>%
-  rename(dataset = dataset.y)%>%
+final_post <- final_post |>
+  select(-dataset.x, -house_dist, -house_distup, -st, -dist)|>
+  rename(dataset = dataset.y)|>
   relocate(year, dataset)
 
-final_pre <- final_pre %>%
+final_pre <- final_pre |>
   select(-st, -dist)
 
 final_pre$current_inc[final_pre$office=="G" & final_pre$inc>0] <- 1

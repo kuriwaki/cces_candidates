@@ -14,7 +14,7 @@ rc_key <- rc_key[rc_key$dataset=="2006" | rc_key$dataset=="2008"| rc_key$dataset
 jim_data <- read.dta13("~/Dropbox/CCES_candidates/Input/election_results_2006_2016.dta")
 
 #rename some variables
-jim_data <- jim_data  %>%
+jim_data <- jim_data  |>
   rename(dist_up=dist,
          st=state)
 
@@ -42,11 +42,11 @@ cands_2018 <- read_excel("~/Dropbox/CCES_candidates/Input/js-extension_by-cand_2
 cands_2018$year <-2018
 
 #limit the data to vaiables we need
-cands_2018 <- cands_2018 %>%
+cands_2018 <- cands_2018 |>
   select(cd, name, year, candidatevotes, inc, w_g, u_g)
 
 #create some variables for the merge
-cands_2018 <- cands_2018 %>%
+cands_2018 <- cands_2018 |>
   separate(cd, c("st","dist_up"), sep = "-")
 cands_2018$dist_up <- as.numeric(cands_2018$dist_up)
 

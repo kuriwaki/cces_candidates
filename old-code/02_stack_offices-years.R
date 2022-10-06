@@ -23,11 +23,11 @@ cand_20g <- read_dta("data/intermediate/2020_govstateexec.dta")
 
 # Binding data --------
 
-cand_all <- bind_rows(cand_16, cand_18, cand_20, cand_20g) %>%
+cand_all <- bind_rows(cand_16, cand_18, cand_20, cand_20g) |>
   arrange(year, office, state, dist)
 
 # Limit to necessary and rename ------
-cand <- cand_all %>%
+cand <- cand_all |>
   select(year, state, office, dist, type, nextup,
          party, name,
          inc, cand_all = vote_g, won = w_g)

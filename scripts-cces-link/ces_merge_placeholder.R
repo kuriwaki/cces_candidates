@@ -7,9 +7,9 @@ library(haven)
 
 cand20 <- read_dta("data/intermediate/2020_uspresident-congress_JC-SK.dta")
 
-cand20 <- cand20 %>%  # Creating last name variable
+cand20 <- cand20 |>  # Creating last name variable
   rename(dist_up = dist, # Standardizing district and state abb variables
-         st = state) %>%
+         st = state) |>
   mutate(namelast = gsub(",.*$", "", name),
          namelast = word(namelast, -1),
          namelast = trimws(namelast),
@@ -71,7 +71,7 @@ cand20 <- cand20 %>%  # Creating last name variable
            TRUE ~ dist_up
          ))
 
-h_cand20 <- cand20 %>% # Creating a House subset
+h_cand20 <- cand20 |> # Creating a House subset
   filter(office == "H")
 
 # Loading in RC Key data --------------------------------------------------
@@ -79,7 +79,7 @@ h_cand20 <- cand20 %>% # Creating a House subset
 
 load("data/candidates_key.RData")
 
-rc_key_2020 <- rc_key %>%
+rc_key_2020 <- rc_key |>
   filter(dataset == "2020",
          !is.na(name))
 
@@ -94,6 +94,6 @@ check <- anti_join(rc_key_2020,
                    h_cand20,
                    by = c("st", "dist_up", "namelast", "year"))
 
-uq_check <- check %>%
+uq_check <- check |>
   distinct(name,
            .keep_all = TRUE)

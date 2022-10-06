@@ -14,8 +14,8 @@ jim_data2018 <- haven::read_dta("~/Dropbox/CCES_candidates/Input/election_result
 
 
 # make the 2018 election data the same format at the other years
-jim_data2018 <- jim_data2018 %>%
-  group_by(state, year, office, dist, type, name) %>%
+jim_data2018 <- jim_data2018 |>
+  group_by(state, year, office, dist, type, name) |>
   summarize(
     vote_g = sum(vote_g),
     party = str_c(party, collapse = ", "),
@@ -28,10 +28,10 @@ jim_data2018 <- jim_data2018 %>%
 # Only keep the offices of interest and even years. Make new variables for "house dist" so that we don't
 # incorrectly match the senate and governor observations.
 
-jim_data <- bind_rows(jim_data, jim_data2018) %>% 
+jim_data <- bind_rows(jim_data, jim_data2018) |> 
   filter(office %in% c("H", "S", "G"),
-         year %% 2 == 0) %>% 
-  mutate(dist = replace(dist, office == "S", NA)) %>% 
+         year %% 2 == 0) |> 
+  mutate(dist = replace(dist, office == "S", NA)) |> 
   select(-chk_name, -u_g, -nextup) # remove names we will not use
 
 ###########################################
@@ -39,7 +39,7 @@ jim_data <- bind_rows(jim_data, jim_data2018) %>%
 ###########################################
 
 # rename some variables
-jim_data <- jim_data %>%
+jim_data <- jim_data |>
   rename(
     dist_up = dist,
     st = state
@@ -54,7 +54,7 @@ jim_data$namelast <- trimws(jim_data$namelast)
 ###########################################
 # Simple Version of Party  --------
 ###########################################
-jim_data <- jim_data %>% 
+jim_data <- jim_data |> 
   mutate(party_short = recode(party, 
                               Indep = "I",
                               IDP = "I",
@@ -470,13 +470,13 @@ jim_data$inc[jim_data$year==2014 & jim_data$office=="S" & jim_data$st=="WV"] <- 
 
 # COLLAPSE
 # Keep the observation that combines the party votes and create the variables of interest
-jim_data <- jim_data %>%
-  group_by(year, st, dist_up, office, type, name) %>%
-  filter(multiple_parties == max(multiple_parties)) %>%
-  group_by(year, st, dist_up, office, type) %>%
-  mutate(totalvotes = sum(vote_g, na.rm = TRUE))  %>%
+jim_data <- jim_data |>
+  group_by(year, st, dist_up, office, type, name) |>
+  filter(multiple_parties == max(multiple_parties)) |>
+  group_by(year, st, dist_up, office, type) |>
+  mutate(totalvotes = sum(vote_g, na.rm = TRUE))  |>
   select(-multiple_parties)
-# group_by(year, st, dist_up, office, name)#  %>%
+# group_by(year, st, dist_up, office, name)#  |>
 # mutate(votepct = vote_g / totalvotes)
 # Save -----
 haven::write_dta(jim_data, "~/Dropbox/CCES_candidates/Output/CandidateLevel_Candidates.dta")
