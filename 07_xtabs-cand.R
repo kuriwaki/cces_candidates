@@ -86,7 +86,7 @@ xtabs(~ year + party, js_fct, subset = (office == "S"), drop.unused.levels = TRU
 # party formal
 js_fct  |>
   filter(office != "P") |>
-  mutate(party_formal = fct_relevel(party_formal, "D", "R", "Lbt", "Grn", "I")) |>
+  mutate(party_formal = fct_relevel(party_formal, "D", "R", "Lbt", "Grn", "I")) %>%
   xtabs(~ party_formal + office, .) |>
   fmt_xtab("Office", long = TRUE, rowname = "party-formal") |>
   wri_xtab("party-formal_by-office")
@@ -94,7 +94,7 @@ js_fct  |>
 
 # office
 jsdat  |>
-  mutate(office = fct_relevel(factor(office), "P", "S", "H", "G")) |>
+  mutate(office = fct_relevel(factor(office), "P", "S", "H", "G")) %>%
   xtabs(~ year + office, .) |>
   fmt_xtab("office") |>
   wri_xtab("office")

@@ -22,7 +22,15 @@ pres_fmt <- pres_raw |>
     candidatevotes
   ) |>
   mutate(
+    party = replace(party, party_formal == "Working Families", "D"),
+    party = replace(party, party_formal == "Women's Equality" & state == "NY", "D"),
+    party = replace(party, party_formal == "Independence" & state == "NY" & year %in% c(2008), "R"),
+    party = replace(party, party_formal == "Independence" & state == "NY" & year %in% c(2016), "Lbt"),
+    party = replace(party, party_formal == "Conservative", "R"),
+    # writins
     party = replace(party, (writein), "W-I"),
+    candidate = replace(candidate, writein, "W-I"),
+    party_formal = replace(party_formal, writein, NA_character_),
     name = recode(
       candidate,
       `OBAMA, BARACK H.` = "OBAMA, BARACK",
@@ -46,6 +54,11 @@ pres_fmt <- pres_raw |>
            inc,
            candidatevotes)
 
+# collapse fusion
+pres_fmt <- pres_fmt |>
+  group_by(year, state, party, name, inc) |>
+  summarize(party_formal = str_c(as.character(party_formal), collapse = ", "),
+            candidatevotes = sum(candidatevotes, na.rm = TRUE))
 
 # drop
 # - candidates with less than 10 votes
