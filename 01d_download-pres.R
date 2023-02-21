@@ -23,6 +23,9 @@ pres_fmt <- pres_raw |>
   ) |>
   mutate(
     party = replace(party, party_formal == "Working Families", "D"),
+    party = replace(party, party_formal == "Women's Equality" & state == "NY", "D"),
+    party = replace(party, party_formal == "Independence" & state == "NY" & year %in% c(2008), "R"),
+    party = replace(party, party_formal == "Independence" & state == "NY" & year %in% c(2016), "Lbt"),
     party = replace(party, party_formal == "Conservative", "R"),
     # writins
     party = replace(party, (writein), "W-I"),

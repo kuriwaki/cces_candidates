@@ -210,10 +210,9 @@ year,state,party,name,inc,party_formal,candidatevotes
 2008,NY,Lbt,"BARR, BOB",0,Lbt,19596
 2008,NY,Other,"HARRIS, JAMES",0,Socialist Workers,3615
 2008,NY,Other,"LA RIVA, GLORIA ESTELLA",0,Socialism And Liberation Party,1639
-2008,NY,Other,"MCCAIN, JOHN S.",0,Independence,163973
 2008,NY,Other,"MCKINNEY, CYNTHIA",0,Grn,12801
 2008,NY,Other,"NADER, RALPH",0,Populist,41249
-2008,NY,R,"MCCAIN, JOHN S.",0,"R, Conservative",2588798
+2008,NY,R,"MCCAIN, JOHN S.",0,"R, Conservative, Independence",2752771
 2008,OH,D,"OBAMA, BARACK",0,D,2940044
 2008,OH,Lbt,"BARR, BOB",0,Lbt,19917
 2008,OH,Other,"BALDWIN, CHARLES (CHUCK)",0,Constitution Party,12565
@@ -770,10 +769,8 @@ year,state,party,name,inc,party_formal,candidatevotes
 2016,NV,Other,"DE LA FUENTE, ROQUE (ROCKY)",0,No Party Affiliation,2552
 2016,NV,Other,"KOPITKE, KYLE KENLEY",0,Independent American,5268
 2016,NV,R,"TRUMP, DONALD J.",0,R,512058
-2016,NY,D,"CLINTON, HILLARY",0,"D, Working Families",4519830
-2016,NY,Lbt,"JOHNSON, GARY",0,Lbt,57442
-2016,NY,Other,"CLINTON, HILLARY",0,Women's Equality,36294
-2016,NY,Other,"JOHNSON, GARY",0,Independence,119156
+2016,NY,D,"CLINTON, HILLARY",0,"D, Working Families, Women's Equality",4556124
+2016,NY,Lbt,"JOHNSON, GARY",0,"Independence, Lbt",176598
 2016,NY,Other,"STEIN, JILL",0,Grn,107934
 2016,NY,R,"TRUMP, DONALD J.",0,"R, Conservative",2819534
 2016,OH,D,"CLINTON, HILLARY",0,D,2394164
