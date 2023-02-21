@@ -15,8 +15,7 @@ fmt_xtab <- function(xtbl, name, long = FALSE, rowname = "year") {
 
   tab |>
   str_replace("XXXXX", name) |>
-    str_replace("rowname", rowname) |>
-    return()
+    str_replace("rowname", rowname)
 }
 
 wri_xtab <- function(tbl, name, dir = "guide/Tables/cands") {
