@@ -327,7 +327,7 @@ cands_fusion_pre18 <- jsdat_all |>
   semi_join(distinct(entries_fusion_pre18, year, office, state, dist, type, name)) |>
   mutate(drop = !str_detect(party_formal, ",")) |>  # we will flag the candidates to DROP. This is candidates who are NOT combined counts.
   mutate(drop = replace(drop, name == "LABATE, STEPHEN A." & party_formal != "R,Tax,C,Indep" & year == 2012 & state == "NY", TRUE),
-         drop = replace(drop, name == "DIOGUARDI, JOSEPH J." & party_formal != "C,Taxp" & year == 2010 & state == "NY", TRUE),
+         drop = replace(drop, name == "DIOGUARDI, JOSEPH J." & party_formal != "R,C,Taxp" & year == 2010 & state == "NY", TRUE),
          drop = replace(drop, name == "LALLY, GRANT M." & party_formal != "R,C,Lbt" & year == 2014 & state == "NY", TRUE))
 
 
