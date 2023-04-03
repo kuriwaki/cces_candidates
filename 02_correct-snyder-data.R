@@ -184,6 +184,37 @@ jsdat <- jsdat |>
 house_append <- read.csv("data/intermediate/cand_house_append.csv")
 jsdat <- bind_rows(jsdat, house_append)
 
+# Corrections to 1990-2005 ------------------------------------------------
+
+js1990 <- js1990_raw |>
+  filter(year < 2006)
+
+empty <- js1990 |>
+  filter(is.na(vote_g))
+
+# Lot's of Louisiana to manually figure out
+
+nowin <- js1990 |>
+  group_by(year, state, office, dist) |>
+  summarise(win = sum(w_g)) |>
+  filter(win == 1)
+
+# At least one winner per contest
+
+hdist <- js1990 |>
+  filter(office == "H") |>
+  group_by(year) |>
+  summarise(win = sum(w_g))
+
+# Pretty good numbers - should check this against Brookings/Wikipedia
+
+sdist <- js1990 |>
+  filter(office == "S") |>
+  group_by(year) |>
+  summarise(win = sum(w_g))
+
+# Pretty good numbers - should check this against Brookings/Wikipedia
+
 # write
 write_rds(jsdat, "data/intermediate/snyder_2006-2020.rds")
 
