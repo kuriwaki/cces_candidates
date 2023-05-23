@@ -15,10 +15,10 @@
 
 
 \date{\vspace{-0.2in} \normalsize Version 1.0 (September 2021)}
-	
+
 
 \begin{document}
-\maketitle 
+\maketitle
 
 \vspace{-0.2in}
 
@@ -33,7 +33,7 @@ Cha, Jeremiah, Shiro Kuriwaki, and James M. Snyder, Jr., 2021, ``Candidates in A
 \end{center}
 \smallskip
 
-Between 2006 and 2020 alone, there were over 4,000 races for Congress and Governor in the general election, in which \input{Ns/all_cands}\unskip \ Democratic and Republican candidates ran for office.  
+Between 2006 and 2020 alone, there were over 4,000 races for Congress and Governor in the general election, in which \input{Ns/all_cands}\unskip \ Democratic and Republican candidates ran for office.
 While many existing efforts compile these election results, few include standardized candidate names across years and offices, candidate incumbency status, and elections for different offices and years combined into a single file.
 
 We provide a candidate-level dataset that is comprehensive for Presidential, Congressional and gubernatorial contests between 2006 and 2020 with standardized names for each unique candidate. We also record party, incumbency, vote totals, and election results. For example:
@@ -48,12 +48,12 @@ We provide a candidate-level dataset that is comprehensive for Presidential, Con
 
 \section{Data Sources and Coverage}
 
-Most of the candidate-level data -- names and incumbency status -- is a subset of the data collected and manually coded by James M. Snyder, Jr. Vote counts and candidate listings of Congress are entered from the Official Election Statistics compiled by the House Clerk (\url{https://history.house.gov/Institution/Election-Statistics/Election-Statistics/}).  
+Most of the candidate-level data -- names and incumbency status -- is a subset of the data collected and manually coded by James M. Snyder, Jr. Vote counts and candidate listings of Congress are entered from the Official Election Statistics compiled by the House Clerk (\url{https://history.house.gov/Institution/Election-Statistics/Election-Statistics/}).
 
-Election results for the state office of the Governor are collected from statements of votes by the Secretary of State of each state. We include the odd-year elections in Virginia, New Jersey, Kentucky, Mississippi, and Louisiana. 
+Election results for the state office of the Governor are collected from statements of votes by the Secretary of State of each state. We include the odd-year elections in Virginia, New Jersey, Kentucky, Mississippi, and Louisiana.
 Recall elections (Wisconsin 2012, California 2021) are not included.
 
-Presidential vote counts are taken from the data compiled by the MIT Election Data Science Lab (\url{https://doi.org/10.7910/DVN/42MVDX}), which in turn mostly sources from the Official Election Statistics by the House Clerk. 
+Presidential vote counts are taken from the data compiled by the MIT Election Data Science Lab (\url{https://doi.org/10.7910/DVN/42MVDX}), which in turn mostly sources from the Official Election Statistics by the House Clerk.
 
 Incumbency is determined by a programmatic count of whether the name is repeated across years, and by manual inspection of the biography of each candidate.
 
@@ -68,9 +68,9 @@ Our code for recoding and editing the data is open-source in a Github repository
 
 To identify a single election, group by \texttt{year}, \texttt{state}, \texttt{office}, \texttt{dist}, and \texttt{type} (General vs. Special).  To isolate the set of candidates who won a seat in an election cycle, group by subset by \texttt{year}, \texttt{state}, \texttt{office}, and \texttt{type}, then subset by \texttt{won}.
 
-To identify a single candidate across office and time, group by \texttt{state} and  \texttt{name\_snyder}. 
+To identify a single candidate across office and time, group by \texttt{state} and  \texttt{name\_snyder}.
 As we discuss in detail in this documentation, the candidate names are standardized (by Snyder's coding) so that the same candidate has the same spelling across years and office.
-In very rare instances, a candidate for a major party runs for office two different states. For example, Mitt Romney ran for Governor of Massachusetts, President, and U.S. Senator from Utah. For these candidates, group by \texttt{name\_snyder}. 
+In very rare instances, a candidate for a major party runs for office two different states. For example, Mitt Romney ran for Governor of Massachusetts, President, and U.S. Senator from Utah. For these candidates, group by \texttt{name\_snyder}.
 % \clearpage
 \section{Variable Descriptions and Tabulations}
 
@@ -78,7 +78,7 @@ In very rare instances, a candidate for a major party runs for office two differ
 
 \subsection*{\texttt{office}}
 
-The office the candidate is running for. Following the Snyder data, we use \texttt{H} for the US House of Representatives, \texttt{S} for the US Senate, and \texttt{G} for Governor. 
+The office the candidate is running for. Following the Snyder data, we use \texttt{H} for the US House of Representatives, \texttt{S} for the US Senate, and \texttt{G} for Governor.
 
 
     \begin{tabularx}{\linewidth}{C}
@@ -87,9 +87,9 @@ The office the candidate is running for. Following the Snyder data, we use \text
 
 \subsection*{\texttt{dist}}
 
-The district the candidate is running for. U.S. House races in at-large districts are numbered 1 instead of 0 or ``-AL''. 
+The district the candidate is running for. U.S. House races in at-large districts are numbered 1 instead of 0 or ``-AL''.
 
- For U.S. Senate candidates, the district variable denotes the class of the particular Senate seat (e.g. Dianne Feinstein has a \texttt{dist} value of 1 since her seat is part of Senate Class I). 
+ For U.S. Senate candidates, the district variable denotes the class of the particular Senate seat (e.g. Dianne Feinstein has a \texttt{dist} value of 1 since her seat is part of Senate Class I).
 
 \begin{table}[!h]
 \centering
@@ -103,7 +103,7 @@ The district the candidate is running for. U.S. House races in at-large district
 
 \subsection*{\texttt{type}}
 
-The type of election the candidate is running in. We use \texttt{G} to denote general election candidates and \texttt{S} to denote special election candidates. Candidates are said to run in special elections if they are running to serve out the term of another legislator. 
+The type of election the candidate is running in. We use \texttt{G} to denote general election candidates and \texttt{S} to denote special election candidates. Candidates are said to run in special elections if they are running to serve out the term of another legislator.
 \begin{table}[!h]
 \begin{tabularx}{\linewidth}{CCC}
     \textbf{Senate} & \textbf{House} & \textbf{Governor}\\
@@ -115,8 +115,8 @@ The type of election the candidate is running in. We use \texttt{G} to denote ge
 
 \subsection*{\texttt{runoff}}
 
-The candidate's election round. In some states (e.g. Louisiana), if no candidate receives over 50 percent of the vote, the top two candidates must run in a runoff election again to determine the winner. 
-In such a case, \emph{only the deciding contest is included}. For example, in the 2020 Georgia Senate elections, both the general and special election went to a runoff because no candidate got over 50 percent of the vote in either race. Therefore, we exclude the November election results and include the January runoff. 
+The candidate's election round. In some states (e.g. Louisiana), if no candidate receives over 50 percent of the vote, the top two candidates must run in a runoff election again to determine the winner.
+In such a case, \emph{only the deciding contest is included}. For example, in the 2020 Georgia Senate elections, both the general and special election went to a runoff because no candidate got over 50 percent of the vote in either race. Therefore, we exclude the November election results and include the January runoff.
 A runoff variable with a value of 1 denotes that the election the candidate is running in is a runoff election, while a 0 denotes that the election is not. A missing value is given for the vast majority of states in which no such runoff option is available, and a candidate can win by plurality.
 \begin{table}[!h]
 \begin{tabularx}{\linewidth}{CCC}
@@ -169,7 +169,7 @@ For example:
 Note that these names are \emph{different} from other names (1)
 on the ballot, (2) on the Clerk of the House report, or the (3) FEC. Any
 of these sources can disagree on the formatting of the names or whether
-to abbreviate a middle name. The same candidate in the same election year may 
+to abbreviate a middle name. The same candidate in the same election year may
 even have different formats in each of these sources.
 
 The Snyder formalization solves some shortcomings in the official data
@@ -215,9 +215,9 @@ For example:
 \FloatBarrier
 
 
-\subsection*{\texttt{party}} 
+\subsection*{\texttt{party}}
 
-The short party affiliation of the candidate. We use the ``short'' or colloquial party name. For example, the Democrat-Farmer-Labor Party in Minnesota is given a \texttt{D} instead of \texttt{DFL}. Candidates who ran on third party tickets in Connecticut and New York are simply given the major party name.   
+The short party affiliation of the candidate. We use the ``short'' or colloquial party name. For example, the Democrat-Farmer-Labor Party in Minnesota is given a \texttt{D} instead of \texttt{DFL}. Candidates who ran on third party tickets in Connecticut and New York are simply given the major party name.
 \begin{table}[!h]
 \begin{adjustwidth}{-4em}{-4em}
 \centering
@@ -229,7 +229,7 @@ The short party affiliation of the candidate. We use the ``short'' or colloquial
 \end{table}
 
 
-\FloatBarrier 
+\FloatBarrier
 
 \subsection*{\texttt{party\_formal}}
 The formal name of the candidate's party affiliation, for example DFL in Minnesota. Third party candidate names follow what is given in the House Clerk document or state SOS reports (for Governors), with some minor abbreviations and standardizations.
@@ -251,7 +251,7 @@ The formal name of the candidate's party affiliation, for example DFL in Minneso
 The incumbency status of the candidate. A 0 means the candidate is not an incumbent, a 1 means the candidate is an incumbent, a 2 means the candidate is an incumbent that was elected in a special election, and 3 indicates a U.S. Senator who was appointed by the Governor.
 \begin{itemize}
 \item District numberings do not matter for determining incumbency. For example, Conor Lamb who won a special election to PA-18 in March 2018 is still an incumbent when he ran in November 2018 for the re-drawn PA-17.
-\item This may differ from \textbf{the CES incumbency variable} in some redistricting cases when two incumbents were forced to run against each other. For example, in 2012 Betty Sutton (OH-13) and Jim Renacci (OH-16), both House incumbents, were forced to run in OH-16. While the CES incumbency variable (HouseCandIncumbent) lists only Sutton as the incumbent, this dataset will list both Sutton and Renacci as incumbents. 
+\item This may differ from \textbf{the CES incumbency variable} in some redistricting cases when two incumbents were forced to run against each other. For example, in 2012 Betty Sutton (OH-13) and Jim Renacci (OH-16), both House incumbents, were forced to run in OH-16. While the CES incumbency variable (HouseCandIncumbent) lists only Sutton as the incumbent, this dataset will list both Sutton and Renacci as incumbents.
 
 \end{itemize}
 
@@ -266,7 +266,7 @@ The incumbency status of the candidate. A 0 means the candidate is not an incumb
 
 \subsection*{\texttt{nextup}}
 
-The year that an incumbent candidate is up for re-election. This variable can be useful in determining tenure in office for special election candidates, who may not have served a full term. See \texttt{type} for designation of special election candidates. 		
+The year that an incumbent candidate is up for re-election. This variable can be useful in determining tenure in office for special election candidates, who may not have served a full term. See \texttt{type} for designation of special election candidates.
 
 \begin{tabularx}{\linewidth}{C}
 \textbf{Senate}\\
@@ -275,7 +275,7 @@ The year that an incumbent candidate is up for re-election. This variable can be
 
 \begin{tabularx}{\linewidth}{C}
 \textbf{House}\\
-\input{Tables/cands/nextup_H} 
+\input{Tables/cands/nextup_H}
 \end{tabularx}
 
 \begin{tabularx}{\linewidth}{C}
@@ -285,9 +285,9 @@ The year that an incumbent candidate is up for re-election. This variable can be
 
 \FloatBarrier
 
-\subsection*{\texttt{candidatevotes}} 
+\subsection*{\texttt{candidatevotes}}
 
-The number of total votes the candidate received. 
+The number of total votes the candidate received.
 \begin{itemize}
 \item For candidates running on multiple party tickets, this will be the \emph{sum} of all of their votes.  For example, in 2016, Rep. Rosa L. DeLauro (CT-03) ran as a Democrat and also ran as a Working Families Party candidate. She won 192,274 votes in the former and 21,298 votes in the latter, so her \texttt{candidatevotes} is the total, 213,572.
 \item  Florida and Oklahoma do not report the vote count for a House candidate if she won unopposed. In these cases, we have the vote count as \texttt{NA} but have the candidate winning (\texttt{won == 1}).
@@ -319,8 +319,8 @@ Total votes for all candidates in each election. This is the sum of \texttt{cand
 
 
 
-\subsection*{\texttt{won}} 
-Candidate won the general election. A 1 means the candidate won the general election, and a 0 means the candidate lost the general election. 
+\subsection*{\texttt{won}}
+Candidate won the general election. A 1 means the candidate won the general election, and a 0 means the candidate lost the general election.
 
 Presidential candidates win electoral college votes at the state level, but only win office with a majority of the college votes. Because of this ambiguity, we have left this variable missing for Presidential candidates.
 
@@ -337,7 +337,7 @@ Some of the years have more than 435 candidates winning in the House each year b
     \end{tabularx}
 
 
-The set of tables below show the \emph{party} of the candidate that \emph{won}. 
+The set of tables below show the \emph{party} of the candidate that \emph{won}.
 
     \begin{tabularx}{\linewidth}{CCC}
     \textbf{Senate} & \textbf{House} & \textbf{Governor}\\
@@ -348,12 +348,12 @@ The NC-09 House race in 2018 is listed as having no winner because it was later 
 
 % \item \texttt{data\_note}: 145 candidates were not included in the election dataset we used to collect the candidate-level variables. We still include these candidates in the supplemental data in case researchers are interested in specific districts or races. The reason for these non-merges can be broken down into four categories, listed below.
 % 		\begin{enumerate}
-% 			\item Incorrect Election: Candidates with this code  did not run in the respondent's district or state. This likely occurs because the respondent's information was incorrectly entered. 
-% 			\item Not on General Election Ballot: Candidates with this code either withdrew from the race, were disqualified, were write-in candidates, did not make it to the included runoff election, or did not receive enough votes to appear on the ballot. 
-% 			\item Unopposed in Oklahoma: In Oklahoma, unopposed candidates do not appear on the general election ballot. 
-% 			\item Missing from election data: Candidates with this code were not included in the data we used to merge in the election information. Oftentimes, this category is made up of candidates in races with jungle primaries, such as Louisiana. This also includes all candidates from Washington D.C.. 
+% 			\item Incorrect Election: Candidates with this code  did not run in the respondent's district or state. This likely occurs because the respondent's information was incorrectly entered.
+% 			\item Not on General Election Ballot: Candidates with this code either withdrew from the race, were disqualified, were write-in candidates, did not make it to the included runoff election, or did not receive enough votes to appear on the ballot.
+% 			\item Unopposed in Oklahoma: In Oklahoma, unopposed candidates do not appear on the general election ballot.
+% 			\item Missing from election data: Candidates with this code were not included in the data we used to merge in the election information. Oftentimes, this category is made up of candidates in races with jungle primaries, such as Louisiana. This also includes all candidates from Washington D.C..
 % 		\end{enumerate}
-	
+
 
 
 
@@ -364,7 +364,7 @@ The MIT Election Data Science Lab (\url{https://dataverse.harvard.edu/dataverse/
 
 % \section{Extensions: Race, Gender, and Primary Elections}
 
-Our dataset does not contain information about the gender or race of the candidates. We hope to work collect that data and combine other sources of data in the future.  In the meantime there are several related data sources users can rely on. First, Numerous years in the CES have data available on candidate race and gender for interested researchers. Please see the table below for further information regarding the availability of such information by year and where it can be located. 
+Our dataset does not contain information about the gender or race of the candidates. We hope to work collect that data and combine other sources of data in the future.  In the meantime there are several related data sources users can rely on. First, Numerous years in the CES have data available on candidate race and gender for interested researchers. Please see the table below for further information regarding the availability of such information by year and where it can be located.
 
 \begin{table}[H]
 	\footnotesize
@@ -400,7 +400,7 @@ Our dataset does not contain information about the gender or race of the candida
 
 
 Finally, other researchers have collected this data in forthcoming work. ``Separating Race and Party in Congressional
-Elections'' by Bernard Fraga (available at \url{https://www.bernardfraga.com/research}) uses hand-coded race data from Congressional general and primary elections from 2006 - 2020. ``Partisanship and Nationalization in American Elections'' by Sharif Almani and Carlos Algara (\emph{Electoral Studies}, doi: \href{https://doi.org/10.7910/DVN/DGUMFI}{\texttt{10.7910/DVN/DGUMFI}}) contains county-level partisan election data from the statewide offices of President, Governor, and Senator going back to the Civil War. 
+Elections'' by Bernard Fraga (available at \url{https://www.bernardfraga.com/research}) uses hand-coded race data from Congressional general and primary elections from 2006 - 2020. ``Partisanship and Nationalization in American Elections'' by Sharif Almani and Carlos Algara (\emph{Electoral Studies}, doi: \href{https://doi.org/10.7910/DVN/DGUMFI}{\texttt{10.7910/DVN/DGUMFI}}) contains county-level partisan election data from the statewide offices of President, Governor, and Senator going back to the Civil War.
 
 \section{Reporting Errors and Suggesting Improvements}
 
@@ -412,13 +412,13 @@ If you find any errors or ambiguities, please do not hesitate to contact us. The
 
 \begin{itemize}
 \item Dataverse v1.0: Initial Dataverse Release (2021-09-27).
-\end{itemize}	
+\end{itemize}
 
 \section{Acknowledgements}
 
-Our thanks to Stephen Ansolabehere and Jaclyn Kaslovsky for their suggestions and comments. 
+Our thanks to Stephen Ansolabehere and Jaclyn Kaslovsky for their suggestions and comments.
 
 
-	
+
 \end{document}
 
