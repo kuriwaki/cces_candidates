@@ -49,4 +49,21 @@ cand <- cand %>%
     inc = replace(inc, name_snyder == "MURRAY, JULIANNE E." & state == "DE" & office == "G" & year == 2020, 0)
   )
 
+# Fixing Issue # 35 "Standardized names -- Joe Kennedy III (MA)
+
+cand <- cand |>
+  mutate(
+    name_snyder = replace(name_snyder, name_snyder == "KENNEDY, JOSEPH P., III" & year == 2018 & office == "H", "KENNEDY, JOSEPH P. (JOE), III")
+  ) |>
+  mutate(
+    name_snyder = replace(name_snyder, name_snyder == "BEUTLER, JAIME HERRERA", "HERRERA BEUTLER, JAIME")
+    ) |>
+  mutate(
+    name_snyder = replace(name_snyder, name_snyder == "DEAN, MADELEINE", "DEAN CUNNANE, MADELEINE"),
+    name_snyder = replace(name_snyder, name_snyder == "CUNNANE, MADELEINE DEAN", "DEAN CUNNANE, MADELEINE")
+  ) |>
+  mutate(
+    name_snyder = replace(name_snyder, name_snyder == "WAKELY, TOMMY", "WAKELY, THOMAS J. (TOM)")
+  )
+
 write_rds(cand, "data/intermediate/candidates_2006-2020.rds")
