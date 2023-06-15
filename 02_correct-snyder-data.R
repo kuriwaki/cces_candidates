@@ -173,7 +173,7 @@ jsdat <- jsdat |>
   filter(
     !(year == 2006 & state == "TX" & office == "H" & dist == 23 & vote_g < 24594)
   ) |>
-  mutate(type = replace(type, year == 2006 & state == "TX" & dist == 23, "S"),
+  mutate(type = replace(type, year == 2006 & state == "TX" & dist == 23, "G"),
          runoff = replace(runoff, year == 2006 & state == "TX" & dist == 23, 1),
          vote_g = replace(vote_g, year == 2006 & state == "TX" & dist == 23 & party == "R", 32217),
          vote_g = replace(vote_g, year == 2006 & state == "TX" & dist == 23 & party == "D", 38256),
