@@ -63,7 +63,7 @@ cand <- cand |>
     name_snyder = replace(name_snyder, name_snyder == "CUNNANE, MADELEINE DEAN", "DEAN CUNNANE, MADELEINE")
   ) |>
   mutate(
-    name_snyder = replace(name_snyder, name_snyder == "WAKELY, TOM", "WAKELY, THOMAS J. (TOM)")
+    name_snyder = replace(name_snyder, name_snyder == "WAKELY, TOMMY", "WAKELY, THOMAS J. (TOM)")
   )
 
 write_rds(cand, "data/intermediate/candidates_2006-2020.rds")
