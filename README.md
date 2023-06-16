@@ -9,18 +9,16 @@ Jeremiah Cha, Shiro Kuriwaki, and James M. Snyder, Jr.
 
 
 
-The goal of cces_candidates is to serve as a standardized interface for U.S. candidate metadata with a particular application to merging with the CES / CCES.
+The goal of cces_candidates is to serve as a standardized interface for U.S. candidate metadata.
 
 Although these data formally only cover 2006 and onwards, the coding rules are written so that they are mostly consistent with a historical database mainly constructed by Jim Snyder.
 
-See the [Dataverse guide/codebook](https://dataverse.harvard.edu/file.xhtml?fileId=5200343&version=1.0) for a complete guide. The following notes are all included in the guide.
+See the [Dataverse guide/codebook](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/DGDRDT) for a complete guide. The following notes are all included in the guide.
 
 ## Script and data organizations
 
 - Internal data are from internal Stata files (only shared internally for now). In some instances, a small csv is stored in the repo.
-- Scripts in the single digits (`01` - `07`) are meant for the candidates data
-- Scripts in the 10s  will be reserved for the CCES merge.
-
+- Scripts in the single digits (`01` - `08`) are meant for the candidates data
 
 
 ## Candidate Data Format
