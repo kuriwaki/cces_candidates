@@ -53,12 +53,11 @@ jsdat <- jsdat |>
     type = replace(type, state == "WY" & office == "S" & year == 2008 & dist == 1, "S"),
     dist = replace(dist, state == "LA" & office == "H" & name == "LETLOW, JULIA", 5),
     dist = replace(dist, state == "OK"   & type == "S" & office == "S" & year == 2022, 2),
-    nextup = replace(dist, state == "OK" & type == "S" & office == "S" & year == 2022, 2026),
+    nextup = replace(nextup, state == "OK" & type == "S" & office == "S" & year == 2022, 2026),
     dist = replace(dist, state == "CA" & office == "S" & year == 2022, 3),
   ) |>
   # padilla was up for 2 cycles
   tidylog::filter(!(type == "S" & state == "CA" & year == 2022 & office == "S"))
-
 
 # Fixing 2020 Georgia Special candidates
 jsdat <- jsdat |>
@@ -247,7 +246,6 @@ sdist <- js1990 |>
   group_by(year) |>
   summarise(win = sum(w_g))
 }
-
 
 # write ------
 write_rds(jsdat, "data/intermediate/snyder_2006-2022.rds")
