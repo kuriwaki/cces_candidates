@@ -1,4 +1,4 @@
-cand <- readRDS("data/intermediate/candidates_2006-2020.rds")
+cand <- readRDS("data/intermediate/candidates_2006-2022.rds")
 
 # Fixing Issue # 26 "Missing gubernatorial candidate states #26"
 
@@ -66,4 +66,4 @@ cand <- cand |>
     name_snyder = replace(name_snyder, name_snyder == "WAKELY, TOMMY", "WAKELY, THOMAS J. (TOM)")
   )
 
-write_rds(cand, "data/intermediate/candidates_2006-2020.rds")
+write_rds(cand, "data/intermediate/candidates_2006-2022.rds")

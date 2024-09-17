@@ -3,7 +3,7 @@ library(haven)
 stopifnot(packageVersion("readr") >= "2.0.0")
 
 # read data ----
-jsdat_all <- read_rds("data/intermediate/snyder_2006-2020.rds")
+jsdat_all <- read_rds("data/intermediate/snyder_2006-2022.rds")
 
 # 2020 state exec
 gov_2020 <- read_csv("data/intermediate/2020_gov.csv",
@@ -217,7 +217,7 @@ cand_level_vars <- c("year", "office", "state", "dist", "type", "runoff", "nextu
 # recode fusion people post 2018-2020 as fusion by summing their votes
 entries_fusion_post18 <- jsdat_all |>
   ungroup() |>
-  filter(year %in% c(2018, 2020), state %in% c("NY", "CT", "SC")) |>
+  filter(year %in% c(2018, 2020, 2022), state %in% c("NY", "CT", "SC")) |>
   mutate(party_formal = fct_relevel(party_formal, "D", "R")) |>
   arrange(party_formal) |>
   group_by(across(all_of(cand_level_vars))) |>
@@ -395,4 +395,4 @@ jsdat_all <- jsdat_all |>
 
 
 # Save -----
-write_rds(jsdat_all, "data/intermediate/candidates_2006-2020.rds")
+write_rds(jsdat_all, "data/intermediate/candidates_2006-2022.rds")
