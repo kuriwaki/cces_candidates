@@ -31,12 +31,16 @@ jsdat <- jsdat_raw |>
           name = "BRIDENSTINE, JAMES FREDERICK (JIM)", inc = 1,
           w_g = 1, u_g = 1,
           vote_g = NA) |>
-  add_row(state = "LA", year = 2022, office = "H", dist = 4,
-          type = "G", nextup = 2024,
-          party = "R",
-          name = "JOHNSON, MIKE",
-          w_g = 1, u_g = 1, inc = 1,
-          vote_g = NA)
+  bind_rows(
+    tibble::tribble(
+      ~state, ~year, ~office, ~dist, ~type, ~nextup, ~party,           ~name, ~w_g, ~u_g, ~inc, ~vote_g,
+      "LA", 2022, "H", 4, "G", 2024, "R", "JOHNSON, MIKE",    1,    1,    1, NA,
+      "LA", 2006, "H", 5, "G", 2008, "D", "HEARN, WILLIAMS GLORIA",0,1,0,33233,
+      "LA", 2006, "H", 5, "G", 2008, "Lbt", "SANDERS, BRENT",0,1,0,1876,
+      "LA", 2006, "H", 5, "G", 2008, "I", "WATTS, JOHN",0,1,0,1262,
+      "LA", 2006, "H", 7, "G", 2008, "D", "STAGG, MIKE",0,1,0,47133,
+    )
+  )
 
 # Senate dist issue
 jsdat <- jsdat |>
@@ -150,12 +154,18 @@ jsdat <- jsdat |>
 jsdat <- jsdat |>
   mutate(w_g = replace(w_g, office == "H" & year == 2018 & state == "NC" & dist == 9 & type == "G", NA))
 
-# removing duplicates oor not-rans
+# removing duplicates or not-rans
 jsdat <- jsdat |>
   # duplicate entry with VAN DUYNE
-  filter(!(office == "H" & state == "TX" & dist == 24 & year == 2022 & name != "VANDUYNE, BETH")) |>
+  filter(!(office == "H" & state == "TX" & dist == 24 & year == 2022 & name == "VANDUYNE, BETH")) |>
   # rest were primary losses, not in general
-  filter(!(office == "H" & state == "FL" & dist == 5 & year == 2022 & name != "RUTHERFORD, JOHN H."))
+  filter(!(office == "H" & state == "FL" & dist == 5 & year == 2022 & name != "RUTHERFORD, JOHN H.")) |>
+  # no votes
+  tidylog::filter(!(office == "H" & state == "CT" & dist == 4 & year == 2022 & name == "GOLDSTEIN, MICHAEL TED")) |>
+  # writein
+  tidylog::mutate(party = replace(party, name == "SMITH, DELLA JEAN (DJ)" & year == 2016, "W-I")) |>
+  tidylog::mutate(party = replace(party, name == "RAMSBURG, KAREN LYNN" & year == 2012, "D")) |>
+  tidylog::mutate(party = replace(party, name != "VAN HOLLEN, CHRISTOPHER (CHRIS), JR." & year == 2016 & office == "S" & party == "D" & state == "MD", "W-I"))
 
 # fix IN-02 Walorski result
 jsdat <- jsdat |>
