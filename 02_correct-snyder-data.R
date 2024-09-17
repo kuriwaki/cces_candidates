@@ -167,6 +167,10 @@ jsdat <- jsdat |>
   tidylog::mutate(party = replace(party, name == "RAMSBURG, KAREN LYNN" & year == 2012, "D")) |>
   tidylog::mutate(party = replace(party, name != "VAN HOLLEN, CHRISTOPHER (CHRIS), JR." & year == 2016 & office == "S" & party == "D" & state == "MD", "W-I"))
 
+# add incumbency to SD senate
+jsdat <- jsdat |>
+  mutate(inc = replace(inc, office == "S" & state == "SD" & year == 2014, 0))
+
 # fix IN-02 Walorski result
 jsdat <- jsdat |>
   mutate(w_g = replace(w_g, name == "STEURY, PAUL D." & office == "H" & year == 2022, 0))
