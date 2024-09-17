@@ -30,6 +30,12 @@ jsdat <- jsdat_raw |>
           party = "R",
           name = "BRIDENSTINE, JAMES FREDERICK (JIM)", inc = 1,
           w_g = 1, u_g = 1,
+          vote_g = NA) |>
+  add_row(state = "LA", year = 2022, office = "H", dist = 4,
+          type = "G", nextup = 2024,
+          party = "R",
+          name = "JOHNSON, MIKE",
+          w_g = 1, u_g = 1, inc = 1,
           vote_g = NA)
 
 # Senate dist issue
@@ -145,6 +151,16 @@ jsdat <- jsdat |>
 jsdat <- jsdat |>
   mutate(w_g = replace(w_g, office == "H" & year == 2018 & state == "NC" & dist == 9 & type == "G", NA))
 
+# removing duplicates oor not-rans
+jsdat <- jsdat |>
+  # duplicate entry with VAN DUYNE
+  filter(!(office == "H" & state == "TX" & dist == 24 & year == 2022 & name != "VANDUYNE, BETH")) |>
+  # rest were primary losses, not in general
+  filter(!(office == "H" & state == "FL" & dist == 5 & year == 2022 & name != "RUTHERFORD, JOHN H."))
+
+# fix IN-02 Walorski result
+jsdat <- jsdat |>
+  mutate(w_g = replace(w_g, name == "STEURY, PAUL D." & office == "H" & year == 2022, 0))
 
 # removing entries without names
 jsdat <- jsdat |>
