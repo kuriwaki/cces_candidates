@@ -6,7 +6,7 @@ stopifnot(packageVersion("readr") >= "2.0.0")
 jsdat_all <- read_rds("data/intermediate/snyder_2006-2022.rds")
 
 # 2020 state exec
-gov_2020 <- read_csv("data/intermediate/2020_gov.csv",
+gov_2020_2022 <- read_csv("data/intermediate/2020_2022_gov.csv",
                      show_col_types = FALSE) |>
   mutate(party_formal = party) # this was basically what I was entering
 
@@ -374,7 +374,7 @@ jsdat_all <- jsdat_all |>
   # ONLY keep three offices
   filter(office %in% c("S", "H", "G", "P")) |>
   # ADD GOVERNOR
-  bind_rows(gov_2020) |>
+  bind_rows(gov_2020_2022) |>
   # ADD PRESIDENT
   bind_rows(pres_2008_2020) |>
   # BULK EDIT PARTY SHORT
