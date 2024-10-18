@@ -38,6 +38,8 @@ jsdat_all <- jsdat_all |>
 
 # party_formal coding
 jsdat_all <- jsdat_all |>
+  # ADD GOVERNOR
+  bind_rows(gov_2020_2022) |>
   mutate(party_formal = party) |>
   mutate(
     party_formal = recode(party_formal,
@@ -214,7 +216,7 @@ jsdat_all <- jsdat_all |>
 
 cand_level_vars <- c("year", "office", "state", "dist", "type", "runoff", "nextup", "name")
 
-# recode fusion people post 2018-2020 as fusion by summing their votes
+# recode fusion people post 2018-2022 as fusion by summing their votes
 entries_fusion_post18 <- jsdat_all |>
   ungroup() |>
   filter(year %in% c(2018, 2020, 2022), state %in% c("NY", "CT", "SC")) |>
@@ -373,8 +375,6 @@ jsdat_all <- jsdat_all |>
 jsdat_all <- jsdat_all |>
   # ONLY keep three offices
   filter(office %in% c("S", "H", "G", "P")) |>
-  # ADD GOVERNOR
-  bind_rows(gov_2020_2022) |>
   # ADD PRESIDENT
   bind_rows(pres_2008_2020) |>
   # BULK EDIT PARTY SHORT
@@ -382,7 +382,7 @@ jsdat_all <- jsdat_all |>
   # VARIABLE RENAME
   mutate(
     candidatevotes = coalesce(candidatevotes, vote_g),
-    won = coalesce(won, w_g)) |>
+    won = coalesce(w_g)) |>
   select(-vote_g, -w_g, -u_g) |>
   rename(name_snyder = name) |>
   # TOTAL VOTE
