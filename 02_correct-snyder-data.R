@@ -222,6 +222,15 @@ jsdat <- jsdat |>
          vote_g = replace(vote_g, name == "JINDAL, BOBBY" & office == "G" & year == 2011 & state == "LA", 673239)
          )
 
+# Fixing FLORES, MAYRA
+
+jsdat <- jsdat |>
+  mutate(
+    vote_g = replace(vote_g, name == "FLORES, MAYRA" & year == 2022 & type == "S", 14799)
+  )
+
+# Adding Ryan, Pat
+
 # addressing issue 25: TX-23 special election runoff
 jsdat <- jsdat |>
   filter(
