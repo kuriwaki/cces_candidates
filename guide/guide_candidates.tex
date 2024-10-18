@@ -252,7 +252,7 @@ The incumbency status of the candidate. A 0 means the candidate is not an incumb
 \begin{itemize}
 \item District numberings do not matter for determining incumbency. For example, Conor Lamb who won a special election to PA-18 in March 2018 is still an incumbent when he ran in November 2018 for the re-drawn PA-17.
 \item This may differ from \textbf{the CES incumbency variable} in some redistricting cases when two incumbents were forced to run against each other. For example, in 2012 Betty Sutton (OH-13) and Jim Renacci (OH-16), both House incumbents, were forced to run in OH-16. While the CES incumbency variable (HouseCandIncumbent) lists only Sutton as the incumbent, this dataset will list both Sutton and Renacci as incumbents.
-
+\item If a special election and general election are held on the same day (e.g., NY-29's House election in 2010), the special election results on incumbency (inc = 2) do not carry over to the general election incumbency status.
 \end{itemize}
 
     \begin{tabularx}{\linewidth}{CCC}
