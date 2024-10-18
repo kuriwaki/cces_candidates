@@ -9,7 +9,7 @@ library(tidyverse)
 source("00b_xtabs-functions.R")
 
 # data ---
-jsdat <- read_dta("release/candidates_2006-2020.dta") |>
+jsdat <- read_dta("release/candidates_2006-2022.dta") |>
   mutate(won_by_type = str_c(type, won, sep = "-"),
          wonparty_by_type = str_c(type, won, sep = "-"))
 
@@ -142,7 +142,7 @@ xtabs(~ year + won, jsdat, subset = office == "H") |>
 xtabs(~ year + won, jsdat, subset = office == "S") |>
   fmt_xtab("won") |> wri_xtab("won_S")
 
-# GEnerals -- won
+# Generals -- won
 xtabs(~ year + won, jsdat, subset = (office == "G" & type == "G")) |>
   fmt_xtab("\\\\shortstack{won\\\\\\\\ (generals)}") |> wri_xtab("won_G_gen")
 xtabs(~ year + won, jsdat, subset = (office == "H" & type == "G")) |>

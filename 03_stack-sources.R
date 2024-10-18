@@ -3,10 +3,10 @@ library(haven)
 stopifnot(packageVersion("readr") >= "2.0.0")
 
 # read data ----
-jsdat_all <- read_rds("data/intermediate/snyder_2006-2020.rds")
+jsdat_all <- read_rds("data/intermediate/snyder_2006-2022.rds")
 
 # 2020 state exec
-gov_2020 <- read_csv("data/intermediate/2020_gov.csv",
+gov_2020_2022 <- read_csv("data/intermediate/2020_2022_gov.csv",
                      show_col_types = FALSE) |>
   mutate(party_formal = party) # this was basically what I was entering
 
@@ -38,6 +38,8 @@ jsdat_all <- jsdat_all |>
 
 # party_formal coding
 jsdat_all <- jsdat_all |>
+  # ADD GOVERNOR
+  bind_rows(gov_2020_2022) |>
   mutate(party_formal = party) |>
   mutate(
     party_formal = recode(party_formal,
@@ -214,10 +216,10 @@ jsdat_all <- jsdat_all |>
 
 cand_level_vars <- c("year", "office", "state", "dist", "type", "runoff", "nextup", "name")
 
-# recode fusion people post 2018-2020 as fusion by summing their votes
+# recode fusion people post 2018-2022 as fusion by summing their votes
 entries_fusion_post18 <- jsdat_all |>
   ungroup() |>
-  filter(year %in% c(2018, 2020), state %in% c("NY", "CT", "SC")) |>
+  filter(year %in% c(2018, 2020, 2022), state %in% c("NY", "CT", "SC")) |>
   mutate(party_formal = fct_relevel(party_formal, "D", "R")) |>
   arrange(party_formal) |>
   group_by(across(all_of(cand_level_vars))) |>
@@ -373,8 +375,6 @@ jsdat_all <- jsdat_all |>
 jsdat_all <- jsdat_all |>
   # ONLY keep three offices
   filter(office %in% c("S", "H", "G", "P")) |>
-  # ADD GOVERNOR
-  bind_rows(gov_2020) |>
   # ADD PRESIDENT
   bind_rows(pres_2008_2020) |>
   # BULK EDIT PARTY SHORT
@@ -382,7 +382,7 @@ jsdat_all <- jsdat_all |>
   # VARIABLE RENAME
   mutate(
     candidatevotes = coalesce(candidatevotes, vote_g),
-    won = coalesce(won, w_g)) |>
+    won = coalesce(w_g)) |>
   select(-vote_g, -w_g, -u_g) |>
   rename(name_snyder = name) |>
   # TOTAL VOTE
@@ -395,4 +395,4 @@ jsdat_all <- jsdat_all |>
 
 
 # Save -----
-write_rds(jsdat_all, "data/intermediate/candidates_2006-2020.rds")
+write_rds(jsdat_all, "data/intermediate/candidates_2006-2022.rds")

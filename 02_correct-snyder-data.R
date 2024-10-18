@@ -3,11 +3,14 @@ library(haven)
 
 # raw
 jsdat_raw <- read_dta("data/snyder/2021-07-29 sen_gov_house_2006_2020.dta")
-js1990_raw <- read_dta("data/snyder/2022-09-30 tmp_gov_sen_house_1990_2020.dta")
+js2022 <- read_dta("data/snyder/tmp_house_2021_2023.dta") |>
+  bind_rows(read_dta("data/snyder/tmp_sen_2022.dta")) |>
+  select(-month_g, -dem_rep_oth)
 
 # Changes, additions ---
 
 jsdat <- jsdat_raw |>
+  bind_rows(js2022) |>
   # https://github.com/kuriwaki/cces_candidates/issues/7: same day special
   mutate(
     type = replace(
@@ -27,13 +30,24 @@ jsdat <- jsdat_raw |>
           party = "R",
           name = "BRIDENSTINE, JAMES FREDERICK (JIM)", inc = 1,
           w_g = 1, u_g = 1,
-          vote_g = NA)
+          vote_g = NA) |>
+  bind_rows(
+    tibble::tribble(
+      ~state, ~year, ~office, ~dist, ~type, ~nextup, ~party,           ~name, ~w_g, ~u_g, ~inc, ~vote_g,
+      "LA", 2022, "H", 4, "G", 2024, "R", "JOHNSON, MIKE",    1,    1,    1, NA,
+      "LA", 2006, "H", 5, "G", 2008, "D", "HEARN, WILLIAMS GLORIA",0,1,0,33233,
+      "LA", 2006, "H", 5, "G", 2008, "Lbt", "SANDERS, BRENT",0,1,0,1876,
+      "LA", 2006, "H", 5, "G", 2008, "I", "WATTS, JOHN",0,1,0,1262,
+      "LA", 2006, "H", 7, "G", 2008, "D", "STAGG, MIKE",0,1,0,47133,
+    )
+  )
 
 # Senate dist issue
 jsdat <- jsdat |>
   group_by(state, year, office) |>
   arrange(dist) |>
   fill(dist, .direction = "down") |>
+  ungroup() |>
   mutate(
     dist = replace(dist, state == "AL" & office == "S" & type == "S" & year == 2017, 2),
     dist = replace(dist, state == "AZ" & office == "S" & type == "S" & year == 2020, 3),
@@ -41,20 +55,30 @@ jsdat <- jsdat |>
     nextup = replace(nextup, state == "GA" & office == "S" & type == "S" & year == 2020, 2022),
     type = replace(type, state == "DE" & office == "S" & year == 2010, "S"),
     type = replace(type, state == "WY" & office == "S" & year == 2008 & dist == 1, "S"),
-    dist = replace(dist, state == "LA" & office == "H" & name == "LETLOW, JULIA", 5)
-  )
+    dist = replace(dist, state == "LA" & office == "H" & name == "LETLOW, JULIA", 5),
+    dist = replace(dist, state == "OK"   & type == "S" & office == "S" & year == 2022, 2),
+    nextup = replace(nextup, state == "OK" & type == "S" & office == "S" & year == 2022, 2026),
+    dist = replace(dist, state == "CA" & office == "S" & year == 2022, 3),
+  ) |>
+  # padilla was up for 2 cycles
+  tidylog::filter(!(type == "S" & state == "CA" & year == 2022 & office == "S"))
 
 # Fixing 2020 Georgia Special candidates
 jsdat <- jsdat |>
+  # remove runoff only candidates
   mutate(
-    temp = ifelse(state == "GA" & year == 2020 & type == "S", 1, 0),
-    temp = replace(temp, name == "LOEFFLER, KELLY" | name == "WARNOCK, RAPHAEL GAMALIEL", 0)
+    temp = ifelse((state == "GA" & year %in% 2020:2022 & office == "S"), 1, 0),
+    temp = replace(temp, name %in% c("LOEFFLER, KELLY", "WARNOCK, RAPHAEL GAMALIEL",
+                                     "WALKER, HERSCHEL JUNIOR",
+                                     "OSSOFF, JON", "PERDUE, DAVID A."), 0)
   ) |>
-  filter(temp == 0) |>
+  tidylog::filter(temp == 0) |>
   select(-temp) |>
   mutate(
     vote_g = replace(vote_g, year == 2020 & state == "GA" & office == "S" & name == "LOEFFLER, KELLY", 2195841),
     vote_g = replace(vote_g, year == 2020 & state == "GA" & office == "S" & name == "WARNOCK, RAPHAEL GAMALIEL", 2289113),
+    vote_g = replace(vote_g, year == 2022 & state == "GA" & office == "S" & name == "WALKER, HERSCHEL JUNIOR", 1721244),
+    vote_g = replace(vote_g, year == 2022 & state == "GA" & office == "S" & name == "WARNOCK, RAPHAEL GAMALIEL", 1820633),
     vote_g = replace(vote_g, year == 2020 & state == "GA" & office == "S" & name == "OSSOFF, JON", 2269923),
     vote_g = replace(vote_g, year == 2020 & state == "GA" & office == "S" & name == "PERDUE, DAVID A.", 2214979)
   )
@@ -73,6 +97,7 @@ jsdat <- jsdat |>
     name != "BUCKLEY, ALLEN" | year != 2008) |>
   select(-temp) |>
   mutate(runoff = case_when(
+    state == "GA" & year == 2022 & office == "S" ~ 1, # 2022 Georgia Runoff
     state == "GA" & year == 2020 & office == "S" ~ 1, # 2020 Georgia Runoff
     state == "GA" & year == 2007 & office == "H" & dist == 10 ~ 1,
     state == "GA" & year == 2008 & office == "S" ~ 1,
@@ -129,6 +154,35 @@ jsdat <- jsdat |>
 jsdat <- jsdat |>
   mutate(w_g = replace(w_g, office == "H" & year == 2018 & state == "NC" & dist == 9 & type == "G", NA))
 
+# removing duplicates or not-rans
+jsdat <- jsdat |>
+  # duplicate entry with VAN DUYNE
+  filter(!(office == "H" & state == "TX" & dist == 24 & year == 2022 & name == "VANDUYNE, BETH")) |>
+  # rest were primary losses, not in general
+  filter(!(office == "H" & state == "FL" & dist == 5 & year == 2022 & name != "RUTHERFORD, JOHN H.")) |>
+  # no votes
+  tidylog::filter(!(office == "H" & state == "CT" & dist == 4 & year == 2022 & name == "GOLDSTEIN, MICHAEL TED")) |>
+  # writein
+  tidylog::mutate(party = replace(party, name == "SMITH, DELLA JEAN (DJ)" & year == 2016, "W-I")) |>
+  tidylog::mutate(party = replace(party, name == "RAMSBURG, KAREN LYNN" & year == 2012, "D")) |>
+  tidylog::mutate(party = replace(party, name != "VAN HOLLEN, CHRISTOPHER (CHRIS), JR." & year == 2016 & office == "S" & party == "D" & state == "MD", "W-I"))
+
+# add incumbency fixes
+jsdat <- jsdat |>
+  mutate(
+    inc = replace(inc, office == "S" & state == "MO" & year == 2016 & party %in% c("Grn", "I"), 0),
+    inc = replace(inc, office == "S" & state == "NV" & year == 2016 & party %in% c(""), 0),
+    inc = replace(inc, office == "S" & state == "SD" & year == 2014, 0),
+    inc = replace(inc, office == "S" & state == "NJ" & year == 2013, 0),
+    inc = replace(inc, office == "S" & state == "MA" & year == 2013 & party == "12 Visions Pty", 0),
+    inc = replace(inc, office == "H" & state == "LA" & year == 2021 & name == "LETLOW, JULIA", 0),
+    inc = replace(inc, office == "H" & state == "KS" & year == 2017 & name == "ROCKHOLD, CHRIS", 0),
+    inc = replace(inc, office %in% c("H", "S") & year %% 2 == 0 & party %in% c("Grn", "Lbt", "W-I", "", "US Taxpayers"), 0)
+  )
+
+# fix IN-02 Walorski result
+jsdat <- jsdat |>
+  mutate(w_g = replace(w_g, name == "STEURY, PAUL D." & office == "H" & year == 2022, 0))
 
 # removing entries without names
 jsdat <- jsdat |>
@@ -168,6 +222,15 @@ jsdat <- jsdat |>
          vote_g = replace(vote_g, name == "JINDAL, BOBBY" & office == "G" & year == 2011 & state == "LA", 673239)
          )
 
+# Fixing FLORES, MAYRA
+
+jsdat <- jsdat |>
+  mutate(
+    vote_g = replace(vote_g, name == "FLORES, MAYRA" & year == 2022 & type == "S", 14799)
+  )
+
+# Adding Ryan, Pat
+
 # addressing issue 25: TX-23 special election runoff
 jsdat <- jsdat |>
   filter(
@@ -184,7 +247,31 @@ jsdat <- jsdat |>
 house_append <- read.csv("data/intermediate/cand_house_append.csv")
 jsdat <- bind_rows(jsdat, house_append)
 
+# Missing inc values (#41)
+jsdat <- jsdat |>
+  left_join(
+    tibble::tribble(
+      ~state, ~year, ~office,                               ~name, ~inc,
+      "IN",  2012,     "G",                   "BONEHAM, RUPERT",  0,
+      "IN",  2012,     "G",                    "GREGG, JOHN R.",  0,
+      "KY",  2015,     "G",                       "BEVIN, MATT",  0,
+      "KY",  2015,     "G",                      "CURTIS, DREW",  0,
+      "LA",  2015,     "G",                 "EDWARDS, JOHN BEL",  0,
+      "MO",  2016,     "G",                         "FITZ, DON",  0,
+      "MO",  2016,     "G", "TURILLI, LESTER BENTON (LES), JR.",  0,
+      "VA",  2013,     "G",               "MCAULIFFE, TERRY R.",  0,
+      "VA",  2013,     "G",                 "SARVIS, ROBERT C.",  0
+    ),
+    by = c("state", "year", "office", "name"),
+    relationship = "one-to-one"
+  ) |>
+  mutate(inc = coalesce(inc.y, inc.x),
+         inc.x = NULL,
+         inc.y = NULL)
+
+if (FALSE) {
 # Corrections to 1990-2005 ------------------------------------------------
+js1990_raw <- read_dta("data/snyder/2022-09-30 tmp_gov_sen_house_1990_2020.dta")
 
 js1990 <- js1990_raw |>
   filter(year < 2006)
@@ -212,9 +299,8 @@ sdist <- js1990 |>
   filter(office == "S") |>
   group_by(year) |>
   summarise(win = sum(w_g))
+}
 
-# Pretty good numbers - should check this against Brookings/Wikipedia
-
-# write
-write_rds(jsdat, "data/intermediate/snyder_2006-2020.rds")
+# write ------
+write_rds(jsdat, "data/intermediate/snyder_2006-2022.rds")
 

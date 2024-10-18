@@ -14,7 +14,7 @@
 % \affil[*]{\url{https://github.com/kuriwaki/cces_candidates} or email \href{mailto:shirokuriwaki@gmail.com}{\texttt{shirokuriwaki@gmail.com}}}
 
 
-\date{\vspace{-0.2in} \normalsize Version 2.0 (June 2023)}
+\date{\vspace{-0.2in} \normalsize Version 3.0 (October 2024)}
 
 
 \begin{document}
@@ -28,15 +28,15 @@
 
 \emph{Please cite as: }
 
-Cha, Jeremiah, Shiro Kuriwaki, and James M. Snyder, Jr., 2023, ``Candidates in American General Elections'', Harvard Dataverse. \textsc{doi}: \href{https://doi.org/10.7910/DVN/DGDRDT}{\texttt{10.7910/DVN/DGDRDT}}.
+Cha, Jeremiah, Shiro Kuriwaki, and James M. Snyder, Jr., 2024, ``Candidates in American General Elections'', Harvard Dataverse. \textsc{doi}: \href{https://doi.org/10.7910/DVN/DGDRDT}{\texttt{10.7910/DVN/DGDRDT}}.
 \end{minipage}
 \end{center}
 \smallskip
 
-Between 2006 and 2020 alone, there were over 4,000 races for Congress and Governor in the general election, in which \input{Ns/all_cands}\unskip \ Democratic and Republican candidates ran for office.
+Between 2006 and 2022, there were over 4,000 races for Congress and Governor in the general election, in which \input{Ns/all_cands}\unskip \ Democratic and Republican candidates ran for office.
 While many existing efforts compile these election results, few include standardized candidate names across years and offices, candidate incumbency status, and elections for different offices and years combined into a single file.
 
-We provide a candidate-level dataset that is comprehensive for Presidential, Congressional and gubernatorial contests between 2006 and 2020 with standardized names for each unique candidate. We also record party, incumbency, vote totals, and election results. For example:
+We provide a candidate-level dataset that is comprehensive for Presidential, Congressional and gubernatorial contests between 2006 and 2022 with standardized names for each unique candidate. We also record party, incumbency, vote totals, and election results. For example:
 
 \begin{table}[!h]
 \centering
@@ -252,7 +252,7 @@ The incumbency status of the candidate. A 0 means the candidate is not an incumb
 \begin{itemize}
 \item District numberings do not matter for determining incumbency. For example, Conor Lamb who won a special election to PA-18 in March 2018 is still an incumbent when he ran in November 2018 for the re-drawn PA-17.
 \item This may differ from \textbf{the CES incumbency variable} in some redistricting cases when two incumbents were forced to run against each other. For example, in 2012 Betty Sutton (OH-13) and Jim Renacci (OH-16), both House incumbents, were forced to run in OH-16. While the CES incumbency variable (HouseCandIncumbent) lists only Sutton as the incumbent, this dataset will list both Sutton and Renacci as incumbents.
-
+\item If a special election and general election are held on the same day (e.g., NY-29's House election in 2010), the special election results on incumbency (inc = 2) do not carry over to the general election incumbency status.
 \end{itemize}
 
     \begin{tabularx}{\linewidth}{CCC}
@@ -280,7 +280,7 @@ The year that an incumbent candidate is up for re-election. This variable can be
 
 \begin{tabularx}{\linewidth}{C}
 \textbf{Governor}\\
-\input{Tables/cands/nextup_G}
+(Varies, with NJ, VA, MS, LA, KY having odd year elections and NH, VT having two year terms)
 \end{tabularx}
 
 \FloatBarrier
@@ -411,6 +411,7 @@ If you find any errors or ambiguities, please do not hesitate to contact us. The
 \section{Version History}
 
 \begin{itemize}
+\item Dataverse v3.0: Added 2021, 2022, 2023 general elections (2024-10-18). These do not include House special elections held during this time.
 \item Dataverse v2.0: Minor Fixes (2023-06-16). Fixes coding for fusion candidates, incumbents, special elections, and additional name inconsistencies (Github issues \href{https://github.com/kuriwaki/cces_candidates/issues/25}{25}, \href{https://github.com/kuriwaki/cces_candidates/issues/26}{26}, \href{https://github.com/kuriwaki/cces_candidates/issues/27}{27}, \href{https://github.com/kuriwaki/cces_candidates/issues/28}{28}, \href{https://github.com/kuriwaki/cces_candidates/issues/29}{29}, \href{https://github.com/kuriwaki/cces_candidates/issues/30}{30},
 \href{https://github.com/kuriwaki/cces_candidates/issues/35}{35}). Thanks to Luca Bellodi and Bill Wilkerson for finding some of these errors.
 \item Dataverse v1.0: Initial Dataverse Release (2021-09-27).
