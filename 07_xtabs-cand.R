@@ -142,7 +142,7 @@ xtabs(~ year + won, jsdat, subset = office == "H") |>
 xtabs(~ year + won, jsdat, subset = office == "S") |>
   fmt_xtab("won") |> wri_xtab("won_S")
 
-# GEnerals -- won
+# Generals -- won
 xtabs(~ year + won, jsdat, subset = (office == "G" & type == "G")) |>
   fmt_xtab("\\\\shortstack{won\\\\\\\\ (generals)}") |> wri_xtab("won_G_gen")
 xtabs(~ year + won, jsdat, subset = (office == "H" & type == "G")) |>
