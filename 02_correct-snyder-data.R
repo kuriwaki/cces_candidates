@@ -247,6 +247,28 @@ jsdat <- jsdat |>
 house_append <- read.csv("data/intermediate/cand_house_append.csv")
 jsdat <- bind_rows(jsdat, house_append)
 
+# Missing inc values (#41)
+jsdat <- jsdat |>
+  left_join(
+    tibble::tribble(
+      ~state, ~year, ~office,                               ~name, ~inc,
+      "IN",  2012,     "G",                   "BONEHAM, RUPERT",  0,
+      "IN",  2012,     "G",                    "GREGG, JOHN R.",  0,
+      "KY",  2015,     "G",                       "BEVIN, MATT",  0,
+      "KY",  2015,     "G",                      "CURTIS, DREW",  0,
+      "LA",  2015,     "G",                 "EDWARDS, JOHN BEL",  0,
+      "MO",  2016,     "G",                         "FITZ, DON",  0,
+      "MO",  2016,     "G", "TURILLI, LESTER BENTON (LES), JR.",  0,
+      "VA",  2013,     "G",               "MCAULIFFE, TERRY R.",  0,
+      "VA",  2013,     "G",                 "SARVIS, ROBERT C.",  0
+    ),
+    by = c("state", "year", "office", "name"),
+    relationship = "one-to-one"
+  ) |>
+  mutate(inc = coalesce(inc.y, inc.x),
+         inc.x = NULL,
+         inc.y = NULL)
+
 if (FALSE) {
 # Corrections to 1990-2005 ------------------------------------------------
 js1990_raw <- read_dta("data/snyder/2022-09-30 tmp_gov_sen_house_1990_2020.dta")
