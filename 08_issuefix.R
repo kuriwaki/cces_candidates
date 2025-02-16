@@ -66,4 +66,19 @@ cand <- cand |>
     name_snyder = replace(name_snyder, name_snyder == "WAKELY, TOMMY", "WAKELY, THOMAS J. (TOM)")
   )
 
+# Fixing Issue # 43
+
+name_corrections <- c(
+  "CUELLAR, HENRY" = "CUELLAR, ENRIQUE ROBERTO (HENRY)",
+  "SHERRILL, MIKIE" = "SHERRILL, REBECCA MICHELLE (MIKIE)",
+  "KELLY, TRENT" = "KELLY, JOHN TRENT",
+  "GARCIA, CHUY" = "GARCIA, JESUS G. (CHUY)",
+  "SCOTT, JAMES AUSTIN" = "SCOTT, AUSTIN",
+  "FERGUSON, DREW" = "FERGUSON, ANDREW DREW, IV",
+  "STEUBE, GREG" = "STEUBE, W. GREGORY (GREG)"
+)
+
+cand <- cand %>%
+  mutate(name = ifelse(name %in% names(name_corrections), name_corrections[name], name))
+
 write_rds(cand, "data/intermediate/candidates_2006-2022.rds")
