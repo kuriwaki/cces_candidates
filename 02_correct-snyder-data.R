@@ -2,13 +2,12 @@ library(tidyverse)
 library(haven)
 
 # raw
-jsdat_raw <- read_dta("data/snyder/2021-07-29 sen_gov_house_2006_2020.dta")
+jsdat_raw <- read_dta("data/snyder/2021-07-29 sen_gov_house_2006_2020.dta", encoding = "latin1")
 js2022 <- read_dta("data/snyder/tmp_house_2021_2023.dta") |>
   bind_rows(read_dta("data/snyder/tmp_sen_2022.dta")) |>
   select(-month_g, -dem_rep_oth)
 
 # Changes, additions ---
-
 jsdat <- jsdat_raw |>
   bind_rows(js2022) |>
   # https://github.com/kuriwaki/cces_candidates/issues/7: same day special
@@ -223,7 +222,6 @@ jsdat <- jsdat |>
          )
 
 # Fixing FLORES, MAYRA
-
 jsdat <- jsdat |>
   mutate(
     vote_g = replace(vote_g, name == "FLORES, MAYRA" & year == 2022 & type == "S", 14799)
@@ -268,6 +266,12 @@ jsdat <- jsdat |>
   mutate(inc = coalesce(inc.y, inc.x),
          inc.x = NULL,
          inc.y = NULL)
+
+# Name recodings
+#45
+jsdat <- jsdat |>
+  tidylog::mutate(name = str_replace(name, "Ê", " ")) |>
+
 
 if (FALSE) {
 # Corrections to 1990-2005 ------------------------------------------------
