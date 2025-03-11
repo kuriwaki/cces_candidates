@@ -18,7 +18,6 @@ See the [Dataverse guide/codebook](https://dataverse.harvard.edu/dataset.xhtml?p
 ## Script and data organizations
 
 - Internal data are from internal Stata files (only shared internally for now). In some instances, a small csv is stored in the repo.
-- Scripts in the single digits (`01` - `08`) are meant for the candidates data
 
 
 ## Candidate Data Format
