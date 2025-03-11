@@ -270,7 +270,7 @@ jsdat <- jsdat |>
 # Name recodings
 #45
 jsdat <- jsdat |>
-  tidylog::mutate(name = str_replace(name, "Ê", " ")) |>
+  tidylog::mutate(name = str_replace(name, "Ê", " "))
 
 
 if (FALSE) {

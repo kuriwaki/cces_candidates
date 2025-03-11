@@ -395,4 +395,4 @@ jsdat_all <- jsdat_all |>
 
 
 # Save -----
-write_rds(jsdat_all, "data/intermediate/candidates_2006-2022.rds")
+write_rds(jsdat_all, "data/intermediate/prelim/candidates_2006-2022.rds")
