@@ -3,7 +3,8 @@ library(haven)
 stopifnot(packageVersion("readr") >= "2.0.0")
 
 # read data ----
-jsdat_all <- read_rds("data/intermediate/snyder_2006-2022.rds")
+jsdat_all <- read_rds("data/intermediate/snyder_2006-2024.rds")
+fmt2024 <- read_rds("data/snyder-fmt_2024.rds")
 
 # 2020 state exec
 gov_2020_2022 <- read_csv("data/intermediate/2020_2022_gov.csv",
@@ -21,6 +22,7 @@ pres_2008_2020 <- read_csv("data/intermediate/2008-2020_pres.csv",
 
 # fixing blank party entries
 jsdat_all <- jsdat_all |>
+  bind_rows(fmt2024) |>
   mutate(party = replace(party, name == "COOPER, ERIC" & state == "IA" & year == 2010, "Lbt"),
          party = replace(party, name == "HUGHES, GREGORY JAMES" & state == "IA" & year == 2010, "I"),
          party = replace(party, name == "NARCISSE, JONATHAN R." & state == "IA" & year == 2010, "I"),
@@ -390,9 +392,9 @@ jsdat_all <- jsdat_all |>
   mutate(totalvotes = sum(candidatevotes)) |>
   ungroup() |>
   # ARRANGE
-  arrange(year, state, desc(office), state, party)
+  arrange(year, state, desc(office), dist, type, party)
 
 
 
 # Save -----
-write_rds(jsdat_all, "data/intermediate/prelim/candidates_2006-2022.rds")
+write_rds(jsdat_all, "data/intermediate/prelim/candidates_2006-2024.rds")

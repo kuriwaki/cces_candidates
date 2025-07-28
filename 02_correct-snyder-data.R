@@ -306,5 +306,5 @@ sdist <- js1990 |>
 }
 
 # write ------
-write_rds(jsdat, "data/intermediate/snyder_2006-2022.rds")
+write_rds(jsdat, "data/intermediate/snyder_2006-2024.rds")
 

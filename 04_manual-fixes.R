@@ -1,4 +1,4 @@
-cand <- readRDS("data/intermediate/prelim/candidates_2006-2022.rds")
+cand <- readRDS("data/intermediate/prelim/candidates_2006-2024.rds")
 
 # #35 "Standardized names -- Joe Kennedy III
 # #43
@@ -49,4 +49,4 @@ cand <- cand %>%
   )
 
 
-write_rds(cand, "data/intermediate/candidates_2006-2022.rds")
+write_rds(cand, "data/intermediate/candidates_2006-2024.rds")

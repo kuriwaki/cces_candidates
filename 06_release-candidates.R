@@ -15,7 +15,7 @@ paste_labels <- function(tbl, lab_df = var_labels) {
 
 
 # Read from Output -----
-cand_raw <- read_rds("data/intermediate/candidates_2006-2022.rds")
+cand_raw <- read_rds("data/intermediate/candidates_2006-2024.rds")
 
 
 # remove variables from candidate -----
@@ -66,7 +66,10 @@ cand_fmt <- paste_labels(cand)
 release_dir <- "release"
 
 # Clear
-file_delete(dir_ls(release_dir, regexp = "(csv|dta|rds)$"))
+# file_delete(dir_ls(release_dir, regexp = "(csv|dta|rds)$"))
 
 # Save
-write_dta(cand_fmt, path(release_dir, "candidates_2006-2022.dta"))
+write_dta(cand_fmt, path(release_dir, "candidates_2006-2024.dta"))
+
+
+
