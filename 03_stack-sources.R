@@ -221,7 +221,7 @@ cand_level_vars <- c("year", "office", "state", "dist", "type", "runoff", "nextu
 # recode fusion people post 2018-2022 as fusion by summing their votes
 entries_fusion_post18 <- jsdat_all |>
   ungroup() |>
-  filter(year %in% c(2018, 2020, 2022), state %in% c("NY", "CT", "SC")) |>
+  filter(year %in% c(2018, 2020, 2022, 2024), state %in% c("NY", "CT", "SC")) |>
   mutate(party_formal = fct_relevel(party_formal, "D", "R")) |>
   arrange(party_formal) |>
   group_by(across(all_of(cand_level_vars))) |>
