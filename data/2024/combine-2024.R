@@ -56,7 +56,8 @@ gov_manual <-
     "WV", "R", "MORRISEY, PATRICK J.", 459300, 0,
     "WV", "D", "WILLIAMS, STEPHEN (STEVE) T.", 233976, 0,
   ) |>
-  mutate(office = "G", type = "G", .after = state)
+  mutate(office = "G", type = "G", .after = state) |>
+  mutate(nextup = if_else(state == "VT", 2026, 2028))
 
 
 pres_dat <- pres |>
@@ -72,7 +73,7 @@ pres_dat <- pres |>
            str_detect(party, "GREEN") ~ "STEIN, JILL",
            .default = NA
          )) |>
-  mutate(inc = 0)
+  mutate(inc = 0, nextup = 2028)
 
 js2024 <- js_dat |>
   tidylog::left_join(
@@ -82,8 +83,10 @@ js2024 <- js_dat |>
   tidylog::mutate(inc = replace_na(inc, 0)) |>
   bind_rows(gov_manual) |>
   mutate(w_g = as.numeric(vote_g == max(vote_g)), .by = c(state, office, dist, type)) |>
+  mutate(year = 2024,
+         nextup = if_else(office == "S", 2030, 2026)) |>
+  mutate(nextup = replace(nextup, type == "S" & state == "NE", 2026)) |>
   bind_rows(pres_dat) |>
-  mutate(year = 2024) |>
   select(-rank)
 
 js2024 <- js2024 |>
@@ -94,7 +97,8 @@ js2024 <- js2024 |>
     str_detect(name, "BRIEN, JOSHUA W.") ~ "O'BRIEN, JOOSHUA W.",
     str_detect(name, "ESPOSITO, ANTHONY") ~ "D'ESPOSITO, ANTHONY",
     .default = name
-  ))
+  )) |>
+  mutate(year = 2024)
 
 
 write_rds(js2024, "data/snyder-fmt_2024.rds")
