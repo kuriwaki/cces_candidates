@@ -1,4 +1,4 @@
-cand <- readRDS("data/intermediate/prelim/candidates_2006-2024.rds")
+cand <- readRDS("data/intermediate/prelim/candidates_party-recoded.rds")
 
 # #35 "Standardized names -- Joe Kennedy III
 # #43

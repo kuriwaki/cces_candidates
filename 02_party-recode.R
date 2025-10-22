@@ -250,3 +250,6 @@ js |>
                     str_sub(party_formal, 1, 1) == "R",
                     "R")
   )
+
+
+write_rds("data/intermediate/prelim/candidates_party-recoded.rds")
