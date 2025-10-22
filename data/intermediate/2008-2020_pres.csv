@@ -562,7 +562,7 @@ year,state,party,name,inc,party_formal,candidatevotes
 2012,WA,Other,"HARRIS, JAMES",0,Socialist Workers,1205
 2012,WA,Other,"LINDSAY, PETA",0,Socialism And Liberation Party,1318
 2012,WA,Other,"STEIN, JILL",0,Grn,20928
-2012,WA,R,"MITT, ROMNEY",0,R,1290670
+2012,WA,R,"ROMNEY, MITT",0,R,1290670
 2012,WI,D,"OBAMA, BARACK",1,D,1620985
 2012,WI,Other,"GOODE, VIRGIL HAMLIN, JR.",0,Constitution Party,4930
 2012,WI,Other,NA,0,Independent,29383
@@ -912,11 +912,6 @@ year,state,party,name,inc,party_formal,candidatevotes
 2020,CT,Other,"HAWKINS, HOWIE",0,Grn,7538
 2020,CT,R,"TRUMP, DONALD J.",1,R,714717
 2020,DC,Other,"PIERCE, BROCK",0,Independent,693
-2020,DC,D,"BIDEN, JOSEPH R., JR.",0,D,317323
-2020,DC,Lbt,"JORGENSEN, JO",0,Lbt,2036
-2020,DC,Other,"HAWKINS, HOWIE",0,Grn,1726
-2020,DC,R,"TRUMP, DONALD J.",1,R,18586
-2020,DC,Other,"LA RIVA, GLORIA ESTELLA",0,Party For Socialism And Liberation,855
 2020,DE,D,"BIDEN, JOSEPH R., JR.",0,D,296268
 2020,DE,Lbt,"JORGENSEN, JO",0,Lbt,5000
 2020,DE,Other,"HAWKINS, HOWIE",0,Grn,2139
