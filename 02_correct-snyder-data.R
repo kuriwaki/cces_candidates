@@ -2,10 +2,8 @@ library(tidyverse)
 library(haven)
 
 # raw
-jsdat_raw <- read_dta("data/snyder/2021-07-29 sen_gov_house_2006_2020.dta", encoding = "latin1")
-js2022 <- read_dta("data/snyder/tmp_house_2021_2023.dta") |>
-  bind_rows(read_dta("data/snyder/tmp_sen_2022.dta")) |>
-  select(-month_g, -dem_rep_oth)
+jsdat_raw <- read_dta("data/snyder/2025", encoding = "latin1")
+js2024 <- read_dta("data/snyder-fmt_2024.rds")
 
 # Changes, additions ---
 jsdat <- jsdat_raw |>
