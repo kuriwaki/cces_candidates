@@ -11,8 +11,25 @@ pres_raw <- get_dataframe_by_name(
   version = "8",
   .f = read_csv)
 
+# 2024
+pres_24_init <- read_csv("https://raw.githubusercontent.com/MEDSL/2024-elections-official/refs/heads/main/2024-president-state.csv") |>
+  mutate(across(c(state_fips, state_ic, version), as.numeric)) |>
+  rename(candidatevotes = votes)
+
+# merge parties in missing states (NV, VT, )
+pres_24_ptys <- pres_24 |>
+  filter(!writein) |>
+  count(candidate, party_detailed) |>
+  slice_max(n, by = c(candidate)) |> # modal party
+  filter(!is.na(party_detailed))
+
+pres_24 <- pres_24_init |>
+  left_join(pres_24_ptys, by = "candidate") |>
+  mutate(party_detailed = coalesce(party_detailed.x, party_detailed.y))
+
 # Recode party, variable names, etc..
 pres_fmt <- pres_raw |>
+  bind_rows(pres_24) |>
   filter(year >= 2006) |>
   transmute(
     year,
@@ -57,17 +74,20 @@ pres_fmt <- pres_raw |>
            candidatevotes)
 
 # collapse fusion
-pres_fmt <- pres_fmt |>
-  group_by(year, state, party, name, inc) |>
-  summarize(party_formal = str_c(as.character(party_formal), collapse = ", "),
-            candidatevotes = sum(candidatevotes, na.rm = TRUE))
+pres_fmt2 <- pres_fmt |>
+  summarize(
+    party_formal = str_c(as.character(party_formal), collapse = ", "),
+    candidatevotes = sum(candidatevotes, na.rm = TRUE),
+    .by = c(year, state, party, name, inc))
 
 # drop
 # - candidates with less than 10 votes
 # - blank votes, overvotes, scatterings, etc..
-pres_sel <- pres_fmt |>
+pres_sel <- pres_fmt2 |>
   filter(candidatevotes >= 10) |>
   filter(!is.na(party_formal))
 
+xtabs(~ year + party, pres_sel)
+
 # write to intermediate
-write_csv(pres_sel, "data/intermediate/2008-2020_pres.csv")
+write_csv(pres_sel, "data/intermediate/2008-2024_pres.csv")
