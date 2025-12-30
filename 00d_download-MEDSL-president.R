@@ -17,7 +17,7 @@ pres_24_init <- read_csv("https://raw.githubusercontent.com/MEDSL/2024-elections
   rename(candidatevotes = votes)
 
 # merge parties in missing states (NV, VT, )
-pres_24_ptys <- pres_24 |>
+pres_24_ptys <- pres_24_init |>
   filter(!writein) |>
   count(candidate, party_detailed) |>
   slice_max(n, by = c(candidate)) |> # modal party
@@ -30,8 +30,8 @@ pres_24 <- pres_24_init |>
 # Recode party, variable names, etc..
 pres_fmt <- pres_raw |>
   bind_rows(pres_24) |>
-  filter(year >= 2006) |>
-  transmute(
+  dplyr::filter(year >= 2006) |>
+  dplyr::transmute(
     year,
     state = state_po,
     candidate,
@@ -40,12 +40,13 @@ pres_fmt <- pres_raw |>
     party_formal = recode(str_to_title(party_detailed), Republican = "R", Democrat = "D", Libertarian = "Lbt", Green = "Grn"),
     candidatevotes
   ) |>
-  mutate(
+  tidylog::mutate(
     party = replace(party, party_formal == "Working Families", "D"),
     party = replace(party, party_formal == "Women's Equality" & state == "NY", "D"),
     party = replace(party, party_formal == "Independence" & state == "NY" & year %in% c(2008), "R"),
     party = replace(party, party_formal == "Independence" & state == "NY" & year %in% c(2016), "Lbt"),
-    party = replace(party, party_formal == "Conservative", "R"),
+    party = replace(party, party_formal == "Conservative", "R")) |>
+  tidylog::mutate(
     # writins
     party = replace(party, (writein), "W-I"),
     candidate = replace(candidate, writein, "W-I"),
@@ -57,7 +58,7 @@ pres_fmt <- pres_raw |>
       `BIDEN, JOSEPH R. JR` = "BIDEN, JOSEPH R., JR.",
       `MCCAIN, JOHN` = "MCCAIN, JOHN S.",
       `PAUL, RONALD \"\"RON\"\"` = "PAUL, RONALD E. (RON)",
-      ),
+    ),
     name = str_replace(name, "\"{1,}$", ")"),
     name = str_replace(name, "\\s\"{1,}", " ("),
     inc = case_when(
@@ -78,7 +79,8 @@ pres_fmt2 <- pres_fmt |>
   summarize(
     party_formal = str_c(as.character(party_formal), collapse = ", "),
     candidatevotes = sum(candidatevotes, na.rm = TRUE),
-    .by = c(year, state, party, name, inc))
+    .by = c(year, state, party, name, inc)
+    )
 
 # drop
 # - candidates with less than 10 votes

@@ -2,10 +2,21 @@ library(tidyverse)
 library(haven)
 source("00c_party-recode-functions.R")
 
-# temp, should change later to "data/intermediate/prelim/candidates_2006-2024.rds"
-js <- read_dta("data/snyder/2025-08-18 tmp_S_H_G_1990_2024.dta")
-js_pres <- read_dta("data/snyder/2025-10-22_pres_votes.dta")
+js0 <- read_rds("data/intermediate/prelim/candidates_stacked.rds")
 
+# party coding
+js1 <- js0 |>
+  tidylog::mutate(party_formal = party_fringeparties(party_formal)) |>
+  tidylog::mutate(party = party_oneletter(party),
+                  party = replace(party, !party %in% c("D", "R",  "I",  "Lbt","Grn"), "Other"))
+
+js1 |>
+  write_rds("data/intermediate/prelim/candidates_party-recoded.rds")
+
+
+stop()
+
+# WIP: TO CHECK IF STILL NECESSARY ---
 
 # party coding
 js |>
@@ -20,11 +31,6 @@ js |>
     party = replace(party, name == "MCLAUGHLIN, CURTIS E., JR." & year == 2014, "I"),
   )
 
-
-write_rds("data/intermediate/prelim/candidates_party-recoded.rds")
-
-stop()
-# WIP: TO ADD SOMEWHERE ---
 
 mutate(party = replace(party, name == "COOPER, ERIC" & state == "IA" & year == 2010, "Lbt"),
        party = replace(party, name == "HUGHES, GREGORY JAMES" & state == "IA" & year == 2010, "I"),
@@ -56,8 +62,6 @@ jsdat_all <- jsdat_all |>
 # WELCH, PETER F. party formal correction
 jsdat_all <- jsdat_all |>
   mutate(party_formal = replace(party_formal, name == "WELCH, PETER F." & year == 2008, "D"))
-
-
 
 # ROMNEY Fix
 jsdat_all <- jsdat_all |>

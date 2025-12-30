@@ -13,19 +13,16 @@ medsl_P <- read_csv("data/intermediate/2008-2024_pres.csv", show_col_types = FAL
   mutate(office = "P", type = "G", nextup = year + 4)
 
 # variable recodings ---
-cands_stacked <- bind_rows(
-  jsdat_HSG,
-  medsl_P,
-  G_2024) |>
+cands_stacked <- bind_rows(jsdat_HSG, G_2024) |>
   mutate(party_formal = party) |>
   # ONLY keep three offices
   filter(office %in% c("S", "H", "G", "P")) |>
+  bind_rows(medsl_P) |> # President
   # VARIABLE RENAME
   mutate(
     candidatevotes = coalesce(candidatevotes, vote_g),
     won = coalesce(w_g)) |>
   select(-vote_g, -w_g) |>
-  rename(name_snyder = name) |>
   # TOTAL VOTE
   mutate(totalvotes = sum(candidatevotes), .by = c(year, office, state, dist, type)) |>
   # ARRANGE
