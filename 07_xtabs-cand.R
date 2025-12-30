@@ -119,12 +119,14 @@ xtabs(~ year + type, jsdat, subset = office == "S") |>
 
 
 # runoff
+if ("runoff" %in% colnames(jsdat)) {
 xtabs(~ year + runoff, jsdat, subset = office == "G") |>
   fmt_xtab("runoff") |> wri_xtab("runoff_G")
 xtabs(~ year + runoff, jsdat, subset = office == "H") |>
   fmt_xtab("runoff") |> wri_xtab("runoff_H")
 xtabs(~ year + runoff, jsdat, subset = office == "S") |>
   fmt_xtab("runoff") |> wri_xtab("runoff_S")
+}
 
 # nextup
 xtabs(~ year + nextup, jsdat, subset = office == "G") |>

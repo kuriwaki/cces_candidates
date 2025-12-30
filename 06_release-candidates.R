@@ -26,7 +26,8 @@ order_candvars <- c("year", "state",
                     "candidatevotes", "totalvotes", "won")
 
 cand <- cand_raw |>
-  relocate(!!!order_candvars)
+  rename(name_snyder = name) |>
+  select(!!!order_candvars)
 
 # what are the columns -----
 
@@ -37,30 +38,21 @@ var_labels <- tribble(
   "state",     "State two-letter abbreviation",
   "office", "Office (H = House, S = Senate, G = Governor, P = President)",
   "dist", "Congressional district number, current",
-  "dist_up", "Congressional district number in election (for House candidates)",
   "runoff", "Whether the election is a runoff (if applicable)",
   "nextup", "The next year the winner will be up",
   "party", "Candidate party affiliation (short)",
   "party_formal", "Candidate party affiliation (formal)",
   "name_snyder", "Candidate name",
   "inc", "Candidate is incumbent",
-  "current_inc", "Candidate is incumbent of the current district",
   "candidatevotes", "Votes for the candidate",
   "totalvotes", "Total votes cast in the race",
   "won", "Whether the candidate won the general election",
-  "data_note", "Documentation for irregular candidates",
   "type", "Type of election. (G = general, S = special)"
-)
-
-# "dataset", "CCES dataset. Common Content, unless suffix added",
-# "case_id", "Case identifier (to be matched with CCES)",
-  # "cand", "Candidate number as coded in CCES dataset",
-
+) |>
+  filter(alias %in% order_candvars)
 
 # add labels ------
 cand_fmt <- paste_labels(cand)
-
-
 
 # Save to Release ------
 release_dir <- "release"
