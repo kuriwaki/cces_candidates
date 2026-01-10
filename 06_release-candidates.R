@@ -26,7 +26,8 @@ order_candvars <- c("year", "state",
                     "candidatevotes", "totalvotes", "won")
 
 cand <- cand_raw |>
-  rename(name_snyder = name) |>
+  rename(candidatevotes = vote_g,
+         won = w_g) |>
   select(!!!order_candvars)
 
 # what are the columns -----

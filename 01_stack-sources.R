@@ -3,7 +3,7 @@ library(haven)
 stopifnot(packageVersion("readr") >= "2.0.0")
 
 # read data ----
-jsdat_HSG <- read_dta("data/snyder/2025-08-18 tmp_S_H_G_1990_2024.dta") |>
+jsdat_HSG <- read_dta("data/snyder/2026-01-07 tmp_S_H_G_1990_2024.dta") |>
   filter(year >= 2006)
 G_2024 <- read_csv("data/2024/2024-governor-raw.csv", show_col_types = FALSE)
 

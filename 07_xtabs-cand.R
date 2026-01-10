@@ -5,7 +5,6 @@ library(glue)
 library(kableExtra)
 library(tidyverse)
 
-
 source("00b_xtabs-functions.R")
 
 # data ---
