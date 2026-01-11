@@ -23,7 +23,7 @@ js2 <- js1 |>
 
 # State-specific party corrections
 js3 <- js2 |>
-  mutate(
+  tidylog::mutate(
     party = replace(party, name == "COOPER, ERIC" & state == "IA" & year == 2010, "Lbt"),
     party = replace(party, name == "HUGHES, GREGORY JAMES" & state == "IA" & year == 2010, "I"),
     party = replace(party, name == "NARCISSE, JONATHAN R." & state == "IA" & year == 2010, "I"),
@@ -42,13 +42,14 @@ js4 <- js3 |>
     TRUE ~ party
   )) |>
   filter(party != "") |>
-  filter(name != "SCHWEIDEL, JOEL",
+  tidylog::filter(
+    name != "SCHWEIDEL, JOEL",
          name != "CARLSON, ELAINE SUE",
          name != "BEARDSLEY, MICHAEL",
          name != "WELCH, PETER F." | party != "R",
          name != "WELCH, PETER F." | party_formal != "D" | year != 2008
   ) |>
-  mutate(party_formal = replace(party_formal, name == "WELCH, PETER F." & year == 2008, "D"))
+  tidylog::mutate(party_formal = replace(party_formal, name == "WELCH, PETER F." & year == 2008, "D"))
 
 js4 |>
   write_rds("data/intermediate/prelim/candidates_party-recoded.rds")

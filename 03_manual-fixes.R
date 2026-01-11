@@ -94,7 +94,7 @@ for (i in seq_len(nrow(ga_additions))) {
 # Fixing 2020/2022 Georgia Special candidates
 jsdat <- jsdat |>
   # remove runoff only candidates (but keep the main candidates)
-  mutate(
+  tidylog::mutate(
     temp = ifelse((state == "GA" & year %in% 2020:2022 & office == "S"), 1, 0),
     temp = replace(temp, name_snyder %in% c("LOEFFLER, KELLY", "WARNOCK, RAPHAEL GAMALIEL",
                                      "WALKER, HERSCHEL JUNIOR",
@@ -103,13 +103,13 @@ jsdat <- jsdat |>
   tidylog::filter(temp == 0) |>
   select(-temp) |>
   # Update vote_g for 2022 GA runoff candidates (2020/2021 already set when rows added)
-  mutate(
+  tidylog::mutate(
     vote_g = replace(vote_g, year == 2022 & state == "GA" & office == "S" & name_snyder == "WALKER, HERSCHEL JUNIOR", 1721244),
     vote_g = replace(vote_g, year == 2022 & state == "GA" & office == "S" & name_snyder == "WARNOCK, RAPHAEL GAMALIEL", 1820633)
   ) |>
   # Fix incumbency for GA special elections
   # Loeffler was appointed incumbent, Warnock/Walker are challengers
-  mutate(
+  tidylog::mutate(
     inc = replace(inc, state == "GA" & year %in% 2020:2022 & office == "S" & name_snyder == "LOEFFLER, KELLY", 1),
     inc = replace(inc, state == "GA" & year %in% 2020:2022 & office == "S" & name_snyder == "WARNOCK, RAPHAEL GAMALIEL", 0),
     inc = replace(inc, state == "GA" & year == 2022 & office == "S" & name_snyder == "WALKER, HERSCHEL JUNIOR", 0)
@@ -131,7 +131,7 @@ jsdat <- jsdat |>
   filter(temp == 0,
          name_snyder != "BUCKLEY, ALLEN" | year != 2008) |>
   select(-temp) |>
-  mutate(runoff = case_when(
+  tidylog::mutate(runoff = case_when(
     state == "GA" & year == 2022 & office == "S" ~ 1, # 2022 Georgia Runoff
     state == "GA" & year == 2021 & office == "S" ~ 1, # 2020 Georgia Runoff
     state == "GA" & year == 2007 & office == "H" & dist == 10 ~ 1,
@@ -159,7 +159,7 @@ jsdat <- jsdat |>
 
 # Correcting vote totals to reflect runoffs
 jsdat <- jsdat |>
-  mutate(vote_g = case_when(
+  tidylog::mutate(vote_g = case_when(
     year == 2008 & state == "GA" & name_snyder == "MARTIN, JAMES FRANCIS (JIM)" ~ 909923,
     year == 2008 & state == "GA" & name_snyder == "CHAMBLISS, C. SAXBY" ~ 1228033,
     year == 2020 & state == "LA" & name_snyder == "LETLOW, LUKE J." ~ 49183,
@@ -169,7 +169,7 @@ jsdat <- jsdat |>
 
 # Other vote total additions
 jsdat <- jsdat |>
-  mutate(vote_g = replace(vote_g, name_snyder == "JINDAL, BOBBY" & office == "H" & year == 2006 & state == "LA", 130508),
+  tidylog::mutate(vote_g = replace(vote_g, name_snyder == "JINDAL, BOBBY" & office == "H" & year == 2006 & state == "LA", 130508),
          vote_g = replace(vote_g, name_snyder == "MCCRERY, JAMES O. (JIM)" & office == "H" & year == 2006 & state == "LA", 77078),
          vote_g = replace(vote_g, name_snyder == "ALEXANDER, RODNEY M." & office == "H" & year == 2006 & state == "LA", 78211),
          vote_g = replace(vote_g, name_snyder == "BOUSTANY, CHARLES W., JR." & office == "H" & year == 2006 & state == "LA", 113720),
@@ -207,11 +207,11 @@ jsdat <- jsdat |>
 
 # Fix Oregon 2018 Gov winner
 jsdat <- jsdat |>
-  mutate(w_g = replace(w_g, year == 2018 & state == "OR" & office == "G" & name_snyder == "BUEHLER, KNUTE", 0))
+  tidylog::mutate(w_g = replace(w_g, year == 2018 & state == "OR" & office == "G" & name_snyder == "BUEHLER, KNUTE", 0))
 
 # Fix Rhode Island 2006 Gov results
 jsdat <- jsdat |>
-  mutate(w_g = replace(w_g, year == 2006 & state == "RI" & office == "G" & name_snyder == "CARCIERI, DONALD L.", 1),
+  tidylog::mutate(w_g = replace(w_g, year == 2006 & state == "RI" & office == "G" & name_snyder == "CARCIERI, DONALD L.", 1),
          w_g = replace(w_g, year == 2006 & state == "RI" & office == "G" & name_snyder == "FOGARTY, CHARLES J.", 0),
          vote_g = replace(vote_g, year == 2006 & state == "RI" & office == "G" & name_snyder == "CARCIERI, DONALD L.", 197306),
          vote_g = replace(vote_g, year == 2006 & state == "RI" & office == "G" & name_snyder == "FOGARTY, CHARLES J.", 189503)
@@ -219,22 +219,22 @@ jsdat <- jsdat |>
 
 # Karin Housley w_g fix
 jsdat <- jsdat |>
-  mutate(w_g = replace(w_g, year == 2018 & state == "MN" & name_snyder == "HOUSLEY, KARIN", 0))
+  tidylog::mutate(w_g = replace(w_g, year == 2018 & state == "MN" & name_snyder == "HOUSLEY, KARIN", 0))
 
 # NC-09 election fraud case
 jsdat <- jsdat |>
-  mutate(w_g = replace(w_g, office == "H" & year == 2018 & state == "NC" & dist == 9 & type == "G", NA))
+  tidylog::mutate(w_g = replace(w_g, office == "H" & year == 2018 & state == "NC" & dist == 9 & type == "G", NA))
 
 # Fix IN-02 Walorski result
 jsdat <- jsdat |>
-  mutate(w_g = replace(w_g, name_snyder == "STEURY, PAUL D." & office == "H" & year == 2022, 0))
+  tidylog::mutate(w_g = replace(w_g, name_snyder == "STEURY, PAUL D." & office == "H" & year == 2022, 0))
 
 # TX-23 special election runoff
 jsdat <- jsdat |>
-  filter(
+  tidylog::filter(
     !(year == 2006 & state == "TX" & office == "H" & dist == 23 & vote_g < 24594)
   ) |>
-  mutate(type = replace(type, year == 2006 & state == "TX" & dist == 23, "G"),
+  tidylog::mutate(type = replace(type, year == 2006 & state == "TX" & dist == 23, "G"),
          runoff = replace(runoff, year == 2006 & state == "TX" & dist == 23, 1),
          vote_g = replace(vote_g, year == 2006 & state == "TX" & dist == 23 & party == "R", 32217),
          vote_g = replace(vote_g, year == 2006 & state == "TX" & dist == 23 & party == "D", 38256),
@@ -244,16 +244,14 @@ jsdat <- jsdat |>
 
 # Removing candidates ----
 
-# Removing Ellen Brickley
-jsdat <- jsdat |>
-  filter(name_snyder != "BRICKLEY, ELLEN")
-
 # Removing duplicates or not-rans
 jsdat <- jsdat |>
+  # Removing Ellen Brickley
+  tidylog::filter(name_snyder != "BRICKLEY, ELLEN") |>
   # duplicate entry with VAN DUYNE
-  filter(!(office == "H" & state == "TX" & dist == 24 & year == 2022 & name_snyder == "VANDUYNE, BETH")) |>
+  tidylog::filter(!(office == "H" & state == "TX" & dist == 24 & year == 2022 & name_snyder == "VANDUYNE, BETH")) |>
   # rest were primary losses, not in general
-  filter(!(office == "H" & state == "FL" & dist == 5 & year == 2022 & name_snyder != "RUTHERFORD, JOHN H.")) |>
+  tidylog::filter(!(office == "H" & state == "FL" & dist == 5 & year == 2022 & name_snyder != "RUTHERFORD, JOHN H.")) |>
   # no votes
   tidylog::filter(!(office == "H" & state == "CT" & dist == 4 & year == 2022 & name_snyder == "GOLDSTEIN, MICHAEL TED"))
 
@@ -274,7 +272,7 @@ jsdat <- jsdat |>
 # Incumbency fixes ----
 
 jsdat <- jsdat |>
-  mutate(
+  tidylog::mutate(
     inc = replace(inc, office == "S" & state == "MO" & year == 2016 & party %in% c("Grn", "I"), 0),
     inc = replace(inc, office == "S" & state == "NV" & year == 2016 & party %in% c(""), 0),
     inc = replace(inc, office == "S" & state == "SD" & year == 2014, 0),
@@ -299,7 +297,7 @@ jsdat <- jsdat |>
 # https://github.com/kuriwaki/cces_candidates/issues/7
 
 jsdat <- jsdat |>
-  mutate(
+  tidylog::mutate(
     type = replace(
       x = type,
       list = (year == 2006 & state == "TX" & dist == 22 & nextup == 2006),
@@ -355,7 +353,7 @@ if (nrow(jsdat |> filter(state == "OK", year == 2016, office == "H", dist == 1,
 # Issue #26: Missing gubernatorial candidate states ----
 
 cand <- jsdat %>%
-  mutate(
+  tidylog::mutate(
     state = replace(state, state == "" & year == 2011 & office == "G", "LA")
   )
 
@@ -363,7 +361,7 @@ cand <- jsdat %>%
 # Issue #27: Three last name misspellings ----
 
 cand <- cand %>%
-  mutate(
+  tidylog::mutate(
     name_snyder = replace(name_snyder, str_detect(name_snyder, "YEVANCY"), "YEVANCEY, MANNY"),
     name_snyder = replace(name_snyder, str_detect(name_snyder, "STANCZACK"), "STANCZAK, JAMES"),
     name_snyder = replace(name_snyder, str_detect(name_snyder, "WEIDER"), "WIEDER, JOHN")
@@ -373,7 +371,7 @@ cand <- cand %>%
 # Issue #29: Fix Ron Caesar Spelling ----
 
 cand <- cand %>%
-  mutate(
+  tidylog::mutate(
     name_snyder = replace(name_snyder, name_snyder == "CEASAR, RON" & state == "LA", "CAESAR, RON")
   )
 
@@ -381,7 +379,7 @@ cand <- cand %>%
 # Issue #30: Corrections on incumbency ----
 
 cand <- cand %>%
-  mutate(
+  tidylog::mutate(
     inc = replace(inc, name_snyder == "BREWER, JANICE (JAN)" & state == "AZ" & office == "G" & year == 2010, 1),
     inc = replace(inc, name_snyder == "MURRAY, JULIANNE E." & state == "DE" & office == "G" & year == 2020, 0)
   )
