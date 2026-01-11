@@ -1,9 +1,9 @@
 
-source("02_correct-snyder-data.R")
-source("03_stack-sources.R")
-source("04_manual-fixes.R")
-source("06_release-candidates.R")
-source("07_xtabs-cand.R")
+source("01_stack-sources.R")
+source("02_party-recode.R")
+source("03_manual-fixes.R")
+source("04_release-candidates.R")
+source("05_xtabs-cand.R")
 
 # then compile
 # guide/guide_candidates-snyder.tex
