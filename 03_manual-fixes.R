@@ -269,52 +269,6 @@ jsdat <- jsdat |>
 jsdat <- jsdat |>
   tidylog::mutate(name_snyder = str_replace(name_snyder, "Ê", " "))
 
-# Adding Bernard Sanders Senate elections ----
-
-# Vermont Senate races for Bernard Sanders (2018, 2012, 2006)
-sanders_additions <- tibble::tribble(
-  ~state, ~year, ~office, ~dist, ~type, ~nextup, ~party, ~party_formal, ~name_snyder, ~inc, ~vote_g, ~w_g,
-  # 2018 Senate election
-  "VT", 2018, "S", 1, "G", 2024, "I", "I", "SANDERS, BERNARD (BERNIE)", 1, 183649, 1,
-  "VT", 2018, "S", 1, "G", 2024, "R", "R", "ZUPAN, LAWRENCE", 0, 74815, 0,
-  "VT", 2018, "S", 1, "G", 2024, "I", "I", "PEACOCK, BRAD J.", 0, 3655, 0,
-  "VT", 2018, "S", 1, "G", 2024, "I", "I", "BESTE, RUSSELL", 0, 2763, 0,
-  "VT", 2018, "S", 1, "G", 2024, "I", "I", "GILBERT, EDWARD S., JR.", 0, 2244, 0,
-  "VT", 2018, "S", 1, "G", 2024, "I", "I", "ADELUOLA, FOLASADE", 0, 1979, 0,
-  "VT", 2018, "S", 1, "G", 2024, "Other", "Liberty Union", "KANE, REID", 0, 1171, 0,
-  "VT", 2018, "S", 1, "G", 2024, "I", "I", "SVITAVSKY, JON", 0, 1130, 0,
-  "VT", 2018, "S", 1, "G", 2024, "I", "I", "BUSA, BRUCE", 0, 914, 0,
-  # 2012 Senate election
-  "VT", 2012, "S", 1, "G", 2018, "I", "I", "SANDERS, BERNARD (BERNIE)", 1, 207848, 1,
-  "VT", 2012, "S", 1, "G", 2018, "R", "R", "MACGOVERN, JOHN", 0, 72898, 0,
-  "VT", 2012, "S", 1, "G", 2018, "Other", "Liberty Union", "DIAMONDSTONE, PETER", 0, 2511, 0,
-  "VT", 2012, "S", 1, "G", 2018, "Other", "Peace and Prosperity", "MOSS, PETER", 0, 2452, 0,
-  "VT", 2012, "S", 1, "G", 2018, "Other", "United States Marijuana", "ERICSON, CHRIS", 0, 5924, 0,
-  "VT", 2012, "S", 1, "G", 2018, "Other", "VoteKISS", "Laframboise", 0, 877, 0,
-  # 2006 Senate election
-  "VT", 2006, "S", 1, "G", 2012, "I", "I", "SANDERS, BERNARD (BERNIE)", 0, 171638, 1,
-  "VT", 2006, "S", 1, "G", 2012, "R", "R", "TARRANT, RICHARD", 0, 84924, 0,
-  "VT", 2006, "S", 1, "G", 2012, "I", "I", "ERICSON, CRIS", 0, 1735, 0,
-  "VT", 2006, "S", 1, "G", 2012, "Grn", "Vermont Green", "HILL, CRAIG", 0, 1536, 0,
-  "VT", 2006, "S", 1, "G", 2012, "Other", "Liberty Union", "DIAMONDSTONE, PETER", 0, 801, 0,
-  "VT" , 2006, "S", 1, "G", 2012, "Other", "Anti-Bush", "MOSS, PETER", 0, 1518, 0
-)
-
-# Check if Sanders entries already exist and add only if they don't
-for (i in seq_len(nrow(sanders_additions))) {
-  row <- sanders_additions[i, ]
-  exists <- jsdat |>
-    filter(state == row$state, year == row$year, office == row$office,
-           dist == row$dist, name_snyder == row$name_snyder) |>
-    nrow() > 0
-
-  if (!exists) {
-    jsdat <- jsdat |> add_row(!!!row)
-    cat(sprintf("Added: %s (%s %d Senate)\n", row$name_snyder, row$state, row$year))
-  } else {
-    cat(sprintf("Already exists: %s (%s %d Senate)\n", row$name_snyder, row$state, row$year))
-  }
-}
 
 # Manually fixing TX-22 2006 ----
 
@@ -362,7 +316,7 @@ jsdat <- jsdat |>
     nextup = replace(nextup, state == "AZ" & year == 2020 & office == "S" & type == "S", 2022)
   )
 
-# Adding Angus King ----
+# Adding Angus King racs ----
 
 king_additions <- tibble::tribble(
   ~state, ~year, ~office, ~dist, ~type, ~nextup, ~party, ~party_formal, ~name_snyder, ~inc, ~vote_g, ~w_g,
@@ -395,7 +349,7 @@ for (i in seq_len(nrow(king_additions))) {
   }
 }
 
-# Adding Joe Lieberman ----
+# Adding Joe Lieberman races ----
 
 lieberman_additions <- tibble::tribble(
   ~state, ~year, ~office, ~dist, ~type, ~nextup, ~party, ~party_formal, ~name_snyder, ~inc, ~vote_g, ~w_g,
@@ -423,6 +377,55 @@ for (i in seq_len(nrow(lieberman_additions))) {
     cat(sprintf("Already exists: %s (%s %d Senate)\n", row$name_snyder, row$state, row$year))
   }
 }
+
+
+# Adding Bernard Sanders Senate elections ----
+
+# Vermont Senate races for Bernard Sanders (2018, 2012, 2006)
+sanders_additions <- tibble::tribble(
+  ~state, ~year, ~office, ~dist, ~type, ~nextup, ~party, ~party_formal, ~name_snyder, ~inc, ~vote_g, ~w_g,
+  # 2018 Senate election
+  "VT", 2018, "S", 1, "G", 2024, "I", "I", "SANDERS, BERNARD (BERNIE)", 1, 183649, 1,
+  "VT", 2018, "S", 1, "G", 2024, "R", "R", "ZUPAN, LAWRENCE", 0, 74815, 0,
+  "VT", 2018, "S", 1, "G", 2024, "I", "I", "PEACOCK, BRAD J.", 0, 3655, 0,
+  "VT", 2018, "S", 1, "G", 2024, "I", "I", "BESTE, RUSSELL", 0, 2763, 0,
+  "VT", 2018, "S", 1, "G", 2024, "I", "I", "GILBERT, EDWARD S., JR.", 0, 2244, 0,
+  "VT", 2018, "S", 1, "G", 2024, "I", "I", "ADELUOLA, FOLASADE", 0, 1979, 0,
+  "VT", 2018, "S", 1, "G", 2024, "Other", "Liberty Union", "KANE, REID", 0, 1171, 0,
+  "VT", 2018, "S", 1, "G", 2024, "I", "I", "SVITAVSKY, JON", 0, 1130, 0,
+  "VT", 2018, "S", 1, "G", 2024, "I", "I", "BUSA, BRUCE", 0, 914, 0,
+  # 2012 Senate election
+  "VT", 2012, "S", 1, "G", 2018, "I", "I", "SANDERS, BERNARD (BERNIE)", 1, 207848, 1,
+  "VT", 2012, "S", 1, "G", 2018, "R", "R", "MACGOVERN, JOHN", 0, 72898, 0,
+  "VT", 2012, "S", 1, "G", 2018, "Other", "Liberty Union", "DIAMONDSTONE, PETER", 0, 2511, 0,
+  "VT", 2012, "S", 1, "G", 2018, "Other", "Peace and Prosperity", "MOSS, PETER", 0, 2452, 0,
+  "VT", 2012, "S", 1, "G", 2018, "Other", "United States Marijuana", "ERICSON, CHRIS", 0, 5924, 0,
+  "VT", 2012, "S", 1, "G", 2018, "Other", "VoteKISS", "Laframboise", 0, 877, 0,
+  # 2006 Senate election
+  "VT", 2006, "S", 1, "G", 2012, "I", "I", "SANDERS, BERNARD (BERNIE)", 0, 171638, 1,
+  "VT", 2006, "S", 1, "G", 2012, "R", "R", "TARRANT, RICHARD", 0, 84924, 0,
+  "VT", 2006, "S", 1, "G", 2012, "I", "I", "ERICSON, CRIS", 0, 1735, 0,
+  "VT", 2006, "S", 1, "G", 2012, "Grn", "Vermont Green", "HILL, CRAIG", 0, 1536, 0,
+  "VT", 2006, "S", 1, "G", 2012, "Other", "Liberty Union", "DIAMONDSTONE, PETER", 0, 801, 0,
+  "VT" , 2006, "S", 1, "G", 2012, "Other", "Anti-Bush", "MOSS, PETER", 0, 1518, 0
+)
+
+# Check if Sanders entries already exist and add only if they don't
+for (i in seq_len(nrow(sanders_additions))) {
+  row <- sanders_additions[i, ]
+  exists <- jsdat |>
+    filter(state == row$state, year == row$year, office == row$office,
+           dist == row$dist, name_snyder == row$name_snyder) |>
+    nrow() > 0
+
+  if (!exists) {
+    jsdat <- jsdat |> add_row(!!!row)
+    cat(sprintf("Added: %s (%s %d Senate)\n", row$name_snyder, row$state, row$year))
+  } else {
+    cat(sprintf("Already exists: %s (%s %d Senate)\n", row$name_snyder, row$state, row$year))
+  }
+}
+
 
 # GITHUB ISSUES ===========================================================
 
