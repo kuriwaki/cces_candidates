@@ -1,4 +1,5 @@
 library(tidyverse)
+library(tidylog)
 
 jsdat_raw <- readRDS("data/intermediate/prelim/candidates_party-recoded.rds") |>
   filter(year >= 2006)
@@ -73,7 +74,7 @@ for (i in seq_len(nrow(ga_additions))) {
 
 # Fixing 2020/2022 Georgia Special candidates
 jsdat <- jsdat |>
-  filter(!(state == "GA" & year == 2020 & office == "S")) |>
+  filter(!(state == "GA" & year == 2021 & office == "S")) |>
   # remove runoff only candidates (but keep the main candidates)
   tidylog::mutate(
     temp = ifelse((state == "GA" & year %in% 2020:2022 & office == "S"), 1, 0),
