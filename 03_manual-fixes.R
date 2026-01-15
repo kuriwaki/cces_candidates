@@ -14,8 +14,8 @@ if ("name" %in% names(jsdat_raw)) {
   jsdat_raw <- jsdat_raw |> rename(name_snyder = name)
 }
 
-# Remove u_g, runoff, and vote_g_share columns if they exist
-jsdat_raw <- jsdat_raw |> select(-any_of(c("u_g", "runoff", "vote_g_share")))
+# Remove u_g and vote_g_share columns if they exist
+jsdat_raw <- jsdat_raw |> select(-any_of(c("u_g", "vote_g_share")))
 
 jsdat <- jsdat_raw
 
@@ -52,10 +52,10 @@ for (i in 1:nrow(la_additions)) {
 ga_additions <- tibble::tribble(
   ~state, ~year, ~office, ~dist, ~type, ~nextup, ~party, ~party_formal, ~name_snyder, ~vote_g, ~w_g, ~inc,
   # 2021 Special runoff - Warnock vs. Loeffler (Jan 5, 2021 runoff)
-  "GA", 2021, "S", 3, "S", 2022, "D", "D", "WARNOCK, RAPHAEL GAMALIEL", 2289113, 1, 0,
-  "GA", 2021, "S", 3, "S", 2022, "R", "R", "LOEFFLER, KELLY", 2195841, 0, 1,
-  "GA", 2021, "S", 2, "G", 2022, "D", "D", "OSSOFF, THOMAS JONATHAN (JON)", 2269923, 1, 0,
-  "GA", 2021, "S", 2, "G", 2022, "R", "R", "PERDUE, DAVID A.", 2214979, 0, 0
+  "GA", 2020, "S", 3, "S", 2022, "D", "D", "WARNOCK, RAPHAEL GAMALIEL", 2289113, 1, 0,
+  "GA", 2020, "S", 3, "S", 2022, "R", "R", "LOEFFLER, KELLY", 2195841, 0, 1,
+  "GA", 2020, "S", 2, "G", 2022, "D", "D", "OSSOFF, THOMAS JONATHAN (JON)", 2269923, 1, 0,
+  "GA", 2020, "S", 2, "G", 2022, "R", "R", "PERDUE, DAVID A.", 2214979, 0, 0
 )
 
 # Only add rows that don't already exist
@@ -111,7 +111,29 @@ jsdat <- jsdat |>
   ) |>
   filter(temp == 0,
          name_snyder != "BUCKLEY, ALLEN" | year != 2008) |>
-  select(-temp)
+  select(-temp) |>
+  tidylog::mutate(runoff = case_when(
+    state == "GA" & year == 2022 & office == "S" ~ 1, # 2022 Georgia Runoff
+    state == "GA" & year == 2021 & office == "S" ~ 1, # 2020 Georgia Runoff
+    state == "GA" & year == 2007 & office == "H" & dist == 10 ~ 1,
+    state == "GA" & year == 2008 & office == "S" ~ 1,
+    state == "GA" & year == 2010 & dist == 9 & type == "S" ~ 1,
+    state == "GA" & year == 2017 & dist == 6 & type == "S" ~ 1,
+    state == "LA" & year == 2020 & dist == 5 & type == "G" ~ 1,
+    state == "LA" & year == 2016 & office == "S" ~ 1,
+    state == "LA" & year == 2016 & dist == 3 & type == "G" ~ 1,
+    state == "LA" & year == 2014 & office == "S" ~ 1,
+    state == "LA" & year == 2014 & office == "H" & dist == 5 ~ 1,
+    state == "LA" & year == 2014 & office == "H" & dist == 6 ~ 1,
+    state == "LA" & year == 2013 & office == "H" & dist == 5 ~ 1,
+    state == "LA" & year == 2012 & office == "H" & dist == 3 ~ 1,
+    state == "LA" & year == 2006 & office == "H" & dist == 2 ~ 1,
+    TRUE ~ 0
+  )) |>
+  mutate(runoff = case_when(
+    state == "GA" | state == "LA" ~ runoff,
+    TRUE ~ NA_real_
+  ))
 
 
 # Vote total corrections ----
@@ -306,9 +328,9 @@ tx22_additions <- tibble::tribble(
   ~state, ~year, ~office, ~dist, ~type, ~nextup, ~party, ~party_formal, ~name_snyder, ~w_g, ~inc, ~vote_g,
   "TX", 2006, "H", 22, "G", 2008, "D", "D", "LAMPSON, NICHOLAS V. (NICK)", 1, 0, 76775,
   "TX", 2006, "H", 22, "G", 2008, "Lbt", "Lbt", "SMITHER, M. BOB", 0, 0, 9009,
-  "TX", 2006, "H", 22, "G", 2008, "Other", "Write-In", "SEKULA GIBBS, SHELLEY A.", 0, 0, 61938,
-  "TX", 2006, "H", 22, "G", 2008, "Other", "Write-In", "RICHARDSON, DONALD LUTHER (DON)", 0, 0, 428,
-  "TX", 2006, "H", 22, "G", 2008, "Other", "Write-In", "REASBECK, JOE", 0, 0, 89
+  "TX", 2006, "H", 22, "G", 2008, "Other", "W-I", "SEKULA GIBBS, SHELLEY A.", 0, 0, 61938,
+  "TX", 2006, "H", 22, "G", 2008, "Other", "W-I", "RICHARDSON, DONALD LUTHER (DON)", 0, 0, 428,
+  "TX", 2006, "H", 22, "G", 2008, "Other", "W-I", "REASBECK, JOE", 0, 0, 89
 )
 
 
@@ -340,6 +362,67 @@ jsdat <- jsdat |>
     nextup = replace(nextup, state == "AZ" & year == 2020 & office == "S" & type == "S", 2022)
   )
 
+# Adding Angus King ----
+
+king_additions <- tibble::tribble(
+  ~state, ~year, ~office, ~dist, ~type, ~nextup, ~party, ~party_formal, ~name_snyder, ~inc, ~vote_g, ~w_g,
+  # 2018 Senate election
+  "ME", 2018, "S", 1, "G", 2024, "I", "I", "KING, ANGUS S., JR.", 0, 370580, 1,
+  "ME", 2018, "S", 1, "G", 2024, "R", "R", "SUMNERS, CHARLES E., JR.", 0, 215399, 0,
+  "ME", 2018, "S", 1, "G", 2024, "D", "D", "DILL, CYNTHIA ANN", 0, 92900, 0,
+  "ME", 2018, "S", 1, "G", 2024, "I", "I", "WOODS, STEPHEN M.", 0, 10289, 0,
+  "ME", 2018, "S", 1, "G", 2024, "Other", "Nonparty", "DALTON, DANNY FRANCIS", 0, 5624, 0,
+  "ME", 2018, "S", 1, "G", 2024, "Other", "Independent for Liberty", "DODGE, ANDREW IAN", 0, 5624, 0,
+  # 2012 Senate election
+  "ME", 2012, "S", 1, "G", 2018, "I", "I", "KING, ANGUS S., JR.", 1, 344575, 1,
+  "ME", 2012, "S", 1, "G", 2018, "R", "R", "BRAKEY, ERIC L.", 0, 223502, 0,
+  "ME", 2012, "S", 1, "G", 2018, "D", "D", "RINGELSTEIN, ZAK", 0, 66268, 0
+)
+
+# Check if Kings entries already exist and add only if they don't
+for (i in seq_len(nrow(king_additions))) {
+  row <- king_additions[i, ]
+  exists <- jsdat |>
+    filter(state == row$state, year == row$year, office == row$office,
+           dist == row$dist, name_snyder == row$name_snyder) |>
+    nrow() > 0
+
+  if (!exists) {
+    jsdat <- jsdat |> add_row(!!!row)
+    cat(sprintf("Added: %s (%s %d Senate)\n", row$name_snyder, row$state, row$year))
+  } else {
+    cat(sprintf("Already exists: %s (%s %d Senate)\n", row$name_snyder, row$state, row$year))
+  }
+}
+
+# Adding Joe Lieberman ----
+
+lieberman_additions <- tibble::tribble(
+  ~state, ~year, ~office, ~dist, ~type, ~nextup, ~party, ~party_formal, ~name_snyder, ~inc, ~vote_g, ~w_g,
+  # 2006 Senate election
+  "CT", 2006, "S", 1, "G", 2012, "I", "Connecticut for Lieberman", "LIEBERMAN, JOSEPH I.", 1, 564095, 1,
+  "CT", 2006, "S", 1, "G", 2012, "D", "D", "LAMONT, NED", 0, 450844, 0,
+  "CT", 2006, "S", 1, "G", 2012, "R", "R", "SCHLESINGER, ALAN", 0, 109198, 0,
+  "CT", 2006, "S", 1, "G", 2012, "Grn", "Green", "FERRUCCI, RALPH A.", 0, 5922, 0,
+  "CT", 2006, "S", 1, "G", 2012, "Other", "Concerned Citizens", "KNIBBS, TIMOTHY A.", 0, 4638, 0,
+  "CT", 2006, "S", 1, "G", 2012, "Other", "Write-in", "VASSAR, CARL E.", 0, 80, 0,
+)
+
+# Check if Lieberman entries already exist and add only if they don't
+for (i in seq_len(nrow(lieberman_additions))) {
+  row <- lieberman_additions[i, ]
+  exists <- jsdat |>
+    filter(state == row$state, year == row$year, office == row$office,
+           dist == row$dist, name_snyder == row$name_snyder) |>
+    nrow() > 0
+
+  if (!exists) {
+    jsdat <- jsdat |> add_row(!!!row)
+    cat(sprintf("Added: %s (%s %d Senate)\n", row$name_snyder, row$state, row$year))
+  } else {
+    cat(sprintf("Already exists: %s (%s %d Senate)\n", row$name_snyder, row$state, row$year))
+  }
+}
 
 # GITHUB ISSUES ===========================================================
 
@@ -348,14 +431,14 @@ jsdat <- jsdat |>
 
 house_append <- read.csv("data/intermediate/cand_house_append.csv")
 
-# Rename 'name' to 'name_snyder' if needed, and remove u_g and runoff columns
+# Rename 'name' to 'name_snyder' if needed
 if ("name" %in% names(house_append) && !"name_snyder" %in% names(house_append)) {
   house_append <- house_append |> rename(name_snyder = name)
 }
 
-# Remove u_g, runoff, and vote_g_share columns if they exist
+# Remove u_g and vote_g_share columns if they exist
 house_append <- house_append |>
-  select(-any_of(c("u_g", "runoff", "vote_g_share")))
+  select(-any_of(c("u_g", "vote_g_share")))
 
 # Only add rows that don't already exist
 for (i in seq_len(nrow(house_append))) {
