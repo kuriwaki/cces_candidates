@@ -26,11 +26,11 @@ jsdat <- jsdat_raw
 
 # Add LA candidates if not already present
 la_additions <- tibble::tribble(
-  ~state, ~year, ~office, ~dist, ~type, ~nextup, ~party, ~name_snyder, ~w_g, ~inc, ~vote_g,
-  "LA", 2006, "H", 5, "G", 2008, "D", "HEARN, WILLIAMS GLORIA", 0, 0, 33233,
-  "LA", 2006, "H", 5, "G", 2008, "Lbt", "SANDERS, BRENT", 0, 0, 1876,
-  "LA", 2006, "H", 5, "G", 2008, "I", "WATTS, JOHN", 0, 0, 1262,
-  "LA", 2006, "H", 7, "G", 2008, "D", "STAGG, MIKE", 0, 0, 47133
+  ~state, ~year, ~office, ~dist, ~type, ~nextup, ~party, ~party_formal, ~name_snyder, ~w_g, ~inc, ~vote_g,
+  "LA", 2006, "H", 5, "G", 2008, "D", "D", "HEARN, WILLIAMS GLORIA", 0, 0, 33233,
+  "LA", 2006, "H", 5, "G", 2008, "Lbt", "Lbt", "SANDERS, BRENT", 0, 0, 1876,
+  "LA", 2006, "H", 5, "G", 2008, "I", "I", "WATTS, JOHN", 0, 0, 1262,
+  "LA", 2006, "H", 7, "G", 2008, "D", "D", "STAGG, MIKE", 0, 0, 47133
 )
 
 # Only add rows that don't already exist
@@ -50,12 +50,12 @@ for (i in 1:nrow(la_additions)) {
 # Adding Georgia 2020/2021 elections ----
 
 ga_additions <- tibble::tribble(
-  ~state, ~year, ~office, ~dist, ~type, ~nextup, ~party, ~name_snyder, ~vote_g, ~w_g, ~inc,
+  ~state, ~year, ~office, ~dist, ~type, ~nextup, ~party, ~party_formal, ~name_snyder, ~vote_g, ~w_g, ~inc,
   # 2021 Special runoff - Warnock vs. Loeffler (Jan 5, 2021 runoff)
-  "GA", 2021, "S", 3, "S", 2022, "D", "WARNOCK, RAPHAEL GAMALIEL", 2289113, 1, 0,
-  "GA", 2021, "S", 3, "S", 2022, "R", "LOEFFLER, KELLY", 2195841, 0, 1,
-  "GA", 2021, "S", 2, "G", 2022, "D", "OSSOFF, THOMAS JONATHAN (JON)", 2269923, 1, 0,
-  "GA", 2021, "S", 2, "G", 2022, "R", "PERDUE, DAVID A.", 2214979, 0, 0
+  "GA", 2021, "S", 3, "S", 2022, "D", "D", "WARNOCK, RAPHAEL GAMALIEL", 2289113, 1, 0,
+  "GA", 2021, "S", 3, "S", 2022, "R", "R", "LOEFFLER, KELLY", 2195841, 0, 1,
+  "GA", 2021, "S", 2, "G", 2022, "D", "D", "OSSOFF, THOMAS JONATHAN (JON)", 2269923, 1, 0,
+  "GA", 2021, "S", 2, "G", 2022, "R", "R", "PERDUE, DAVID A.", 2214979, 0, 0
 )
 
 # Only add rows that don't already exist
@@ -222,9 +222,9 @@ jsdat <- jsdat |>
 
 jsdat <- jsdat |>
   # writein
-  tidylog::mutate(party = replace(party, name_snyder == "SMITH, DELLA JEAN (DJ)" & year == 2016, "W-I")) |>
+  tidylog::mutate(party = replace(party, name_snyder == "SMITH, DELLA JEAN (DJ)" & year == 2016, "Other")) |>
   tidylog::mutate(party = replace(party, name_snyder == "RAMSBURG, KAREN LYNN" & year == 2012, "D")) |>
-  tidylog::mutate(party = replace(party, name_snyder != "VAN HOLLEN, CHRISTOPHER (CHRIS), JR." & year == 2016 & office == "S" & party == "D" & state == "MD", "W-I"))
+  tidylog::mutate(party = replace(party, name_snyder != "VAN HOLLEN, CHRISTOPHER (CHRIS), JR." & year == 2016 & office == "S" & party == "D" & state == "MD", "Other"))
 
 
 # Incumbency fixes ----
@@ -301,24 +301,54 @@ jsdat <- jsdat |>
     w_g = replace(w_g, office == "H" & state == "NC" & dist == 9 & year == 2018, 0)
   )
 
-# GITHUB ISSUES ===========================================================
+# Manually fixing TX-22 2006 ----
 
-# Issue #7: TX-22 2006 election type ----
-# https://github.com/kuriwaki/cces_candidates/issues/7
+jsdat <- jsdat |>
+  tidylog::filter(
+    !(state == "TX" & year == 2006 & office == "H" & dist == 22)
+  )
+
+# TX-22 2006 general election
+tx22_additions <- tibble::tribble(
+  ~state, ~year, ~office, ~dist, ~type, ~nextup, ~party, ~party_formal, ~name_snyder, ~w_g, ~inc, ~vote_g,
+  "TX", 2006, "H", 22, "G", 2008, "D", "D", "LAMPSON, NICHOLAS V. (NICK)", 1, 0, 76775,
+  "TX", 2006, "H", 22, "G", 2008, "Lbt", "Lbt", "SMITHER, M. BOB", 0, 0, 9009,
+  "TX", 2006, "H", 22, "G", 2008, "Other", "Write-In", "SEKULA GIBBS, SHELLEY A.", 0, 0, 61938,
+  "TX", 2006, "H", 22, "G", 2008, "Other", "Write-In", "RICHARDSON, DONALD LUTHER (DON)", 0, 0, 428,
+  "TX", 2006, "H", 22, "G", 2008, "Other", "Write-In", "REASBECK, JOE", 0, 0, 89
+)
+
+
+# Only add rows that don't already exist
+for (i in seq_len(nrow(tx22_additions))) {
+  row <- tx22_additions[i, ]
+  exists <- jsdat |>
+    filter(state == row$state, year == row$year, office == row$office,
+           dist == row$dist, name_snyder == row$name_snyder, type == row$type) |>
+    nrow() > 0
+
+  if (!exists) {
+    jsdat <- jsdat |> add_row(!!!row)
+  }
+}
+
+# McMasters, Thomas (Tom) Manual Edit ----
 
 jsdat <- jsdat |>
   tidylog::mutate(
-    type = replace(
-      x = type,
-      list = (year == 2006 & state == "TX" & dist == 22 & nextup == 2006),
-      values = "S"
-    ),
-    type = replace(
-      x = type,
-      list = (year == 2006 & state == "TX" & dist == 22 & nextup == 2008),
-      values = "G"
-    )
+    party = replace(party, name_snyder == "MCMASTERS, THOMAS (TOM)", "I"),
+    party_formal = replace(party_formal, name_snyder == "MCMASTERS, THOMAS (TOM)", "W-I")
   )
+
+# Fixing nextup for Arizona races ----
+
+jsdat <- jsdat |>
+  tidylog::mutate(
+    nextup = replace(nextup, state == "AZ" & year == 2020 & office == "S" & type == "S", 2022)
+  )
+
+
+# GITHUB ISSUES ===========================================================
 
 
 # Issues #9, #10, #13, #14, #16, #17, #18, #19, #20: House append ----
@@ -448,24 +478,25 @@ cand <- cand |>
 
 # Define 2024 additions
 additions_2024 <- tibble::tribble(
-  ~state, ~year, ~office, ~dist, ~type, ~nextup, ~party, ~name_snyder, ~inc, ~vote_g, ~w_g,
+  ~state, ~year, ~office, ~dist, ~type, ~nextup, ~party, ~party_formal, ~name_snyder, ~inc, ~vote_g, ~w_g,
   # NY-15
-  "NY", 2024, "H", 15, "G", 2026, "D", "TORRES, RITCHIE", 1, 130392, 1,
-  "NY", 2024, "H", 15, "G", 2026, "R", "DURAN, GONZALEZ", 0, 36010, 0,
-  "NY", 2024, "H", 15, "G", 2026, "I", "JOSE VEGA, LAROUCHE", 0, 0, 0,
+  "NY", 2024, "H", 15, "G", 2026, "D", "D", "TORRES, RITCHIE", 1, 130392, 1,
+  "NY", 2024, "H", 15, "G", 2026, "R", "R", "DURAN, GONZALEZ", 0, 36010, 0,
+  "NY", 2024, "H", 15, "G", 2026, "Other", "LaRouche", "JOSE VEGA, LAROUCHE", 0, 0, 0,
   # Maine Senate
-  "ME", 2024, "S", 2, "G", 2030, "R", "KOUZOUNAS, DEMI", 0, 284338, 0,
-  "ME", 2024, "S", 2, "G", 2030, "D", "COSTELLO, DAVID ALLEN", 0, 88891, 0,
-  "ME", 2024, "S", 2, "G", 2030, "I", "KING, ANGUS S., JR.", 1, 427331, 1,
-  "ME", 2024, "S", 2, "G", 2030, "I", "CHERRY, JASON S.", 0, 20222, 0,
+  "ME", 2024, "S", 2, "G", 2030, "R", "R", "KOUZOUNAS, DEMI", 0, 284338, 0,
+  "ME", 2024, "S", 2, "G", 2030, "D", "D", "COSTELLO, DAVID ALLEN", 0, 88891, 0,
+  "ME", 2024, "S", 2, "G", 2030, "I", "I", "KING, ANGUS S., JR.", 1, 427331, 1,
+  "ME", 2024, "S", 2, "G", 2030, "I", "I", "CHERRY, JASON S.", 0, 20222, 0,
   # Vermont Senate
-  "VT", 2024, "S", 2, "G", 2030, "R", "MALLOY, GERALD", 0, 116512, 0,
-  "VT", 2024, "S", 2, "G", 2030, "I", "SANDERS, BERNARD (BERNIE)", 1, 229429, 1,
-  "VT", 2024, "S", 2, "G", 2030, "I", "BERRY, STEVE", 0, 7941, 0,
-  "VT", 2024, "S", 2, "G", 2030, "L", "HILL, MATT", 0, 4530, 0,
-  "VT", 2024, "S", 2, "G", 2030, "Green Mountain Peace and Justice", "SCHOVILLE, JUSTIN", 0, 3339, 0,
-  "VT", 2024, "S", 2, "G", 2030, "Epic", "STEWART GREENSTEIN, MARK", 0, 1104, 0
+  "VT", 2024, "S", 2, "G", 2030, "R", "R", "MALLOY, GERALD", 0, 116512, 0,
+  "VT", 2024, "S", 2, "G", 2030, "I", "I", "SANDERS, BERNARD (BERNIE)", 1, 229429, 1,
+  "VT", 2024, "S", 2, "G", 2030, "I", "I", "BERRY, STEVE", 0, 7941, 0,
+  "VT", 2024, "S", 2, "G", 2030, "Lbt", "Lbt", "HILL, MATT", 0, 4530, 0,
+  "VT", 2024, "S", 2, "G", 2030, "Other", "Green Mountain Peace and Justice", "SCHOVILLE, JUSTIN", 0, 3339, 0,
+  "VT", 2024, "S", 2, "G", 2030, "Other", "Epic", "STEWART GREENSTEIN, MARK", 0, 1104, 0
 )
+
 
 
 # Only add 2024 rows that don't already exist
