@@ -27,7 +27,6 @@ jsdat <- jsdat_raw
 # Add LA candidates if not already present
 la_additions <- tibble::tribble(
   ~state, ~year, ~office, ~dist, ~type, ~nextup, ~party, ~name_snyder, ~w_g, ~inc, ~vote_g,
-  "LA", 2022, "H", 4, "G", 2024, "R", "JOHNSON, MIKE", 1, 1, NA,
   "LA", 2006, "H", 5, "G", 2008, "D", "HEARN, WILLIAMS GLORIA", 0, 0, 33233,
   "LA", 2006, "H", 5, "G", 2008, "Lbt", "SANDERS, BRENT", 0, 0, 1876,
   "LA", 2006, "H", 5, "G", 2008, "I", "WATTS, JOHN", 0, 0, 1262,
@@ -295,6 +294,12 @@ for (i in seq_len(nrow(sanders_additions))) {
   }
 }
 
+# Removing winner from NC-9 2018 ----
+
+jsdat <- jsdat |>
+  tidylog::mutate(
+    w_g = replace(w_g, office == "H" & state == "NC" & dist == 9 & year == 2018, 0)
+  )
 
 # GITHUB ISSUES ===========================================================
 
@@ -403,12 +408,10 @@ cand <- cand %>%
     "BOYDA, NANCY\xcaE." ~ "BOYDA, NANCY E.",
     "KENNEDY, JOSEPH P., III" ~ "KENNEDY, JOSEPH P. (JOE), III",
     "BEUTLER, JAIME HERRERA" ~ "HERRERA BEUTLER, JAIME",
-    "DEAN, MADELEINE" ~ "DEAN CUNNANE, MADELEINE",
     "WAKELY, TOMMY" ~ "WAKELY, THOMAS J. (TOM)",
     "CUELLAR, HENRY" ~ "CUELLAR, ENRIQUE ROBERTO (HENRY)",
     "SHERRILL, MIKIE" ~ "SHERRILL, REBECCA MICHELLE (MIKIE)",
     "KELLY, TRENT" ~ "KELLY, JOHN TRENT",
-    "GARCIA, CHUY" ~ "GARCIA, JESUS G. (CHUY)",
     "SCOTT, JAMES AUSTIN" ~ "SCOTT, AUSTIN",
     "FERGUSON, DREW" ~ "FERGUSON, ANDREW DREW, IV",
     "STEUBE, GREG" ~ "STEUBE, W. GREGORY (GREG)",
