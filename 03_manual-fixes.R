@@ -294,13 +294,6 @@ for (i in seq_len(nrow(sanders_additions))) {
   }
 }
 
-# Removing winner from NC-9 2018 ----
-
-jsdat <- jsdat |>
-  tidylog::mutate(
-    w_g = replace(w_g, office == "H" & state == "NC" & dist == 9 & year == 2018, 0)
-  )
-
 # Manually fixing TX-22 2006 ----
 
 jsdat <- jsdat |>
