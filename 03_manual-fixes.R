@@ -275,7 +275,7 @@ jsdat <- jsdat |>
 sanders_additions <- tibble::tribble(
   ~state, ~year, ~office, ~dist, ~type, ~nextup, ~party, ~party_formal, ~name_snyder, ~inc, ~vote_g, ~w_g,
   # 2018 Senate election
-  "VT", 2018, "S", 1, "G", 2024, "I", "D", "SANDERS, BERNARD (BERNIE)", 1, 183649, 1,
+  "VT", 2018, "S", 1, "G", 2024, "I", "I", "SANDERS, BERNARD (BERNIE)", 1, 183649, 1,
   "VT", 2018, "S", 1, "G", 2024, "R", "R", "ZUPAN, LAWRENCE", 0, 74815, 0,
   "VT", 2018, "S", 1, "G", 2024, "I", "I", "PEACOCK, BRAD J.", 0, 3655, 0,
   "VT", 2018, "S", 1, "G", 2024, "I", "I", "BESTE, RUSSELL", 0, 2763, 0,
@@ -285,14 +285,14 @@ sanders_additions <- tibble::tribble(
   "VT", 2018, "S", 1, "G", 2024, "I", "I", "SVITAVSKY, JON", 0, 1130, 0,
   "VT", 2018, "S", 1, "G", 2024, "I", "I", "BUSA, BRUCE", 0, 914, 0,
   # 2012 Senate election
-  "VT", 2012, "S", 1, "G", 2018, "I", "D", "SANDERS, BERNARD (BERNIE)", 1, 207848, 1,
+  "VT", 2012, "S", 1, "G", 2018, "I", "I", "SANDERS, BERNARD (BERNIE)", 1, 207848, 1,
   "VT", 2012, "S", 1, "G", 2018, "R", "R", "MACGOVERN, JOHN", 0, 72898, 0,
   "VT", 2012, "S", 1, "G", 2018, "Other", "Liberty Union", "DIAMONDSTONE, PETER", 0, 2511, 0,
   "VT", 2012, "S", 1, "G", 2018, "Other", "Peace and Prosperity", "MOSS, PETER", 0, 2452, 0,
   "VT", 2012, "S", 1, "G", 2018, "Other", "United States Marijuana", "ERICSON, CHRIS", 0, 5924, 0,
   "VT", 2012, "S", 1, "G", 2018, "Other", "VoteKISS", "Laframboise", 0, 877, 0,
   # 2006 Senate election
-  "VT", 2006, "S", 1, "G", 2012, "I", "D", "SANDERS, BERNARD (BERNIE)", 0, 171638, 1,
+  "VT", 2006, "S", 1, "G", 2012, "I", "I", "SANDERS, BERNARD (BERNIE)", 0, 171638, 1,
   "VT", 2006, "S", 1, "G", 2012, "R", "R", "TARRANT, RICHARD", 0, 84924, 0,
   "VT", 2006, "S", 1, "G", 2012, "I", "I", "ERICSON, CRIS", 0, 1735, 0,
   "VT", 2006, "S", 1, "G", 2012, "Grn", "Vermont Green", "HILL, CRAIG", 0, 1536, 0,
