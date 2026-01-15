@@ -1,4 +1,7 @@
-jsdat_raw <- readRDS("data/intermediate/prelim/candidates_party-recoded.rds")
+library(tidyverse)
+
+jsdat_raw <- readRDS("data/intermediate/prelim/candidates_party-recoded.rds") |>
+  filter(year >= 2006)
 
 # Rename variables to match expected names (if needed)
 if ("candidatevotes" %in% names(jsdat_raw)) {
@@ -11,6 +14,9 @@ if ("name" %in% names(jsdat_raw)) {
   jsdat_raw <- jsdat_raw |> rename(name_snyder = name)
 }
 
+# Remove u_g, runoff, and vote_g_share columns if they exist
+jsdat_raw <- jsdat_raw |> select(-any_of(c("u_g", "runoff", "vote_g_share")))
+
 jsdat <- jsdat_raw
 
 
@@ -20,12 +26,12 @@ jsdat <- jsdat_raw
 
 # Add LA candidates if not already present
 la_additions <- tibble::tribble(
-  ~state, ~year, ~office, ~dist, ~type, ~nextup, ~party, ~name_snyder, ~w_g, ~u_g, ~inc, ~vote_g,
-  "LA", 2022, "H", 4, "G", 2024, "R", "JOHNSON, MIKE", 1, 1, 1, NA,
-  "LA", 2006, "H", 5, "G", 2008, "D", "HEARN, WILLIAMS GLORIA", 0, 1, 0, 33233,
-  "LA", 2006, "H", 5, "G", 2008, "Lbt", "SANDERS, BRENT", 0, 1, 0, 1876,
-  "LA", 2006, "H", 5, "G", 2008, "I", "WATTS, JOHN", 0, 1, 0, 1262,
-  "LA", 2006, "H", 7, "G", 2008, "D", "STAGG, MIKE", 0, 1, 0, 47133
+  ~state, ~year, ~office, ~dist, ~type, ~nextup, ~party, ~name_snyder, ~w_g, ~inc, ~vote_g,
+  "LA", 2022, "H", 4, "G", 2024, "R", "JOHNSON, MIKE", 1, 1, NA,
+  "LA", 2006, "H", 5, "G", 2008, "D", "HEARN, WILLIAMS GLORIA", 0, 0, 33233,
+  "LA", 2006, "H", 5, "G", 2008, "Lbt", "SANDERS, BRENT", 0, 0, 1876,
+  "LA", 2006, "H", 5, "G", 2008, "I", "WATTS, JOHN", 0, 0, 1262,
+  "LA", 2006, "H", 7, "G", 2008, "D", "STAGG, MIKE", 0, 0, 47133
 )
 
 # Only add rows that don't already exist
@@ -44,38 +50,13 @@ for (i in 1:nrow(la_additions)) {
 
 # Adding Georgia 2020/2021 elections ----
 
-# Note: totalvotes, vote_g_share, and n will be recalculated at end of script
-# 2020 Special election (Class 3, unexpired Isakson term) - jungle primary went to runoff
-# 2021 is the runoff for that special election
-# nextup = 2022 because winner serves remainder of Isakson's term (expires Jan 2023)
-# Loeffler was appointed incumbent (inc = 1), all others are challengers (inc = 0)
 ga_additions <- tibble::tribble(
   ~state, ~year, ~office, ~dist, ~type, ~nextup, ~party, ~name_snyder, ~vote_g, ~w_g, ~inc,
-  # 2020 Special election (unexpired term) - jungle primary, no winner
-  "GA", 2020, "S", 3, "G", 2022, "D", "WARNOCK, RAPHAEL GAMALIEL", 1617035, 0, 0,
-  "GA", 2020, "S", 3, "G", 2022, "D", "JACKSON, DEBORAH", 324118, 0, 0,
-  "GA", 2020, "S", 3, "G", 2022, "D", "LIEBERMAN, MATT", 136021, 0, 0,
-  "GA", 2020, "S", 3, "G", 2022, "D", "JOHNSON-SHEALEY, TAMARA", 106767, 0, 0,
-  "GA", 2020, "S", 3, "G", 2022, "D", "JAMES, JAMESIA", 94406, 0, 0,
-  "GA", 2020, "S", 3, "G", 2022, "D", "SLADE, JOY FELICIA", 44945, 0, 0,
-  "GA", 2020, "S", 3, "G", 2022, "D", "WINFIELD, RICHARD DIEN", 28687, 0, 0,
-  "GA", 2020, "S", 3, "G", 2022, "D", "TARVER, ED", 26333, 0, 0,
-  "GA", 2020, "S", 3, "G", 2022, "R", "LOEFFLER, KELLY", 1273214, 0, 1,
-  "GA", 2020, "S", 3, "G", 2022, "R", "COLLINS, DOUG", 980454, 0, 0,
-  "GA", 2020, "S", 3, "G", 2022, "R", "GRAYSON, DERRICK E.", 51592, 0, 0,
-  "GA", 2020, "S", 3, "G", 2022, "R", "DAVIS JACKSON, ANNETTE", 44335, 0, 0,
-  "GA", 2020, "S", 3, "G", 2022, "R", "TAYLOR, KANDISS", 40349, 0, 0,
-  "GA", 2020, "S", 3, "G", 2022, "R", "JOHNSON, A. WAYNE", 36176, 0, 0,
-  "GA", 2020, "S", 3, "G", 2022, "I", "SLOWINSKI, BRIAN", 35431, 0, 0,
-  "GA", 2020, "S", 3, "G", 2022, "I", "BUCKLEY, ALLEN", 17954, 0, 0,
-  "GA", 2020, "S", 3, "G", 2022, "I", "FORTUIN, JOHN GREEN", 15293, 0, 0,
-  "GA", 2020, "S", 3, "G", 2022, "I", "BARTELL, AL", 14640, 0, 0,
-  "GA", 2020, "S", 3, "G", 2022, "I", "STOVALL, VALENCIA", 13318, 0, 0,
-  "GA", 2020, "S", 3, "G", 2022, "I", "GREENE, MICHAEL TODD", 13293, 0, 0,
-  "GA", 2020, "S", 3, "G", 2022, "I", "MACK, ROD", 7, 0, 0,
   # 2021 Special runoff - Warnock vs. Loeffler (Jan 5, 2021 runoff)
   "GA", 2021, "S", 3, "S", 2022, "D", "WARNOCK, RAPHAEL GAMALIEL", 2289113, 1, 0,
-  "GA", 2021, "S", 3, "S", 2022, "R", "LOEFFLER, KELLY", 2195841, 0, 1
+  "GA", 2021, "S", 3, "S", 2022, "R", "LOEFFLER, KELLY", 2195841, 0, 1,
+  "GA", 2021, "S", 2, "G", 2022, "D", "OSSOFF, THOMAS JONATHAN (JON)", 2269923, 1, 0,
+  "GA", 2021, "S", 2, "G", 2022, "R", "PERDUE, DAVID A.", 2214979, 0, 0
 )
 
 # Only add rows that don't already exist
@@ -93,12 +74,13 @@ for (i in seq_len(nrow(ga_additions))) {
 
 # Fixing 2020/2022 Georgia Special candidates
 jsdat <- jsdat |>
+  filter(!(state == "GA" & year == 2020 & office == "S")) |>
   # remove runoff only candidates (but keep the main candidates)
   tidylog::mutate(
     temp = ifelse((state == "GA" & year %in% 2020:2022 & office == "S"), 1, 0),
     temp = replace(temp, name_snyder %in% c("LOEFFLER, KELLY", "WARNOCK, RAPHAEL GAMALIEL",
                                      "WALKER, HERSCHEL JUNIOR",
-                                     "OSSOFF, JON", "PERDUE, DAVID A."), 0)
+                                     "OSSOFF, THOMAS JONATHAN (JON)", "PERDUE, DAVID A."), 0)
   ) |>
   tidylog::filter(temp == 0) |>
   select(-temp) |>
@@ -118,7 +100,7 @@ jsdat <- jsdat |>
 
 # Runoff elections ----
 
-# Adding "runoff" variable and removing extraneous candidates
+# Removing extraneous candidates
 ## Georgia data comes from https://sos.ga.gov/index.php/Elections/current_and_past_elections_results
 ## Louisiana data comes from https://voterportal.sos.la.gov/graphical
 jsdat <- jsdat |>
@@ -130,29 +112,7 @@ jsdat <- jsdat |>
   ) |>
   filter(temp == 0,
          name_snyder != "BUCKLEY, ALLEN" | year != 2008) |>
-  select(-temp) |>
-  tidylog::mutate(runoff = case_when(
-    state == "GA" & year == 2022 & office == "S" ~ 1, # 2022 Georgia Runoff
-    state == "GA" & year == 2021 & office == "S" ~ 1, # 2020 Georgia Runoff
-    state == "GA" & year == 2007 & office == "H" & dist == 10 ~ 1,
-    state == "GA" & year == 2008 & office == "S" ~ 1,
-    state == "GA" & year == 2010 & dist == 9 & type == "S" ~ 1,
-    state == "GA" & year == 2017 & dist == 6 & type == "S" ~ 1,
-    state == "LA" & year == 2020 & dist == 5 & type == "G" ~ 1,
-    state == "LA" & year == 2016 & office == "S" ~ 1,
-    state == "LA" & year == 2016 & dist == 3 & type == "G" ~ 1,
-    state == "LA" & year == 2014 & office == "S" ~ 1,
-    state == "LA" & year == 2014 & office == "H" & dist == 5 ~ 1,
-    state == "LA" & year == 2014 & office == "H" & dist == 6 ~ 1,
-    state == "LA" & year == 2013 & office == "H" & dist == 5 ~ 1,
-    state == "LA" & year == 2012 & office == "H" & dist == 3 ~ 1,
-    state == "LA" & year == 2006 & office == "H" & dist == 2 ~ 1,
-    TRUE ~ 0
-  )) |>
-  mutate(runoff = case_when(
-    state == "GA" | state == "LA" ~ runoff,
-    TRUE ~ NA_real_
-  ))
+  select(-temp)
 
 
 # Vote total corrections ----
@@ -235,7 +195,6 @@ jsdat <- jsdat |>
     !(year == 2006 & state == "TX" & office == "H" & dist == 23 & vote_g < 24594)
   ) |>
   tidylog::mutate(type = replace(type, year == 2006 & state == "TX" & dist == 23, "G"),
-         runoff = replace(runoff, year == 2006 & state == "TX" & dist == 23, 1),
          vote_g = replace(vote_g, year == 2006 & state == "TX" & dist == 23 & party == "R", 32217),
          vote_g = replace(vote_g, year == 2006 & state == "TX" & dist == 23 & party == "D", 38256),
          w_g = replace(w_g, year == 2006 & state == "TX" & dist == 23 & party == "R", 0),
@@ -289,6 +248,52 @@ jsdat <- jsdat |>
 jsdat <- jsdat |>
   tidylog::mutate(name_snyder = str_replace(name_snyder, "Ê", " "))
 
+# Adding Bernard Sanders Senate elections ----
+
+# Vermont Senate races for Bernard Sanders (2018, 2012, 2006)
+sanders_additions <- tibble::tribble(
+  ~state, ~year, ~office, ~dist, ~type, ~nextup, ~party, ~party_formal, ~name_snyder, ~inc, ~vote_g, ~w_g,
+  # 2018 Senate election
+  "VT", 2018, "S", 1, "G", 2024, "I", "D", "SANDERS, BERNARD (BERNIE)", 1, 183649, 1,
+  "VT", 2018, "S", 1, "G", 2024, "R", "R", "ZUPAN, LAWRENCE", 0, 74815, 0,
+  "VT", 2018, "S", 1, "G", 2024, "I", "I", "PEACOCK, BRAD J.", 0, 3655, 0,
+  "VT", 2018, "S", 1, "G", 2024, "I", "I", "BESTE, RUSSELL", 0, 2763, 0,
+  "VT", 2018, "S", 1, "G", 2024, "I", "I", "GILBERT, EDWARD S., JR.", 0, 2244, 0,
+  "VT", 2018, "S", 1, "G", 2024, "I", "I", "ADELUOLA, FOLASADE", 0, 1979, 0,
+  "VT", 2018, "S", 1, "G", 2024, "Other", "Liberty Union", "KANE, REID", 0, 1171, 0,
+  "VT", 2018, "S", 1, "G", 2024, "I", "I", "SVITAVSKY, JON", 0, 1130, 0,
+  "VT", 2018, "S", 1, "G", 2024, "I", "I", "BUSA, BRUCE", 0, 914, 0,
+  # 2012 Senate election
+  "VT", 2012, "S", 1, "G", 2018, "I", "D", "SANDERS, BERNARD (BERNIE)", 1, 207848, 1,
+  "VT", 2012, "S", 1, "G", 2018, "R", "R", "MACGOVERN, JOHN", 0, 72898, 0,
+  "VT", 2012, "S", 1, "G", 2018, "Other", "Liberty Union", "DIAMONDSTONE, PETER", 0, 2511, 0,
+  "VT", 2012, "S", 1, "G", 2018, "Other", "Peace and Prosperity", "MOSS, PETER", 0, 2452, 0,
+  "VT", 2012, "S", 1, "G", 2018, "Other", "United States Marijuana", "ERICSON, CHRIS", 0, 5924, 0,
+  "VT", 2012, "S", 1, "G", 2018, "Other", "VoteKISS", "Laframboise", 0, 877, 0,
+  # 2006 Senate election
+  "VT", 2006, "S", 1, "G", 2012, "I", "D", "SANDERS, BERNARD (BERNIE)", 0, 171638, 1,
+  "VT", 2006, "S", 1, "G", 2012, "R", "R", "TARRANT, RICHARD", 0, 84924, 0,
+  "VT", 2006, "S", 1, "G", 2012, "I", "I", "ERICSON, CRIS", 0, 1735, 0,
+  "VT", 2006, "S", 1, "G", 2012, "Grn", "Vermont Green", "HILL, CRAIG", 0, 1536, 0,
+  "VT", 2006, "S", 1, "G", 2012, "Other", "Liberty Union", "DIAMONDSTONE, PETER", 0, 801, 0,
+  "VT" , 2006, "S", 1, "G", 2012, "Other", "Anti-Bush", "MOSS, PETER", 0, 1518, 0
+)
+
+# Check if Sanders entries already exist and add only if they don't
+for (i in seq_len(nrow(sanders_additions))) {
+  row <- sanders_additions[i, ]
+  exists <- jsdat |>
+    filter(state == row$state, year == row$year, office == row$office,
+           dist == row$dist, name_snyder == row$name_snyder) |>
+    nrow() > 0
+
+  if (!exists) {
+    jsdat <- jsdat |> add_row(!!!row)
+    cat(sprintf("Added: %s (%s %d Senate)\n", row$name_snyder, row$state, row$year))
+  } else {
+    cat(sprintf("Already exists: %s (%s %d Senate)\n", row$name_snyder, row$state, row$year))
+  }
+}
 
 
 # GITHUB ISSUES ===========================================================
@@ -315,10 +320,14 @@ jsdat <- jsdat |>
 
 house_append <- read.csv("data/intermediate/cand_house_append.csv")
 
-# Rename 'name' to 'name_snyder' if needed
+# Rename 'name' to 'name_snyder' if needed, and remove u_g and runoff columns
 if ("name" %in% names(house_append) && !"name_snyder" %in% names(house_append)) {
   house_append <- house_append |> rename(name_snyder = name)
 }
+
+# Remove u_g, runoff, and vote_g_share columns if they exist
+house_append <- house_append |>
+  select(-any_of(c("u_g", "runoff", "vote_g_share")))
 
 # Only add rows that don't already exist
 for (i in seq_len(nrow(house_append))) {
@@ -345,7 +354,7 @@ if (nrow(jsdat |> filter(state == "OK", year == 2016, office == "H", dist == 1,
             type = "G", nextup = 2018,
             party = "R",
             name_snyder = "BRIDENSTINE, JAMES FREDERICK (JIM)", inc = 1,
-            w_g = 1, u_g = 1,
+            w_g = 1,
             vote_g = NA)
 }
 
@@ -436,25 +445,25 @@ cand <- cand |>
 
 # Define 2024 additions
 additions_2024 <- tibble::tribble(
-  ~state, ~year, ~office, ~dist, ~type, ~nextup, ~party, ~name_snyder, ~inc, ~vote_g, ~w_g, ~vote_g_share,
+  ~state, ~year, ~office, ~dist, ~type, ~nextup, ~party, ~name_snyder, ~inc, ~vote_g, ~w_g,
   # NY-15
-  "NY", 2024, "H", 15, "G", 2026, "D", "TORRES, RITCHIE", 1, 130392, 1, 0.6915697,
-  "NY", 2024, "H", 15, "G", 2026, "R", "DURAN, GONZALEZ", 0, 36010, 0, 0.1909889,
-  "NY", 2024, "H", 15, "G", 2026, "I", "JOSE VEGA, LAROUCHE", 0, 0, 0, 0.02167122,
+  "NY", 2024, "H", 15, "G", 2026, "D", "TORRES, RITCHIE", 1, 130392, 1,
+  "NY", 2024, "H", 15, "G", 2026, "R", "DURAN, GONZALEZ", 0, 36010, 0,
+  "NY", 2024, "H", 15, "G", 2026, "I", "JOSE VEGA, LAROUCHE", 0, 0, 0,
   # Maine Senate
-  "ME", 2024, "S", 2, "G", 2026, "D", "COSTELLO, DAVID ALLEN", 1, 0, 1, 0.5970149,
-  "ME", 2024, "S", 2, "G", 2030, "R", "KOUZOUNAS, DEMI", 0, 284338, 0, 0.3376,
-  "ME", 2024, "S", 2, "G", 2030, "D", "COSTELLO, DAVID ALLEN", 0, 88891, 0, 0.1056,
-  "ME", 2024, "S", 2, "G", 2030, "Indep", "KING, ANGUS S., JR.", 1, 427331, 1, 0.5073,
-  "ME", 2024, "S", 2, "G", 2030, "Indep", "CHERRY, JASON S.", 0, 20222, 0, 0.0240,
+  "ME", 2024, "S", 2, "G", 2030, "R", "KOUZOUNAS, DEMI", 0, 284338, 0,
+  "ME", 2024, "S", 2, "G", 2030, "D", "COSTELLO, DAVID ALLEN", 0, 88891, 0,
+  "ME", 2024, "S", 2, "G", 2030, "I", "KING, ANGUS S., JR.", 1, 427331, 1,
+  "ME", 2024, "S", 2, "G", 2030, "I", "CHERRY, JASON S.", 0, 20222, 0,
   # Vermont Senate
-  "VT", 2024, "S", 2, "G", 2030, "R", "MALLOY, GERALD", 0, 116512, 0, 0.3212,
-  "VT", 2024, "S", 2, "G", 2030, "Indep", "SANDERS, BERNARD", 1, 229429, 1, 0.6322,
-  "VT", 2024, "S", 2, "G", 2030, "Indep", "BERRY, STEVE", 0, 7941, 0, 0.0219,
-  "VT", 2024, "S", 2, "G", 2030, "L", "HILL, MATT", 0, 4530, 0, 0.0125,
-  "VT", 2024, "S", 2, "G", 2030, "Green Mountain Peace and Justice", "SCHOVILLE, JUSTIN", 0, 3339, 0, 0.0092,
-  "VT", 2024, "S", 2, "G", 2030, "Epic", "STEWART GREENSTEIN, MARK", 0, 1104, 0, 0.0030
+  "VT", 2024, "S", 2, "G", 2030, "R", "MALLOY, GERALD", 0, 116512, 0,
+  "VT", 2024, "S", 2, "G", 2030, "I", "SANDERS, BERNARD (BERNIE)", 1, 229429, 1,
+  "VT", 2024, "S", 2, "G", 2030, "I", "BERRY, STEVE", 0, 7941, 0,
+  "VT", 2024, "S", 2, "G", 2030, "L", "HILL, MATT", 0, 4530, 0,
+  "VT", 2024, "S", 2, "G", 2030, "Green Mountain Peace and Justice", "SCHOVILLE, JUSTIN", 0, 3339, 0,
+  "VT", 2024, "S", 2, "G", 2030, "Epic", "STEWART GREENSTEIN, MARK", 0, 1104, 0
 )
+
 
 # Only add 2024 rows that don't already exist
 for (i in seq_len(nrow(additions_2024))) {
@@ -498,8 +507,6 @@ fusion_agg <- cand %>%
     # These should be the same across rows, take first non-NA
     inc = first(na.omit(inc)),
     w_g = first(na.omit(w_g)),
-    u_g = first(na.omit(u_g)),
-    vote_g_share = NA_real_,  # Will be recalculated below
     n = first(na.omit(n)),
     totalvotes = first(na.omit(totalvotes)),
     .groups = "drop"
@@ -512,20 +519,16 @@ cand <- cand %>%
   bind_rows(fusion_agg)
 
 
-# Recalculate totalvotes, vote_g_share, and u_g ----
+# Recalculate totalvotes ----
 # After fusion aggregation, recalculate:
 # - totalvotes: sum of vote_g within each race
-# - vote_g_share: candidate's share of totalvotes
 # - n: number of candidates in the race
-# - u_g: whether the candidate was uncontested (1 if only candidate in race, 0 otherwise)
 
 cand <- cand %>%
   group_by(state, year, office, dist, type) %>%
   mutate(
     n = n(),
-    totalvotes = sum(vote_g, na.rm = TRUE),
-    vote_g_share = vote_g / totalvotes,
-    u_g = if_else(n == 1, 1, 0)
+    totalvotes = sum(vote_g, na.rm = TRUE)
   ) %>%
   ungroup()
 

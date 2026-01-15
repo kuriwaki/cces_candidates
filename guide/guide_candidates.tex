@@ -1,5 +1,6 @@
 \documentclass[12pt]{article}
 \usepackage{guide_common-preamble} % guide_common-preamble.sty
+\usepackage{comment}
 
 % Author setting
 \usepackage{authblk}
@@ -28,12 +29,12 @@
 
 \emph{Please cite as: }
 
-Cha, Jeremiah, Shiro Kuriwaki, and James M. Snyder, Jr., 2024, ``Candidates in American General Elections'', Harvard Dataverse. \textsc{doi}: \href{https://doi.org/10.7910/DVN/DGDRDT}{\texttt{10.7910/DVN/DGDRDT}}.
+Cha, Jeremiah, Shiro Kuriwaki, and James M. Snyder, Jr., 2026, ``Candidates in American General Elections'', Harvard Dataverse. \textsc{doi}: \href{https://doi.org/10.7910/DVN/DGDRDT}{\texttt{10.7910/DVN/DGDRDT}}.
 \end{minipage}
 \end{center}
 \smallskip
 
-Between 2006 and 2022, there were over 4,000 races for Congress and Governor in the general election, in which \input{Ns/all_cands}\unskip \ Democratic and Republican candidates ran for office.
+Between 2006 and 2024, there were approximately 5,000 races for Congress and Governor in the general election, in which \input{Ns/all_cands}\unskip \ Democratic and Republican candidates ran for office.
 While many existing efforts compile these election results, few include standardized candidate names across years and offices, candidate incumbency status, and elections for different offices and years combined into a single file.
 
 We provide a candidate-level dataset that is comprehensive for Presidential, Congressional and gubernatorial contests between 2006 and 2022 with standardized names for each unique candidate. We also record party, incumbency, vote totals, and election results. For example:
@@ -113,6 +114,7 @@ The type of election the candidate is running in. We use \texttt{G} to denote ge
 
 \FloatBarrier
 
+\begin{comment}
 \subsection*{\texttt{runoff}}
 
 The candidate's election round. In some states (e.g. Louisiana), if no candidate receives over 50 percent of the vote, the top two candidates must run in a runoff election again to determine the winner.
@@ -127,6 +129,7 @@ A runoff variable with a value of 1 denotes that the election the candidate is r
 
 
 \FloatBarrier
+\end{comment}
 
 \subsection*{\texttt{name\_snyder}}
 
@@ -364,7 +367,7 @@ The MIT Election Data Science Lab (\url{https://dataverse.harvard.edu/dataverse/
 
 % \section{Extensions: Race, Gender, and Primary Elections}
 
-Our dataset does not contain information about the gender or race of the candidates. We hope to work collect that data and combine other sources of data in the future.  In the meantime there are several related data sources users can rely on. First, Numerous years in the CES have data available on candidate race and gender for interested researchers. Please see the table below for further information regarding the availability of such information by year and where it can be located.
+Our dataset does not contain information about the gender or race of the candidates. We hope to collect that data and combine other sources of data in the future.  In the meantime there are several related data sources users can rely on. First, numerous years in the CES have data available on candidate race and gender for interested researchers. Please see the table below for further information regarding the availability of such information by year and where it can be located.
 
 \begin{table}[H]
 	\footnotesize
@@ -411,6 +414,7 @@ If you find any errors or ambiguities, please do not hesitate to contact us. The
 \section{Version History}
 
 \begin{itemize}
+\item Dataverse v4.0: Added 2024 general elections (2025-01-15). 
 \item Dataverse v3.0: Added 2021, 2022, 2023 general elections (2024-10-18). These do not include House special elections held during this time.
 \item Dataverse v2.0: Minor Fixes (2023-06-16). Fixes coding for fusion candidates, incumbents, special elections, and additional name inconsistencies (Github issues \href{https://github.com/kuriwaki/cces_candidates/issues/25}{25}, \href{https://github.com/kuriwaki/cces_candidates/issues/26}{26}, \href{https://github.com/kuriwaki/cces_candidates/issues/27}{27}, \href{https://github.com/kuriwaki/cces_candidates/issues/28}{28}, \href{https://github.com/kuriwaki/cces_candidates/issues/29}{29}, \href{https://github.com/kuriwaki/cces_candidates/issues/30}{30},
 \href{https://github.com/kuriwaki/cces_candidates/issues/35}{35}). Thanks to Luca Bellodi and Bill Wilkerson for finding some of these errors.
@@ -418,7 +422,6 @@ If you find any errors or ambiguities, please do not hesitate to contact us. The
 \end{itemize}
 
 \section{Acknowledgements}
-
 Our thanks to Stephen Ansolabehere and Jaclyn Kaslovsky for their suggestions and comments.
 
 
