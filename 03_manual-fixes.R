@@ -50,6 +50,9 @@ for (i in 1:nrow(la_additions)) {
 
 # Adding Georgia 2020/2021 elections ----
 
+jsdat <- jsdat |>
+  filter(!(state == "GA" & year == 2020 & office == "S"))
+
 ga_additions <- tibble::tribble(
   ~state, ~year, ~office, ~dist, ~type, ~nextup, ~party, ~party_formal, ~name_snyder, ~vote_g, ~w_g, ~inc,
   # 2021 Special runoff - Warnock vs. Loeffler (Jan 5, 2021 runoff)
@@ -74,7 +77,6 @@ for (i in seq_len(nrow(ga_additions))) {
 
 # Fixing 2020/2022 Georgia Special candidates
 jsdat <- jsdat |>
-  filter(!(state == "GA" & year == 2021 & office == "S")) |>
   # remove runoff only candidates (but keep the main candidates)
   tidylog::mutate(
     temp = ifelse((state == "GA" & year %in% 2020:2022 & office == "S"), 1, 0),
@@ -95,6 +97,9 @@ jsdat <- jsdat |>
     inc = replace(inc, state == "GA" & year %in% 2020:2022 & office == "S" & name_snyder == "LOEFFLER, KELLY", 1),
     inc = replace(inc, state == "GA" & year %in% 2020:2022 & office == "S" & name_snyder == "WARNOCK, RAPHAEL GAMALIEL", 0),
     inc = replace(inc, state == "GA" & year == 2022 & office == "S" & name_snyder == "WALKER, HERSCHEL JUNIOR", 0)
+  ) |>
+  mutate(
+    inc = replace(inc, year == 2022 & state == "GA" & office == "S" & name_snyder == "WARNOCK, RAPHAEL GAMALIEL", 2)
   )
 
 
@@ -115,7 +120,6 @@ jsdat <- jsdat |>
   select(-temp) |>
   tidylog::mutate(runoff = case_when(
     state == "GA" & year == 2022 & office == "S" ~ 1, # 2022 Georgia Runoff
-    state == "GA" & year == 2021 & office == "S" ~ 1, # 2020 Georgia Runoff
     state == "GA" & year == 2007 & office == "H" & dist == 10 ~ 1,
     state == "GA" & year == 2008 & office == "S" ~ 1,
     state == "GA" & year == 2010 & dist == 9 & type == "S" ~ 1,
@@ -317,7 +321,7 @@ jsdat <- jsdat |>
     nextup = replace(nextup, state == "AZ" & year == 2020 & office == "S" & type == "S", 2022)
   )
 
-# Adding Angus King racs ----
+# Adding Angus King races ----
 
 king_additions <- tibble::tribble(
   ~state, ~year, ~office, ~dist, ~type, ~nextup, ~party, ~party_formal, ~name_snyder, ~inc, ~vote_g, ~w_g,
@@ -427,6 +431,44 @@ for (i in seq_len(nrow(sanders_additions))) {
   }
 }
 
+# Adding Bill Cassidy 2020 race ----
+
+louisiana_senate_2020 <- tibble::tribble(
+  ~state, ~year, ~office, ~dist, ~type, ~nextup, ~party, ~party_formal, ~name_snyder, ~inc, ~vote_g, ~w_g,
+  # 2020 Senate election
+  "LA", 2020, "S", 1, "G", 2026, "R", "R", "CASSIDY, WILLIAM (BILL)", 1, 1228908, 1,
+  "LA", 2020, "S", 1, "G", 2026, "D", "D", "PERKINS, ADRIAN", 0, 394049, 0,
+  "LA", 2020, "S", 1, "G", 2026, "D", "D", "EDWARDS, DERRICK (CHAMP)", 0, 229814, 0,
+  "LA", 2020, "S", 1, "G", 2026, "D", "D", "PIERCE, ANTOINE", 0, 55710, 0,
+  "LA", 2020, "S", 1, "G", 2026, "R", "R", "MURPHY, DUSTIN", 0, 38383, 0,
+  "LA", 2020, "S", 1, "G", 2026, "D", "D", "KNIGHT, DAVID DREW", 0, 36962, 0,
+  "LA", 2020, "S", 1, "G", 2026, "I", "I", "BILLIOT, BERYL", 0, 17362, 0,
+  "LA", 2020, "S", 1, "G", 2026, "I", "I", "BOURGEOIS, JOHN PAUL", 0, 16518, 0,
+  "LA", 2020, "S", 1, "G", 2026, "D", "D", "WENSTRUP, PETER", 0, 14454, 0,
+  "LA", 2020, "S", 1, "G", 2026, "L", "L", "SIGLER, AARON C.", 0, 11321, 0,
+  "LA", 2020, "S", 1, "G", 2026, "I", "I", "MENDOZA, M. V. (VINNY)", 0, 7811, 0,
+  "LA", 2020, "S", 1, "G", 2026, "Other", "Other", "PRICE, MELINDA MARY", 0, 7680, 0,
+  "LA", 2020, "S", 1, "G", 2026, "I", "I", "MONTGOMERY, JAMAR", 0, 5804, 0,
+  "LA", 2020, "S", 1, "G", 2026, "I", "I", "DARET, RENO JEAN, III", 0, 3954, 0,
+  "LA", 2020, "S", 1, "G", 2026, "Other", "Other", "JOHN, XAN", 0, 2813, 0
+)
+
+
+# Check if Cassidy entries already exist and add only if they don't
+for (i in seq_len(nrow(louisiana_senate_2020))) {
+  row <- louisiana_senate_2020[i, ]
+  exists <- jsdat |>
+    filter(state == row$state, year == row$year, office == row$office,
+           dist == row$dist, name_snyder == row$name_snyder) |>
+    nrow() > 0
+
+  if (!exists) {
+    jsdat <- jsdat |> add_row(!!!row)
+    cat(sprintf("Added: %s (%s %d Senate)\n", row$name_snyder, row$state, row$year))
+  } else {
+    cat(sprintf("Already exists: %s (%s %d Senate)\n", row$name_snyder, row$state, row$year))
+  }
+}
 
 # GITHUB ISSUES ===========================================================
 
