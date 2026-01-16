@@ -23,7 +23,8 @@ order_candvars <- c("year", "state",
                     "office", "dist", "type", "nextup",
                     "party", "party_formal",
                     "name_snyder", "inc",
-                    "candidatevotes", "totalvotes", "won")
+                    "candidatevotes", "totalvotes", "won",
+                    "runoff")
 
 cand <- cand_raw |>
   rename(candidatevotes = vote_g,

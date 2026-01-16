@@ -599,18 +599,17 @@ for (i in seq_len(nrow(additions_2024))) {
 # row per candidate-race with summed votes and comma-separated party_formal.
 
 # Identify NY/CT races with multiple rows for the same candidate
-cand <- cand %>%
-  group_by(state, year, office, dist, name_snyder) %>%
+cand <- cand |>
   mutate(
     n_party_rows = n(),
-    is_fusion_state = state %in% c("NY", "CT")
-  ) %>%
-  ungroup()
+    is_fusion_state = state %in% c("NY", "CT"),
+    .by = c(state, year, office, dist, name_snyder)
+  )
 
 # For NY/CT candidates with multiple rows, aggregate them
-fusion_agg <- cand %>%
-  filter(is_fusion_state & n_party_rows > 1) %>%
-  group_by(state, year, office, dist, type, nextup, name_snyder) %>%
+fusion_agg <- cand |>
+  filter(is_fusion_state & n_party_rows > 1)  |>
+  group_by(state, year, office, dist, type, nextup, name_snyder) |>
   summarize(
     # Sum votes across all party lines
     vote_g = sum(vote_g, na.rm = TRUE),
@@ -628,8 +627,8 @@ fusion_agg <- cand %>%
 
 # Remove the original multi-row fusion candidates and add the aggregated versions
 cand <- cand %>%
-  filter(!(is_fusion_state & n_party_rows > 1)) %>%
-  select(-n_party_rows, -is_fusion_state) %>%
+  filter(!(is_fusion_state & n_party_rows > 1)) |>
+  select(-n_party_rows, -is_fusion_state) |>
   bind_rows(fusion_agg)
 
 
@@ -638,13 +637,12 @@ cand <- cand %>%
 # - totalvotes: sum of vote_g within each race
 # - n: number of candidates in the race
 
-cand <- cand %>%
-  group_by(state, year, office, dist, type) %>%
+cand <- cand |>
   mutate(
     n = n(),
-    totalvotes = sum(vote_g, na.rm = TRUE)
-  ) %>%
-  ungroup()
+    totalvotes = sum(vote_g, na.rm = TRUE),
+    .by = c(state, year, office, dist, type)
+  )
 
 
 write_rds(cand, "data/intermediate/candidates_2006-2024.rds")
