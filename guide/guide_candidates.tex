@@ -11,7 +11,7 @@
 \author[2]{\normalsize Shiro Kuriwaki}
 \author[1]{\normalsize James M. Snyder, Jr.}
 \affil[1]{\footnotesize Department of Government, Harvard University.}
-\affil[2]{\footnotesize Department of Political Science and Institution of Social and Policy Studies, Yale University}
+\affil[2]{\footnotesize Department of Political Science and Institution of Social and Policy Studies, Yale University.}
 % \affil[*]{\url{https://github.com/kuriwaki/cces_candidates} or email \href{mailto:shirokuriwaki@gmail.com}{\texttt{shirokuriwaki@gmail.com}}}
 
 
@@ -58,7 +58,7 @@ Presidential vote counts are taken from the data compiled by the MIT Election Da
 
 Incumbency is determined by a programmatic count of whether the name is repeated across years, and by manual inspection of the biography of each candidate.
 
-This dataset excludes candidates who receive less than ten votes in their general election and those who identify Blank or Miscellaneous as their party.
+This dataset excludes candidates who receive less than ten votes in their general election and those who list Blank or Miscellaneous as their party.
 We also exclude overvotes, undervotes, and invalid votes.
 Although these removals make the \texttt{totalvotes} be a few votes less than the actual turnout, we made this choice uniformly because states vary in their reporting protocol for such votes. That is, given that some states report overvotes while others exclude them entirely in their official counts, it is more internally consistent to exclude them for all states.
 
@@ -67,11 +67,11 @@ Our code for recoding and editing the data is open-source in a Github repository
 
 \section{Unique Identifiers}
 
-To identify a single election, group by \texttt{year}, \texttt{state}, \texttt{office}, \texttt{dist}, and \texttt{type} (General vs. Special).  To isolate the set of candidates who won a seat in an election cycle, group by subset by \texttt{year}, \texttt{state}, \texttt{office}, and \texttt{type}, then subset by \texttt{won}.
+To identify a single election, group by \texttt{year}, \texttt{state}, \texttt{office}, \texttt{dist}, and \texttt{type} (General vs. Special).  To isolate the set of candidates who won a seat in an election cycle, group by \texttt{year}, \texttt{state}, \texttt{office}, and \texttt{type}, then subset by \texttt{won}.
 
 To identify a single candidate across office and time, group by \texttt{state} and  \texttt{name\_snyder}.
 As we discuss in detail in this documentation, the candidate names are standardized (by Snyder's coding) so that the same candidate has the same spelling across years and office.
-In very rare instances, a candidate for a major party runs for office two different states. For example, Mitt Romney ran for Governor of Massachusetts, President, and U.S. Senator from Utah. For these candidates, group by \texttt{name\_snyder}.
+In very rare instances, a candidate for a major party runs for office in two different states. For example, Mitt Romney ran for Governor of Massachusetts, President, and U.S. Senator from Utah. For these candidates, group by \texttt{name\_snyder}.
 % \clearpage
 \section{Variable Descriptions and Tabulations}
 
@@ -90,7 +90,7 @@ The office the candidate is running for. Following the Snyder data, we use \text
 
 The district the candidate is running for. U.S. House races in at-large districts are numbered 1 instead of 0 or ``-AL''.
 
- For U.S. Senate candidates, the district variable denotes the class of the particular Senate seat (e.g. Dianne Feinstein has a \texttt{dist} value of 1 since her seat is part of Senate Class I).
+ For U.S. Senate candidates, the district variable denotes the class of the particular Senate seat (e.g. Dianne Feinstein had a \texttt{dist} value of 1 since her seat is part of Senate Class I).
 
 \begin{table}[!h]
 \centering
@@ -135,7 +135,7 @@ A runoff variable with a value of 1 denotes that the election the candidate is r
 
 
 Standardized candidate name following Snyder coding rules. The
-specifics of these coding rules are important for overtime tracking because
+specifics of these coding rules are important for tracking over time because
 \textbf{name and state uniquely identify a unique person} across all his
 Congressional candidate data (at least 1950 to the present). The syntax
 is
@@ -180,7 +180,7 @@ above. Candidates may report different style names on the ballot vs.~the
 FEC or they may have multiple FEC IDs at the same time. More commonly, a
 House representative who then runs for higher office like the Senate will
 often get a separate FEC ID, even though they are the same person. In
-theses cases, the Snyder formalization of identifying people by their full
+these cases, the Snyder formalization of identifying people by their full
 name and state is the most reliable.
 
 Therefore, it is important in our formalization to spell out nicknames
@@ -188,9 +188,9 @@ and distinguish between hyphenated last names to the extent that it
 uniquely identifies a person within a state. The same person's name
 should be formatted exactly the same way, and conversely, two different
 people with near-identical last names should somehow be given
-{different} names. For example, if a John Smith ran for Congress
+{different} names. For example, suppose a John Smith ran for Congress
 in 1980 in Ohio and then a \emph{separate, unrelated} John Smith ran
-again in Ohio in 2020. To distinguish the two different people, we
+again in 2020 in Ohio. To distinguish the two different people, we
 would need to find {something} like a middle name or suffix to
 distinguish the name in characters.
 
@@ -362,7 +362,7 @@ The NC-09 House race in 2018 is listed as having no winner because it was later 
 
 \section{Related Work and Extensions}
 
-The MIT Election Data Science Lab (\url{https://dataverse.harvard.edu/dataverse/medsl\_election\_returns}) produces similar election results. Their data goes back as far as 1976. However, the data does not include incumbency status, and the names are taken as officially reported rather than standardized to match across years.
+The MIT Election Data Science Lab (\url{https://dataverse.harvard.edu/dataverse/medsl\_election\_returns}) produces similar election result data. Their data goes back as far as 1976. However, the data does not include incumbency status, and the names are taken as officially reported rather than standardized to match across years.
 
 
 % \section{Extensions: Race, Gender, and Primary Elections}

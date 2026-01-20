@@ -474,7 +474,7 @@ for (i in seq_len(nrow(louisiana_senate_2020))) {
 # Fixing battery of Louisiana issues ----
 
 # Remove existing LA House entries for the years/districts we're adding
-cand <- cand |>
+jsdat <- jsdat |>
   filter(!(state == "LA" & office == "H" &
              ((year == 2006 & dist %in% c(1, 3, 4, 5, 6, 7)) |
                 (year == 2008 & dist == 7) |
@@ -607,13 +607,13 @@ la_additions <- tibble::tribble(
 # Add LA House entries
 for (i in seq_len(nrow(la_additions))) {
   row <- la_additions[i, ]
-  exists <- cand |>
+  exists <- jsdat |>
     filter(state == row$state, year == row$year, office == row$office,
            dist == row$dist, name_snyder == row$name_snyder) |>
     nrow() > 0
 
   if (!exists) {
-    cand <- cand |> add_row(!!!row)
+    jsdat <- jsdat |> add_row(!!!row)
   }
 }
 
