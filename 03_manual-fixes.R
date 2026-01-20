@@ -133,6 +133,7 @@ jsdat <- jsdat |>
     state == "LA" & year == 2013 & office == "H" & dist == 5 ~ 1,
     state == "LA" & year == 2012 & office == "H" & dist == 3 ~ 1,
     state == "LA" & year == 2006 & office == "H" & dist == 2 ~ 1,
+    state == "LA" & year == 2016 & dist == 4 & type == "G" ~ 1,
     TRUE ~ 0
   )) |>
   mutate(runoff = case_when(
@@ -470,6 +471,153 @@ for (i in seq_len(nrow(louisiana_senate_2020))) {
   }
 }
 
+# Fixing battery of Louisiana issues ----
+
+# Remove existing LA House entries for the years/districts we're adding
+cand <- cand |>
+  filter(!(state == "LA" & office == "H" &
+             ((year == 2006 & dist %in% c(1, 3, 4, 5, 6, 7)) |
+                (year == 2008 & dist == 7) |
+                (year == 2012 & dist %in% c(1, 2, 4, 5, 6)) |
+                (year == 2014 & dist %in% c(1, 2, 3, 4)) |
+                (year == 2016 & dist %in% c(1, 2, 6)) |
+                (year == 2020 & dist %in% c(1, 2, 3, 4, 6)))))
+
+la_additions <- tibble::tribble(
+  ~state, ~year, ~office, ~dist, ~type, ~nextup, ~party, ~party_formal, ~name_snyder, ~inc, ~vote_g, ~w_g,
+  # LA-01 House 2006
+  "LA", 2006, "H", 1, "G", 2008, "D", "D", "GEREIGHTY, DAVID", 0, 10919, 0,
+  "LA", 2006, "H", 1, "G", 2008, "D", "D", "TALLITSCH, STACEY", 0, 5025, 0,
+  "LA", 2006, "H", 1, "G", 2008, "R", "R", "JINDAL, BOBBY", 0, 130508, 1,
+  "LA", 2006, "H", 1, "G", 2008, "Lbt", "Lbt", "BEARY, PETER", 0, 1676, 0,
+  # LA-03 House 2006
+  "LA", 2006, "H", 3, "G", 2008, "D", "D", "BREECH, OLANGEE (OJ)", 0, 4190, 0,
+  "LA", 2006, "H", 3, "G", 2008, "D", "D", "MELANCON, CHARLES J. (CHARLIE), JR.", 0, 75023, 1,
+  "LA", 2006, "H", 3, "G", 2008, "R", "R", "ROMERO, CRAIG", 0, 54950, 0,
+  "LA", 2006, "H", 3, "G", 2008, "Lbt", "Lbt", "BLAKE, JAMES LEE, JR.", 0, 2168, 0,
+  # LA-04 House 2006
+  "LA", 2006, "H", 4, "G", 2008, "D", "D", "CASH, ARTIS R., SR.", 0, 22757, 0,
+  "LA", 2006, "H", 4, "G", 2008, "D", "D", "COX, PATTI", 0, 17788, 0,
+  "LA", 2006, "H", 4, "G", 2008, "R", "R", "KELLEY, CHESTER T.", 0, 16649, 0,
+  "LA", 2006, "H", 4, "G", 2008, "R", "R", "MCCRERY, JAMES O. (JIM)", 0, 77078, 1,
+  # LA-05 House 2006
+  "LA", 2006, "H", 5, "G", 2008, "D", "D", "HEARN, GLORIA WILLIAMS", 0, 33233, 0,
+  "LA", 2006, "H", 5, "G", 2008, "R", "R", "ALEXANDER, RODNEY M.", 0, 78211, 1,
+  "LA", 2006, "H", 5, "G", 2008, "Lbt", "Lbt", "SANDERS, BRENT", 0, 1876, 0,
+  "LA", 2006, "H", 5, "G", 2008, "Other", "Other", "WATTS, JOHN", 0, 1262, 0,
+  # LA-06 House 2006
+  "LA", 2006, "H", 6, "G", 2008, "R", "R", "BAKER, RICHARD HUGH", 0, 94658, 1,
+  "LA", 2006, "H", 6, "G", 2008, "Lbt", "Lbt", "FONTANESI, RICHARD M.", 0, 19648, 0,
+  # LA-07 House 2006
+  "LA", 2006, "H", 7, "G", 2008, "D", "D", "STAGG, MIKE", 0, 47133, 0,
+  "LA", 2006, "H", 7, "G", 2008, "R", "R", "BOUSTANY, CHARLES W., JR.", 0, 113720, 1,
+  # LA-07 House 2008
+  "LA", 2008, "H", 7, "G", 2010, "D", "D", "CRAVINS, DONALD (DON), JR.", 0, 98280, 0,
+  "LA", 2008, "H", 7, "G", 2010, "R", "R", "BOUSTANY, CHARLES W., JR.", 1, 177173, 1,
+  "LA", 2008, "H", 7, "G", 2010, "Other", "Other", "VIDRINE, PETER", 0, 10846, 0,
+  # LA-01 House 2012
+  "LA", 2012, "H", 1, "G", 2014, "R", "R", "KING, GARY", 0, 24844, 0,
+  "LA", 2012, "H", 1, "G", 2014, "R", "R", "SCALISE, STEPHEN J. (STEVE)", 1, 193496, 1,
+  "LA", 2012, "H", 1, "G", 2014, "D", "D", "MENDOZA, M. V. (VINNY)", 0, 61703, 0,
+  "LA", 2012, "H", 1, "G", 2014, "I", "No Party", "TURKNETT, DAVID (TURK)", 0, 6079, 0,
+  "LA", 2012, "H", 1, "G", 2014, "I", "No Party", "WELLS, ARDEN", 0, 4288, 0,
+  # LA-02 House 2012
+  "LA", 2012, "H", 2, "G", 2014, "R", "R", "BAILEY, DWAYNE", 0, 38801, 0,
+  "LA", 2012, "H", 2, "G", 2014, "R", "R", "LAROSE, JOSUE", 0, 11345, 0,
+  "LA", 2012, "H", 2, "G", 2014, "D", "D", "LANDRIEU, GARY", 0, 71916, 0,
+  "LA", 2012, "H", 2, "G", 2014, "D", "D", "RICHMOND, CEDRIC L.", 1, 158501, 1,
+  "LA", 2012, "H", 2, "G", 2014, "Lbt", "Lbt", "TROTTER, CALEB", 0, 6791, 0,
+  # LA-04 House 2012
+  "LA", 2012, "H", 4, "G", 2014, "R", "R", "FLEMING, JOHN C., JR.", 1, 187894, 1,
+  "LA", 2012, "H", 4, "G", 2014, "Lbt", "Lbt", "LORD, RANDALL", 0, 61637, 0,
+  # LA-05 House 2012
+  "LA", 2012, "H", 5, "G", 2014, "R", "R", "ALEXANDER, RODNEY M.", 1, 202536, 1,
+  "LA", 2012, "H", 5, "G", 2014, "Lbt", "Lbt", "GRANT, CLAY STEVEN", 0, 20194, 0,
+  "LA", 2012, "H", 5, "G", 2014, "I", "No Party", "CEASAR, RON", 0, 37486, 0,
+  # LA-06 House 2012
+  "LA", 2012, "H", 6, "G", 2014, "R", "R", "CASSIDY, BILL", 1, 243553, 1,
+  "LA", 2012, "H", 6, "G", 2014, "Lbt", "Lbt", "CRAIG, RUFUS HOLT, JR.", 0, 32185, 0,
+  "LA", 2012, "H", 6, "G", 2014, "I", "No Party", "TORREGANO, RICHARD (RPT)", 0, 30975, 0,
+  # LA-01 House 2014
+  "LA", 2014, "H", 1, "G", 2016, "R", "R", "SCALISE, STEPHEN J. (STEVE)", 1, 189250, 1,
+  "LA", 2014, "H", 1, "G", 2016, "D", "D", "MENDOZA, M. V. (VINNY)", 0, 24761, 0,
+  "LA", 2014, "H", 1, "G", 2016, "D", "D", "DUGAS, LEE A.", 0, 21286, 0,
+  "LA", 2014, "H", 1, "G", 2016, "Lbt", "Lbt", "SANFORD, JEFFRY (JEFF)", 0, 8707, 0,
+  # LA-02 House 2014
+  "LA", 2014, "H", 2, "G", 2016, "D", "D", "RICHMOND, CEDRIC L.", 1, 152201, 1,
+  "LA", 2014, "H", 2, "G", 2016, "D", "D", "LANDRIEU, GARY", 0, 37805, 0,
+  "LA", 2014, "H", 2, "G", 2016, "I", "No Party", "BROOKS, DAVID", 0, 16327, 0,
+  "LA", 2014, "H", 2, "G", 2016, "Lbt", "Lbt", "DAVENPORT, SAMUEL", 0, 15237, 0,
+  # LA-03 House 2014
+  "LA", 2014, "H", 3, "G", 2016, "R", "R", "BOUSTANY, CHARLES W., JR.", 1, 185867, 1,
+  "LA", 2014, "H", 3, "G", 2016, "R", "R", "BARRILLEAUX, BRYAN", 0, 22059, 0,
+  "LA", 2014, "H", 3, "G", 2016, "I", "No Party", "RICHARD, RUSSELL", 0, 28342, 0,
+  # LA-04 House 2014
+  "LA", 2014, "H", 4, "G", 2016, "R", "R", "FLEMING, JOHN C., JR.", 1, 152683, 1,
+  "LA", 2014, "H", 4, "G", 2016, "Lbt", "Lbt", "LORD, RANDALL", 0, 55236, 0,
+  # LA-01 House 2016
+  "LA", 2016, "H", 1, "G", 2018, "R", "R", "SCALISE, STEPHEN J. (STEVE)", 1, 243645, 1,
+  "LA", 2016, "H", 1, "G", 2018, "D", "D", "DUGAS, LEE ANN", 0, 41840, 0,
+  "LA", 2016, "H", 1, "G", 2018, "D", "D", "FAUST, DANIL EZEKIEL", 0, 12708, 0,
+  "LA", 2016, "H", 1, "G", 2018, "D", "D", "SWIDER, JOSEPH (JOE)", 0, 9237, 0,
+  "LA", 2016, "H", 1, "G", 2018, "Lbt", "Lbt", "KEARNEY, HOWARD", 0, 9405, 0,
+  "LA", 2016, "H", 1, "G", 2018, "Grn", "Green", "BARRON, ELIOT", 0, 6717, 0,
+  "LA", 2016, "H", 1, "G", 2018, "I", "No Party", "YANG, CHUEMAI", 0, 3236, 0,
+  # LA-02 House 2016
+  "LA", 2016, "H", 2, "G", 2018, "D", "D", "RICHMOND, CEDRIC L.", 1, 198289, 1,
+  "LA", 2016, "H", 2, "G", 2018, "D", "D", "HOLDEN, MELVIN L. (KIP)", 0, 57125, 0,
+  "LA", 2016, "H", 2, "G", 2018, "D", "D", "CUTNO, KENNETH", 0, 28855, 0,
+  # LA-06 House 2016
+  "LA", 2016, "H", 6, "G", 2018, "R", "R", "GRAVES, GARRET", 1, 207483, 1,
+  "LA", 2016, "H", 6, "G", 2018, "R", "R", "BELL, ROBERT LAMAR (BOB)", 0, 33592, 0,
+  "LA", 2016, "H", 6, "G", 2018, "D", "D", "LIEBERMAN, RICHARD", 0, 49380, 0,
+  "LA", 2016, "H", 6, "G", 2018, "D", "D", "SAMPSON, JERMAINE", 0, 29822, 0,
+  "LA", 2016, "H", 6, "G", 2018, "Lbt", "Lbt", "FONTANESI, RICHARD M.", 0, 7603, 0,
+  "LA", 2016, "H", 6, "G", 2018, "Other", "Other", "GRAHAM, DEVIN LANCE", 0, 3218, 0,
+  # LA-01 House 2020
+  "LA", 2020, "H", 1, "G", 2022, "D", "D", "DUGAS, LEE ANN", 0, 94730, 0,
+  "LA", 2020, "H", 1, "G", 2022, "R", "R", "SCALISE, STEPHEN J. (STEVE)", 1, 270330, 1,
+  "LA", 2020, "H", 1, "G", 2022, "Lbt", "Lbt", "KEARNEY, HOWARD", 0, 9309, 0,
+  # LA-02 House 2020
+  "LA", 2020, "H", 2, "G", 2022, "D", "D", "RICHMOND, CEDRIC L.", 1, 201636, 1,
+  "LA", 2020, "H", 2, "G", 2022, "D", "D", "HARRIS, GLENN ADRAIN", 0, 33684, 0,
+  "LA", 2020, "H", 2, "G", 2022, "R", "R", "SCHILLING, DAVID M.", 0, 47575, 0,
+  "LA", 2020, "H", 2, "G", 2022, "R", "R", "VINCENT, SHELDON C., SR.", 0, 15565, 0,
+  "LA", 2020, "H", 2, "G", 2022, "I", "Independent", "BATISTE, BELDEN (NOONIE MAN)", 0, 12268, 0,
+  "LA", 2020, "H", 2, "G", 2022, "I", "Independent", "JAMES, COLBY", 0, 6254, 0,
+  # LA-03 House 2020
+  "LA", 2020, "H", 3, "G", 2022, "D", "D", "HARRIS, BRAYLON", 0, 60852, 0,
+  "LA", 2020, "H", 3, "G", 2022, "D", "D", "ANDERSON, ROB", 0, 39423, 0,
+  "LA", 2020, "H", 3, "G", 2022, "R", "R", "HIGGINS, CLAY", 1, 230480, 1,
+  "LA", 2020, "H", 3, "G", 2022, "Lbt", "Lbt", "LELEUX, BRANDON", 0, 9365, 0,
+  # LA-04 House 2020
+  "LA", 2020, "H", 4, "G", 2022, "D", "D", "HOUSTON, KENNY", 0, 78157, 0,
+  "LA", 2020, "H", 4, "G", 2022, "D", "D", "TRUNDLE, RYAN", 0, 23813, 0,
+  "LA", 2020, "H", 4, "G", 2022, "R", "R", "JOHNSON, MIKE", 1, 185265, 1,
+  "LA", 2020, "H", 4, "G", 2022, "R", "R", "GIBSON, BEN", 0, 19343, 0,
+  # LA-06 House 2020
+  "LA", 2020, "H", 6, "G", 2022, "D", "D", "WILLIAMS, DARTANYON (DAW)", 0, 95541, 0,
+  "LA", 2020, "H", 6, "G", 2022, "R", "R", "GRAVES, GARRET", 1, 265706, 1,
+  "LA", 2020, "H", 6, "G", 2022, "Lbt", "Lbt", "SLOAN, SHANNON", 0, 9732, 0,
+  "LA", 2020, "H", 6, "G", 2022, "I", "No Party", "TORREGANO, RICHARD (RPT)", 0, 3017, 0,
+  # LA-05 House 2020
+  "LA", 2020, "H", 5, "G", 2022, "R", "R", "HARRIS, LANCE", 0, 30124, 0,
+)
+
+# Add LA House entries
+for (i in seq_len(nrow(la_additions))) {
+  row <- la_additions[i, ]
+  exists <- cand |>
+    filter(state == row$state, year == row$year, office == row$office,
+           dist == row$dist, name_snyder == row$name_snyder) |>
+    nrow() > 0
+
+  if (!exists) {
+    cand <- cand |> add_row(!!!row)
+  }
+}
+
+
 # GITHUB ISSUES ===========================================================
 
 
@@ -685,6 +833,12 @@ cand <- cand |>
     totalvotes = sum(vote_g, na.rm = TRUE),
     .by = c(state, year, office, dist, type)
   )
+
+
+# Fix NA runoffs for GA/LA ----
+# Rows added after the runoff logic don't have runoff set; default them to 0
+cand <- cand |>
+  mutate(runoff = if_else(state %in% c("GA", "LA") & is.na(runoff), 0, runoff))
 
 
 write_rds(cand, "data/intermediate/candidates_2006-2024.rds")
