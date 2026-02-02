@@ -54,7 +54,7 @@ Most of the candidate-level data -- names and incumbency status -- is a subset o
 Election results for the state office of the Governor are collected from statements of votes by the Secretary of State of each state. We include the odd-year elections in Virginia, New Jersey, Kentucky, Mississippi, and Louisiana.
 Recall elections (Wisconsin 2012, California 2021) are not included.
 
-Presidential vote counts are taken from the data compiled by the MIT Election Data Science Lab (\url{https://doi.org/10.7910/DVN/42MVDX}), which in turn mostly sources from the Official Election Statistics by the House Clerk.
+Presidential vote counts at the state level are taken from the data compiled by the MIT Election Data Science Lab (\url{https://doi.org/10.7910/DVN/42MVDX}), which is helpfully standardizes party names of Presidential candidates, even for minor parties.
 
 Incumbency is determined by a programmatic count of whether the name is repeated across years, and by manual inspection of the biography of each candidate.
 
@@ -362,8 +362,7 @@ The NC-09 House race in 2018 is listed as having no winner because it was later 
 
 \section{Related Work and Extensions}
 
-The MIT Election Data Science Lab (\url{https://dataverse.harvard.edu/dataverse/medsl\_election\_returns}) produces similar election result data. Their data goes back as far as 1976. However, the data does not include incumbency status, and the names are taken as officially reported rather than standardized to match across years.
-
+The MIT Election Data Science Lab (\url{https://dataverse.harvard.edu/dataverse/medsl\_election\_returns}) produces similar election result data. Their data goes back as far as 1976. The data does not include incumbency status, and the names are taken as officially reported rather than standardized to be consistent across years.
 
 % \section{Extensions: Race, Gender, and Primary Elections}
 
@@ -414,7 +413,7 @@ If you find any errors or ambiguities, please do not hesitate to contact us. The
 \section{Version History}
 
 \begin{itemize}
-\item Dataverse v4.0: Added 2024 general elections (2025-01-15). 
+\item Dataverse v4.0: Added 2024 general elections (2026-01-15).
 \item Dataverse v3.0: Added 2021, 2022, 2023 general elections (2024-10-18). These do not include House special elections held during this time.
 \item Dataverse v2.0: Minor Fixes (2023-06-16). Fixes coding for fusion candidates, incumbents, special elections, and additional name inconsistencies (Github issues \href{https://github.com/kuriwaki/cces_candidates/issues/25}{25}, \href{https://github.com/kuriwaki/cces_candidates/issues/26}{26}, \href{https://github.com/kuriwaki/cces_candidates/issues/27}{27}, \href{https://github.com/kuriwaki/cces_candidates/issues/28}{28}, \href{https://github.com/kuriwaki/cces_candidates/issues/29}{29}, \href{https://github.com/kuriwaki/cces_candidates/issues/30}{30},
 \href{https://github.com/kuriwaki/cces_candidates/issues/35}{35}). Thanks to Luca Bellodi and Bill Wilkerson for finding some of these errors.
