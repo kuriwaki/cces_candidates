@@ -434,6 +434,9 @@ for (i in seq_len(nrow(sanders_additions))) {
 
 # Adding Bill Cassidy 2020 race ----
 
+jsdat <- jsdat |>
+  filter(!(state == "LA" & year == 2020 & office == "S"))
+
 louisiana_senate_2020 <- tibble::tribble(
   ~state, ~year, ~office, ~dist, ~type, ~nextup, ~party, ~party_formal, ~name_snyder, ~inc, ~vote_g, ~w_g,
   # 2020 Senate election
@@ -535,7 +538,7 @@ la_additions <- tibble::tribble(
   "LA", 2012, "H", 5, "G", 2014, "Lbt", "Lbt", "GRANT, CLAY STEVEN", 0, 20194, 0,
   "LA", 2012, "H", 5, "G", 2014, "I", "No Party", "CEASAR, RON", 0, 37486, 0,
   # LA-06 House 2012
-  "LA", 2012, "H", 6, "G", 2014, "R", "R", "CASSIDY, BILL", 1, 243553, 1,
+  "LA", 2012, "H", 6, "G", 2014, "R", "R", "CASSIDY, WILLIAM (BILL)", 1, 243553, 1,
   "LA", 2012, "H", 6, "G", 2014, "Lbt", "Lbt", "CRAIG, RUFUS HOLT, JR.", 0, 32185, 0,
   "LA", 2012, "H", 6, "G", 2014, "I", "No Party", "TORREGANO, RICHARD (RPT)", 0, 30975, 0,
   # LA-01 House 2014
@@ -607,6 +610,32 @@ la_additions <- tibble::tribble(
 # Add LA House entries
 for (i in seq_len(nrow(la_additions))) {
   row <- la_additions[i, ]
+  exists <- jsdat |>
+    filter(state == row$state, year == row$year, office == row$office,
+           dist == row$dist, name_snyder == row$name_snyder) |>
+    nrow() > 0
+
+  if (!exists) {
+    jsdat <- jsdat |> add_row(!!!row)
+  }
+}
+
+# Adding Lisa Murkowski 2010 ----
+
+# Adding Alaska 2010 Senate race (Murkowski write-in victory) ----
+
+alaska_senate_2010 <- tibble::tribble(
+  ~state, ~year, ~office, ~dist, ~type, ~nextup, ~party, ~party_formal, ~name_snyder, ~inc, ~vote_g, ~w_g,
+  "AK", 2010, "S", 2, "G", 2016, "Other", "W-I", "MURKOWSKI, LISA ANN", 1, 101091, 1,
+  "AK", 2010, "S", 2, "G", 2016, "R", "R", "MILLER, JOE", 0, 90860, 0,
+  "AK", 2010, "S", 2, "G", 2016, "D", "D", "MCADAMS, SCOTT T.", 0, 60045, 0,
+  "AK", 2010, "S", 2, "G", 2016, "Lbt", "Lbt", "HAASE, FREDRICK (DAVID)", 0, 1459, 0,
+  "AK", 2010, "S", 2, "G", 2016, "I", "Nonaffiliated", "CARTER, TIM", 0, 927, 0,
+  "AK", 2010, "S", 2, "G", 2016, "I", "Nonaffiliated", "GIANOUTSOS, TED", 0, 458, 0
+)
+
+for (i in seq_len(nrow(alaska_senate_2010))) {
+  row <- alaska_senate_2010[i, ]
   exists <- jsdat |>
     filter(state == row$state, year == row$year, office == row$office,
            dist == row$dist, name_snyder == row$name_snyder) |>
@@ -840,5 +869,25 @@ cand <- cand |>
 cand <- cand |>
   mutate(runoff = if_else(state %in% c("GA", "LA") & is.na(runoff), 0, runoff))
 
+# Adding won variable for 2024 Governor races ----
+
+cand <- cand |>
+  mutate(
+    w_g = case_when(
+      year == 2024 & office == "G" & vote_g == max(vote_g, na.rm = TRUE) ~ 1,
+      year == 2024 & office == "G" ~ 0,
+      TRUE ~ w_g
+    ),
+    .by = c(state, year, office)
+  )
+
+
+# Reorder the dataset ----
+
+
+cand <- cand |>
+  arrange(year, office, state, dist)
+
+# Write the dataset ----
 
 write_rds(cand, "data/intermediate/candidates_2006-2024.rds")
