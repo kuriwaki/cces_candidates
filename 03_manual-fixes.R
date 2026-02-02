@@ -81,8 +81,8 @@ jsdat <- jsdat |>
   tidylog::mutate(
     temp = ifelse((state == "GA" & year %in% 2020:2022 & office == "S"), 1, 0),
     temp = replace(temp, name_snyder %in% c("LOEFFLER, KELLY", "WARNOCK, RAPHAEL GAMALIEL",
-                                     "WALKER, HERSCHEL JUNIOR",
-                                     "OSSOFF, THOMAS JONATHAN (JON)", "PERDUE, DAVID A."), 0)
+                                            "WALKER, HERSCHEL JUNIOR",
+                                            "OSSOFF, THOMAS JONATHAN (JON)", "PERDUE, DAVID A."), 0)
   ) |>
   tidylog::filter(temp == 0) |>
   select(-temp) |>
@@ -157,36 +157,36 @@ jsdat <- jsdat |>
 # Other vote total additions
 jsdat <- jsdat |>
   tidylog::mutate(vote_g = replace(vote_g, name_snyder == "JINDAL, BOBBY" & office == "H" & year == 2006 & state == "LA", 130508),
-         vote_g = replace(vote_g, name_snyder == "MCCRERY, JAMES O. (JIM)" & office == "H" & year == 2006 & state == "LA", 77078),
-         vote_g = replace(vote_g, name_snyder == "ALEXANDER, RODNEY M." & office == "H" & year == 2006 & state == "LA", 78211),
-         vote_g = replace(vote_g, name_snyder == "BOUSTANY, CHARLES W., JR." & office == "H" & year == 2006 & state == "LA", 113720),
-         vote_g = replace(vote_g, name_snyder == "BAKER, RICHARD HUGH" & office == "H" & year == 2006 & state == "LA", 94658),
-         vote_g = replace(vote_g, name_snyder == "MELANCON, CHARLES J. (CHARLIE), JR." & office == "H" & year == 2006 & state == "LA", 75023),
-         vote_g = replace(vote_g, name_snyder == "JINDAL, BOBBY" & office == "G" & year == 2007 & state == "LA", 699275),
-         vote_g = replace(vote_g, name_snyder == "GAIERO, THEODORE J., JR." & office == "H" & year == 2008 & state == "MA", 114),
-         vote_g = replace(vote_g, name_snyder == "SPEIER, KAREN (JACKIE)" & type == "S" & year == 2008 & state == "CA", 66279),
-         vote_g = replace(vote_g, name_snyder == "DJOU, CHARLES KONG" & type == "S" & year == 2010 & state == "HI", 67610),
-         vote_g = replace(vote_g, name_snyder == "PAYNE, DONALD M. (DON), JR." & type == "S" & year == 2012 & state == "NJ", 166413),
-         vote_g = replace(vote_g, name_snyder == "SCALISE, STEPHEN J. (STEVE)" & type == "G" & year == 2012 & state == "LA", 193496),
-         vote_g = replace(vote_g, name_snyder == "RICHMOND, CEDRIC L." & type == "G" & year == 2012 & state == "LA", 158501),
-         vote_g = replace(vote_g, name_snyder == "FLEMING, JOHN C., JR." & type == "G" & year == 2012 & state == "LA", 187894),
-         vote_g = replace(vote_g, name_snyder == "ALEXANDER, RODNEY M." & type == "G" & year == 2012 & state == "LA", 202536),
-         vote_g = replace(vote_g, name_snyder == "CASSIDY, WILLIAM (BILL)" & type == "G" & year == 2012 & state == "LA", 243553),
-         vote_g = replace(vote_g, name_snyder == "SCALISE, STEPHEN J. (STEVE)" & type == "G" & year == 2014 & state == "LA", 189250),
-         vote_g = replace(vote_g, name_snyder == "RICHMOND, CEDRIC L." & type == "G" & year == 2014 & state == "LA", 152201),
-         vote_g = replace(vote_g, name_snyder == "BOUSTANY, CHARLES W., JR." & type == "G" & year == 2014 & state == "LA", 185867),
-         vote_g = replace(vote_g, name_snyder == "FLEMING, JOHN C., JR." & type == "G" & year == 2014 & state == "LA", 152683),
-         vote_g = replace(vote_g, name_snyder == "SCALISE, STEPHEN J. (STEVE)" & type == "G" & year == 2016 & state == "LA", 243645),
-         vote_g = replace(vote_g, name_snyder == "RICHMOND, CEDRIC L." & type == "G" & year == 2016 & state == "LA", 198289),
-         vote_g = replace(vote_g, name_snyder == "ABRAHAM, RALPH LEE" & type == "G" & year == 2016 & state == "LA", 208345),
-         vote_g = replace(vote_g, name_snyder == "GRAVES, GARRET" & type == "G" & year == 2016 & state == "LA", 207483),
-         vote_g = replace(vote_g, name_snyder == "MURPHY, GREGORY F. (GREG)" & type == "S" & year == 2019 & state == "NC", 70407),
-         vote_g = replace(vote_g, name_snyder == "BISHOP, DAN" & type == "S" & year == 2019 & state == "NC", 96573),
-         vote_g = replace(vote_g, name_snyder == "KELLER, FREDERICK B. (FRED)" & type == "S" & year == 2019 & state == "PA", 90000),
-         vote_g = replace(vote_g, name_snyder == "LETLOW, JULIA" & type == "S" & year == 2021 & state == "LA", 67203),
-         vote_g = replace(vote_g, name_snyder == "ROSSANO, TIMOTHY" & year == 2014 & state == "FL", 12),
-         vote_g = replace(vote_g, name_snyder == "JINDAL, BOBBY" & office == "G" & year == 2011 & state == "LA", 673239),
-         vote_g = replace(vote_g, name_snyder == "FLORES, MAYRA" & year == 2022 & type == "S", 14799)
+                  vote_g = replace(vote_g, name_snyder == "MCCRERY, JAMES O. (JIM)" & office == "H" & year == 2006 & state == "LA", 77078),
+                  vote_g = replace(vote_g, name_snyder == "ALEXANDER, RODNEY M." & office == "H" & year == 2006 & state == "LA", 78211),
+                  vote_g = replace(vote_g, name_snyder == "BOUSTANY, CHARLES W., JR." & office == "H" & year == 2006 & state == "LA", 113720),
+                  vote_g = replace(vote_g, name_snyder == "BAKER, RICHARD HUGH" & office == "H" & year == 2006 & state == "LA", 94658),
+                  vote_g = replace(vote_g, name_snyder == "MELANCON, CHARLES J. (CHARLIE), JR." & office == "H" & year == 2006 & state == "LA", 75023),
+                  vote_g = replace(vote_g, name_snyder == "JINDAL, BOBBY" & office == "G" & year == 2007 & state == "LA", 699275),
+                  vote_g = replace(vote_g, name_snyder == "GAIERO, THEODORE J., JR." & office == "H" & year == 2008 & state == "MA", 114),
+                  vote_g = replace(vote_g, name_snyder == "SPEIER, KAREN (JACKIE)" & type == "S" & year == 2008 & state == "CA", 66279),
+                  vote_g = replace(vote_g, name_snyder == "DJOU, CHARLES KONG" & type == "S" & year == 2010 & state == "HI", 67610),
+                  vote_g = replace(vote_g, name_snyder == "PAYNE, DONALD M. (DON), JR." & type == "S" & year == 2012 & state == "NJ", 166413),
+                  vote_g = replace(vote_g, name_snyder == "SCALISE, STEPHEN J. (STEVE)" & type == "G" & year == 2012 & state == "LA", 193496),
+                  vote_g = replace(vote_g, name_snyder == "RICHMOND, CEDRIC L." & type == "G" & year == 2012 & state == "LA", 158501),
+                  vote_g = replace(vote_g, name_snyder == "FLEMING, JOHN C., JR." & type == "G" & year == 2012 & state == "LA", 187894),
+                  vote_g = replace(vote_g, name_snyder == "ALEXANDER, RODNEY M." & type == "G" & year == 2012 & state == "LA", 202536),
+                  vote_g = replace(vote_g, name_snyder == "CASSIDY, WILLIAM (BILL)" & type == "G" & year == 2012 & state == "LA", 243553),
+                  vote_g = replace(vote_g, name_snyder == "SCALISE, STEPHEN J. (STEVE)" & type == "G" & year == 2014 & state == "LA", 189250),
+                  vote_g = replace(vote_g, name_snyder == "RICHMOND, CEDRIC L." & type == "G" & year == 2014 & state == "LA", 152201),
+                  vote_g = replace(vote_g, name_snyder == "BOUSTANY, CHARLES W., JR." & type == "G" & year == 2014 & state == "LA", 185867),
+                  vote_g = replace(vote_g, name_snyder == "FLEMING, JOHN C., JR." & type == "G" & year == 2014 & state == "LA", 152683),
+                  vote_g = replace(vote_g, name_snyder == "SCALISE, STEPHEN J. (STEVE)" & type == "G" & year == 2016 & state == "LA", 243645),
+                  vote_g = replace(vote_g, name_snyder == "RICHMOND, CEDRIC L." & type == "G" & year == 2016 & state == "LA", 198289),
+                  vote_g = replace(vote_g, name_snyder == "ABRAHAM, RALPH LEE" & type == "G" & year == 2016 & state == "LA", 208345),
+                  vote_g = replace(vote_g, name_snyder == "GRAVES, GARRET" & type == "G" & year == 2016 & state == "LA", 207483),
+                  vote_g = replace(vote_g, name_snyder == "MURPHY, GREGORY F. (GREG)" & type == "S" & year == 2019 & state == "NC", 70407),
+                  vote_g = replace(vote_g, name_snyder == "BISHOP, DAN" & type == "S" & year == 2019 & state == "NC", 96573),
+                  vote_g = replace(vote_g, name_snyder == "KELLER, FREDERICK B. (FRED)" & type == "S" & year == 2019 & state == "PA", 90000),
+                  vote_g = replace(vote_g, name_snyder == "LETLOW, JULIA" & type == "S" & year == 2021 & state == "LA", 67203),
+                  vote_g = replace(vote_g, name_snyder == "ROSSANO, TIMOTHY" & year == 2014 & state == "FL", 12),
+                  vote_g = replace(vote_g, name_snyder == "JINDAL, BOBBY" & office == "G" & year == 2011 & state == "LA", 673239),
+                  vote_g = replace(vote_g, name_snyder == "FLORES, MAYRA" & year == 2022 & type == "S", 14799)
   )
 
 
@@ -199,9 +199,9 @@ jsdat <- jsdat |>
 # Fix Rhode Island 2006 Gov results
 jsdat <- jsdat |>
   tidylog::mutate(w_g = replace(w_g, year == 2006 & state == "RI" & office == "G" & name_snyder == "CARCIERI, DONALD L.", 1),
-         w_g = replace(w_g, year == 2006 & state == "RI" & office == "G" & name_snyder == "FOGARTY, CHARLES J.", 0),
-         vote_g = replace(vote_g, year == 2006 & state == "RI" & office == "G" & name_snyder == "CARCIERI, DONALD L.", 197306),
-         vote_g = replace(vote_g, year == 2006 & state == "RI" & office == "G" & name_snyder == "FOGARTY, CHARLES J.", 189503)
+                  w_g = replace(w_g, year == 2006 & state == "RI" & office == "G" & name_snyder == "FOGARTY, CHARLES J.", 0),
+                  vote_g = replace(vote_g, year == 2006 & state == "RI" & office == "G" & name_snyder == "CARCIERI, DONALD L.", 197306),
+                  vote_g = replace(vote_g, year == 2006 & state == "RI" & office == "G" & name_snyder == "FOGARTY, CHARLES J.", 189503)
   )
 
 # Karin Housley w_g fix
@@ -222,10 +222,10 @@ jsdat <- jsdat |>
     !(year == 2006 & state == "TX" & office == "H" & dist == 23 & vote_g < 24594)
   ) |>
   tidylog::mutate(type = replace(type, year == 2006 & state == "TX" & dist == 23, "G"),
-         vote_g = replace(vote_g, year == 2006 & state == "TX" & dist == 23 & party == "R", 32217),
-         vote_g = replace(vote_g, year == 2006 & state == "TX" & dist == 23 & party == "D", 38256),
-         w_g = replace(w_g, year == 2006 & state == "TX" & dist == 23 & party == "R", 0),
-         w_g = replace(w_g, year == 2006 & state == "TX" & dist == 23 & party == "D", 1))
+                  vote_g = replace(vote_g, year == 2006 & state == "TX" & dist == 23 & party == "R", 32217),
+                  vote_g = replace(vote_g, year == 2006 & state == "TX" & dist == 23 & party == "D", 38256),
+                  w_g = replace(w_g, year == 2006 & state == "TX" & dist == 23 & party == "R", 0),
+                  w_g = replace(w_g, year == 2006 & state == "TX" & dist == 23 & party == "D", 1))
 
 
 # Removing candidates ----
@@ -682,7 +682,7 @@ for (i in seq_len(nrow(house_append))) {
 
 # Add BRIDENSTINE if not already present
 if (nrow(jsdat |> filter(state == "OK", year == 2016, office == "H", dist == 1,
-                          name_snyder == "BRIDENSTINE, JAMES FREDERICK (JIM)")) == 0) {
+                         name_snyder == "BRIDENSTINE, JAMES FREDERICK (JIM)")) == 0) {
   jsdat <- jsdat |>
     add_row(state = "OK", year = 2016, office = "H", dist = 1,
             type = "G", nextup = 2018,
