@@ -21,9 +21,9 @@ jsdat_raw <- jsdat_raw |> select(-any_of(c("u_g", "vote_g_share")))
 jsdat <- jsdat_raw
 
 
-# MANUAL FIXES ============================================================
+# MANUAL FIXES =====
 
-# Adding missing candidates ----
+## Adding missing candidates ----
 
 # Add LA candidates if not already present
 la_additions <- tibble::tribble(
@@ -48,7 +48,7 @@ for (i in 1:nrow(la_additions)) {
 }
 
 
-# Adding Georgia 2020/2021 elections ----
+## Adding Georgia 2020/2021 elections ----
 
 jsdat <- jsdat |>
   filter(!(state == "GA" & year == 2020 & office == "S"))
@@ -75,7 +75,7 @@ for (i in seq_len(nrow(ga_additions))) {
   }
 }
 
-# Fixing 2020/2022 Georgia Special candidates
+## Fixing 2020/2022 Georgia Special candidates ----
 jsdat <- jsdat |>
   # remove runoff only candidates (but keep the main candidates)
   tidylog::mutate(
@@ -103,7 +103,7 @@ jsdat <- jsdat |>
   )
 
 
-# Runoff elections ----
+## Runoff elections ----
 
 # Removing extraneous candidates
 ## Georgia data comes from https://sos.ga.gov/index.php/Elections/current_and_past_elections_results
@@ -142,7 +142,9 @@ jsdat <- jsdat |>
   ))
 
 
-# Vote total corrections ----
+# VARIABLE CORRECTIONS =====
+
+## Vote total corrections ----
 
 # Correcting vote totals to reflect runoffs
 jsdat <- jsdat |>
@@ -190,7 +192,7 @@ jsdat <- jsdat |>
   )
 
 
-# Winner (w_g) corrections ----
+## Winner (w_g) corrections ----
 
 # Fix Oregon 2018 Gov winner
 jsdat <- jsdat |>
@@ -228,7 +230,7 @@ jsdat <- jsdat |>
                   w_g = replace(w_g, year == 2006 & state == "TX" & dist == 23 & party == "D", 1))
 
 
-# Removing candidates ----
+## Removing candidates ----
 
 # Removing duplicates or not-rans
 jsdat <- jsdat |>
@@ -246,7 +248,7 @@ jsdat <- jsdat |>
   filter(name_snyder != "" | !is.na(vote_g))
 
 
-# Party corrections ----
+## Party corrections ----
 
 jsdat <- jsdat |>
   # writein
@@ -255,7 +257,7 @@ jsdat <- jsdat |>
   tidylog::mutate(party = replace(party, name_snyder != "VAN HOLLEN, CHRISTOPHER (CHRIS), JR." & year == 2016 & office == "S" & party == "D" & state == "MD", "Other"))
 
 
-# Incumbency fixes ----
+## Incumbency fixes ----
 
 jsdat <- jsdat |>
   tidylog::mutate(
@@ -270,13 +272,13 @@ jsdat <- jsdat |>
   )
 
 
-# Name recodings ----
+## Name recodings ----
 
 jsdat <- jsdat |>
   tidylog::mutate(name_snyder = str_replace(name_snyder, "Ê", " "))
 
 
-# Manually fixing TX-22 2006 ----
+## Manually fixing TX-22 2006 ----
 
 jsdat <- jsdat |>
   tidylog::filter(
@@ -307,7 +309,7 @@ for (i in seq_len(nrow(tx22_additions))) {
   }
 }
 
-# McMasters, Thomas (Tom) Manual Edit ----
+## McMasters, Thomas (Tom) Manual Edit ----
 
 jsdat <- jsdat |>
   tidylog::mutate(
@@ -315,14 +317,17 @@ jsdat <- jsdat |>
     party_formal = replace(party_formal, name_snyder == "MCMASTERS, THOMAS (TOM)", "W-I")
   )
 
-# Fixing nextup for Arizona races ----
+## Fixing nextup for Arizona races ----
 
 jsdat <- jsdat |>
   tidylog::mutate(
     nextup = replace(nextup, state == "AZ" & year == 2020 & office == "S" & type == "S", 2022)
   )
 
-# Adding Angus King races ----
+
+# INDEPENDENT SENATORS =====
+
+## Adding Angus King races ----
 
 king_additions <- tibble::tribble(
   ~state, ~year, ~office, ~dist, ~type, ~nextup, ~party, ~party_formal, ~name_snyder, ~inc, ~vote_g, ~w_g,
@@ -355,7 +360,7 @@ for (i in seq_len(nrow(king_additions))) {
   }
 }
 
-# Adding Joe Lieberman races ----
+## Adding Joe Lieberman races ----
 
 lieberman_additions <- tibble::tribble(
   ~state, ~year, ~office, ~dist, ~type, ~nextup, ~party, ~party_formal, ~name_snyder, ~inc, ~vote_g, ~w_g,
@@ -385,7 +390,7 @@ for (i in seq_len(nrow(lieberman_additions))) {
 }
 
 
-# Adding Bernard Sanders Senate elections ----
+## Adding Bernard Sanders Senate elections ----
 
 # Vermont Senate races for Bernard Sanders (2018, 2012, 2006)
 sanders_additions <- tibble::tribble(
@@ -432,7 +437,10 @@ for (i in seq_len(nrow(sanders_additions))) {
   }
 }
 
-# Adding Bill Cassidy 2020 race ----
+
+# STATE-SPECIFIC FIXES =====
+
+## Adding Bill Cassidy 2020 race ----
 
 jsdat <- jsdat |>
   filter(!(state == "LA" & year == 2020 & office == "S"))
@@ -474,7 +482,7 @@ for (i in seq_len(nrow(louisiana_senate_2020))) {
   }
 }
 
-# Fixing battery of Louisiana issues ----
+## Fixing battery of Louisiana issues ----
 
 # Remove existing LA House entries for the years/districts we're adding
 jsdat <- jsdat |>
@@ -620,9 +628,7 @@ for (i in seq_len(nrow(la_additions))) {
   }
 }
 
-# Adding Lisa Murkowski 2010 ----
-
-# Adding Alaska 2010 Senate race (Murkowski write-in victory) ----
+## Adding Lisa Murkowski 2010 ----
 
 alaska_senate_2010 <- tibble::tribble(
   ~state, ~year, ~office, ~dist, ~type, ~nextup, ~party, ~party_formal, ~name_snyder, ~inc, ~vote_g, ~w_g,
@@ -647,10 +653,10 @@ for (i in seq_len(nrow(alaska_senate_2010))) {
 }
 
 
-# GITHUB ISSUES ===========================================================
+# GITHUB ISSUES =====
 
 
-# Issues #9, #10, #13, #14, #16, #17, #18, #19, #20: House append ----
+## Issues #9-20: House append ----
 
 house_append <- read.csv("data/intermediate/cand_house_append.csv")
 
@@ -677,7 +683,7 @@ for (i in seq_len(nrow(house_append))) {
 }
 
 
-# Issue #21: Adding Bridenstine ----
+## Issue #21: Adding Bridenstine ----
 # https://github.com/kuriwaki/cces_candidates/issues/21
 
 # Add BRIDENSTINE if not already present
@@ -693,7 +699,7 @@ if (nrow(jsdat |> filter(state == "OK", year == 2016, office == "H", dist == 1,
 }
 
 
-# Issue #26: Missing gubernatorial candidate states ----
+## Issue #26: Missing gubernatorial candidate states ----
 
 cand <- jsdat %>%
   tidylog::mutate(
@@ -701,7 +707,7 @@ cand <- jsdat %>%
   )
 
 
-# Issue #27: Three last name misspellings ----
+## Issue #27: Three last name misspellings ----
 
 cand <- cand %>%
   tidylog::mutate(
@@ -711,7 +717,7 @@ cand <- cand %>%
   )
 
 
-# Issue #29: Fix Ron Caesar Spelling ----
+## Issue #29: Fix Ron Caesar Spelling ----
 
 cand <- cand %>%
   tidylog::mutate(
@@ -719,7 +725,7 @@ cand <- cand %>%
   )
 
 
-# Issue #30: Corrections on incumbency ----
+## Issue #30: Corrections on incumbency ----
 
 cand <- cand %>%
   tidylog::mutate(
@@ -728,7 +734,7 @@ cand <- cand %>%
   )
 
 
-# Issue #35: Standardized names -- Joe Kennedy III ----
+## Issue #35: Standardized names ----
 # Issue #43
 
 cand <- cand %>%
@@ -748,7 +754,7 @@ cand <- cand %>%
   ))
 
 
-# Issue #41: Missing inc values ----
+## Issue #41: Missing inc values ----
 
 cand <- cand |>
   left_join(
@@ -773,7 +779,7 @@ cand <- cand |>
 
 
 
-# 2024 ADDITIONS ----------------------------------------------------------
+# 2024 ADDITIONS =====
 
 # Define 2024 additions
 additions_2024 <- tibble::tribble(
@@ -812,10 +818,23 @@ for (i in seq_len(nrow(additions_2024))) {
 }
 
 
-# NY, CT, SC fusion voting aggregation ----
+# POST-PROCESSING =====
+
+## NY, CT, SC fusion voting aggregation ----
 # In these states candidates can run on multiple party lines (e.g., Democratic and Working Families).
 # Some years have these as separate rows, some as aggregated. This code aggregates all to a single
 # row per candidate-race with summed votes and comma-separated party_formal.
+
+# missing in v4 source data
+cand |>
+  mutate(
+    party = replace(party, state == "CT" & office ==  2018 & office == "S" & dist ==  1 & party == "D", "D, Wk Fam"),
+    party = replace(party, state == "CT" & office ==  2018 & office == "H" & dist ==  1 & party == "D", "D, Wk Fam"),
+    party = replace(party, state == "CT" & office ==  2018 & office == "H" & dist ==  2 & party == "D", "D, Wk Fam"),
+    party = replace(party, state == "CT" & office ==  2018 & office == "H" & dist ==  3 & party == "D", "D, Wk Fam"),
+    party = replace(party, state == "CT" & office ==  2018 & office == "H" & dist ==  5 & party == "D", "D, Wk Fam"),
+    party = replace(party, state == "CT" & office ==  2018 & office == "G" & dist == NA & party == "D", "D, Wk Fam"),
+  )
 
 # Identify fusion state races with multiple rows for the same candidate
 cand <- cand |>
@@ -849,7 +868,7 @@ cand <- cand |>
   bind_rows(fusion_agg)
 
 
-# Recalculate totalvotes ----
+## Recalculate totalvotes ----
 # After fusion aggregation, recalculate:
 # - totalvotes: sum of vote_g within each race
 # - n: number of candidates in the race
@@ -862,12 +881,12 @@ cand <- cand |>
   )
 
 
-# Fix NA runoffs for GA/LA ----
+## Fix NA runoffs for GA/LA ----
 # Rows added after the runoff logic don't have runoff set; default them to 0
 cand <- cand |>
   mutate(runoff = if_else(state %in% c("GA", "LA") & is.na(runoff), 0, runoff))
 
-# Adding won variable for 2024 Governor races ----
+## Adding won variable for 2024 Governor races ----
 
 cand <- cand |>
   mutate(
@@ -880,12 +899,12 @@ cand <- cand |>
   )
 
 
-# Reorder the dataset ----
+## Reorder the dataset ----
 
 
 cand <- cand |>
   arrange(year, office, state, dist)
 
-# Write the dataset ----
+## Write the dataset ----
 
 write_rds(cand, "data/intermediate/candidates_2006-2024.rds")
