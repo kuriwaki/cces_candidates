@@ -825,12 +825,12 @@ cand <- cand |>
     .by = c(state, year, office, dist, name_snyder)
   )
 
-# aggregate
+# Pick fused vote
 fusion_agg <- cand |>
   filter(is_fusion_state & n_party_rows > 1)  |>
   group_by(state, year, office, dist, type, nextup, name_snyder) |>
   summarize(
-    vote_g = sum(vote_g, na.rm = TRUE),
+    vote_g = max(vote_g, na.rm = TRUE),
     # Take the primary party (D > R > others) - first non-Other party alphabetically
     party = first(party[party %in% c("D", "R")], default = first(party)),
     # Combine all unique parties from party_formal into comma-separated string
@@ -842,7 +842,7 @@ fusion_agg <- cand |>
     .groups = "drop"
   )
 
-# Remove the original multi-row fusion candidates and add the aggregated versions
+# Split and bind
 cand <- cand |>
   filter(!(is_fusion_state & n_party_rows > 1)) |>
   select(-c(n_party_rows, is_fusion_state)) |>
