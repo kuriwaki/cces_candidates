@@ -54,7 +54,7 @@ pres_fmt <- pres_raw |>
     name = recode(
       candidate,
       `OBAMA, BARACK H.` = "OBAMA, BARACK",
-      `CLINTON HILLARY` = "CLINTON, HILLARY RODHAM",
+      `CLINTON, HILLARY` = "CLINTON, HILLARY RODHAM",
       `BIDEN, JOSEPH R. JR` = "BIDEN, JOSEPH R., JR.",
       `MCCAIN, JOHN` = "MCCAIN, JOHN S.",
       `PAUL, RONALD \"\"RON\"\"` = "PAUL, RONALD E. (RON)",
