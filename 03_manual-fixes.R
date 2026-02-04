@@ -652,6 +652,558 @@ for (i in seq_len(nrow(alaska_senate_2010))) {
   }
 }
 
+## Manually Adding Fusion candidates ----
+fusion_2018 <- tibble::tribble(
+  ~state, ~year, ~office, ~dist, ~type, ~nextup, ~party, ~party_formal, ~name_snyder, ~inc, ~vote_g, ~w_g,
+
+  # Senate Race
+  "NY", 2018, "S", 1, "G", 2024, "D", "D, Wk Fam, I, WE", "GILLIBRAND, KIRSTEN ELIZABETH", 1, 4056931, 1,
+  "NY", 2018, "S", 1, "G", 2024, "R", "R, Conservative, Reform", "FARLEY, CHELE CHIAVACCI", 0, 1998220, 0,
+
+  # District 1
+  "NY", 2018, "H", 1, "G", 2020, "D", "D, Wk Fam", "GERSHON, PERRY", 0, 127991, 0,
+  "NY", 2018, "H", 1, "G", 2020, "R", "R, Conservative, I, Reform", "ZELDIN, LEE M.", 1, 139027, 1,
+  "NY", 2018, "H", 1, "G", 2020, "WE", "WE", "BROWNING, KATE M.", 0, 2988, 0,
+
+  # District 2
+  "NY", 2018, "H", 2, "G", 2020, "D", "D, Wk Fam, WE", "SHIRLEY, LIUBA GRECHEN", 0, 113074, 0,
+  "NY", 2018, "H", 2, "G", 2020, "R", "R, Conservative, I, Reform", "KING, PETER T. (PETE)", 1, 128078, 1,
+
+  # District 3
+  "NY", 2018, "H", 3, "G", 2020, "D", "D, I, Wk Fam, WE, Reform", "SUOZZI, THOMAS R. (TOM)", 1, 157456, 1,
+  "NY", 2018, "H", 3, "G", 2020, "R", "R, Conservative", "DEBONO, DAN P.", 0, 109514, 0,
+
+  # District 4
+  "NY", 2018, "H", 4, "G", 2020, "D", "D, WE", "RICE, KATHLEEN M.", 1, 159535, 1,
+  "NY", 2018, "H", 4, "G", 2020, "R", "R, Conservative, Reform", "BENNO, AMEER N.", 0, 100571, 0,
+
+  # District 6
+  "NY", 2018, "H", 6, "G", 2020, "D", "D, Wk Fam, Reform", "MENG, GRACE", 1, 111646, 1,
+  "NY", 2018, "H", 6, "G", 2020, "G", "Green", "HILLGARDNER, THOMAS J.", 0, 11209, 0,
+
+  # District 7
+  "NY", 2018, "H", 7, "G", 2020, "D", "D, Wk Fam", "VELAZQUEZ, NYDIA M.", 1, 146687, 1,
+  "NY", 2018, "H", 7, "G", 2020, "C", "Conservative", "LIEBERMAN, JOSEPH", 0, 8670, 0,
+  "NY", 2018, "H", 7, "G", 2020, "Reform", "Reform", "KURZON, JEFFREY M. (JEFF)", 0, 1740, 0,
+
+  # District 8
+  "NY", 2018, "H", 8, "G", 2020, "D", "D, Wk Fam", "JEFFRIES, HAKEEM S.", 1, 180376, 1,
+  "NY", 2018, "H", 8, "G", 2020, "C", "Conservative", "JOHNSON, ERNEST C.", 0, 9997, 0,
+  "NY", 2018, "H", 8, "G", 2020, "Reform", "Reform", "WHITE, JESSICA L.", 0, 1031, 0,
+
+  # District 9
+  "NY", 2018, "H", 9, "G", 2020, "D", "D, Wk Fam", "CLARKE, YVETTE DIANE", 1, 181455, 1,
+  "NY", 2018, "H", 9, "G", 2020, "R", "R, Conservative", "GAYOT, LUTCHI", 0, 20901, 0,
+  "NY", 2018, "H", 9, "G", 2020, "Reform", "Reform", "ANABILAH-AZUMAH, JOEL", 0, 779, 0,
+
+  # District 10
+  "NY", 2018, "H", 10, "G", 2020, "D", "D, Wk Fam", "NADLER, JERROLD L. (JERRY)", 1, 173095, 1,
+  "NY", 2018, "H", 10, "G", 2020, "R", "R, Conservative, Reform", "LEVIN, NAOMI", 0, 37619, 0,
+
+  # District 11
+  "NY", 2018, "H", 11, "G", 2020, "D", "D, Wk Fam, WE", "ROSE, MAX N.", 0, 101823, 1,
+  "NY", 2018, "H", 11, "G", 2020, "R", "R, Conservative, I, Reform", "DONOVAN, DANIEL M. (DAN), JR.", 1, 89441, 0,
+  "NY", 2018, "H", 11, "G", 2020, "G", "Green", "BARDEL, HENRY J. (HANK)", 0, 774, 0,
+
+  # District 12
+  "NY", 2018, "H", 12, "G", 2020, "D", "D, Wk Fam, Reform", "MALONEY, CAROLYN B.", 1, 217430, 1,
+  "NY", 2018, "H", 12, "G", 2020, "R", "R", "RABIN, ELIOT", 0, 30446, 0,
+  "NY", 2018, "H", 12, "G", 2020, "G", "Green", "HUTCHINS, SCOTT", 0, 3728, 0,
+
+  # District 13
+  "NY", 2018, "H", 13, "G", 2020, "D", "D, Wk Fam", "ESPAILLAT, ADRIANO", 1, 180035, 1,
+  "NY", 2018, "H", 13, "G", 2020, "R", "R, Reform", "BUTLER, JINEEA R.", 0, 10268, 0,
+
+  # District 15
+  "NY", 2018, "H", 15, "G", 2020, "D", "D, Wk Fam", "SERRANO, JOSE E.", 1, 124469, 1,
+  "NY", 2018, "H", 15, "G", 2020, "R", "R, Conservative", "GONZALEZ, JASON D.", 0, 5205, 0,
+
+  # District 16
+  "NY", 2018, "H", 16, "G", 2020, "D", "D, Wk Fam, WE", "ENGEL, ELIOT L.", 1, 182044, 1,
+
+  # District 17
+  "NY", 2018, "H", 17, "G", 2020, "D", "D, Wk Fam, WE", "LOWEY, NITA M.", 1, 170168, 1,
+  "NY", 2018, "H", 17, "G", 2020, "Reform", "Reform", "CIARDULLO, JOSEPH J.", 0, 23150, 0,
+
+  # District 18
+  "NY", 2018, "H", 18, "G", 2020, "D", "D, I, Wk Fam, WE", "MALONEY, SEAN PATRICK", 1, 139564, 1,
+  "NY", 2018, "H", 18, "G", 2020, "R", "R, Conservative, Reform", "O'DONNELL, JAMES", 0, 112035, 0,
+
+  # District 19
+  "NY", 2018, "H", 19, "G", 2020, "D", "D, Wk Fam, WE", "DELGADO, ANTONIO", 0, 147873, 1,
+  "NY", 2018, "H", 19, "G", 2020, "R", "R, Conservative, I, Reform", "FASO, JOHN J.", 1, 132873, 0,
+  "NY", 2018, "H", 19, "G", 2020, "G", "Green", "GREENFIELD, STEVEN", 0, 4313, 0,
+  "NY", 2018, "H", 19, "G", 2020, "Other", "Friends of Diane Neal", "NEAL, DIANE", 0, 2835, 0,
+
+  # District 20
+  "NY", 2018, "H", 20, "G", 2020, "D", "D, Wk Fam, WE, Reform", "TONKO, PAUL DAVID", 1, 176811, 1,
+  "NY", 2018, "H", 20, "G", 2020, "R", "R", "VITOLLO, FRANCIS JOSEPH (JOE)", 0, 89058, 0,
+
+  # District 21
+  "NY", 2018, "H", 21, "G", 2020, "D", "D, Wk Fam, WE", "COBB, TEDRA L.", 0, 99791, 0,
+  "NY", 2018, "H", 21, "G", 2020, "R", "R, Conservative, I, Reform", "STEFANIK, ELISE M.", 1, 131981, 1,
+  "NY", 2018, "H", 21, "G", 2020, "G", "Green", "KAHN, LYNN", 0, 3437, 0,
+
+  # District 22
+  "NY", 2018, "H", 22, "G", 2020, "D", "D, I, Wk Fam, WE", "BRINDISI, ANTHONY J.", 0, 127715, 1,
+  "NY", 2018, "H", 22, "G", 2020, "R", "R, Conservative, Reform", "TENNEY, CLAUDIA", 1, 123242, 0,
+
+  # District 23
+  "NY", 2018, "H", 23, "G", 2020, "D", "D, Wk Fam, WE", "MITRANO, TRACY", 0, 109932, 0,
+  "NY", 2018, "H", 23, "G", 2020, "R", "R, Conservative, I", "REED, THOMAS W. (TOM), II", 1, 130323, 1,
+
+  # District 24
+  "NY", 2018, "H", 24, "G", 2020, "D", "D, Wk Fam, WE", "BALTER, DANA", 0, 123226, 0,
+  "NY", 2018, "H", 24, "G", 2020, "R", "R, Conservative, I, Reform", "KATKO, JOHN M.", 1, 136920, 1,
+
+  # District 25
+  "NY", 2018, "H", 25, "G", 2020, "D", "D, I, Wk Fam, WE", "MORELLE, JOSEPH D.", 0, 159244, 1,
+  "NY", 2018, "H", 25, "G", 2020, "R", "R, Conservative, Reform", "MAXWELL, JIM", 0, 110736, 0,
+
+  # District 26
+  "NY", 2018, "H", 26, "G", 2020, "D", "D, Wk Fam, WE", "HIGGINS, BRIAN M.", 1, 169166, 1,
+  "NY", 2018, "H", 26, "G", 2020, "R", "R", "ZENO, RENEE M.", 0, 61488, 0,
+
+  # District 27
+  "NY", 2018, "H", 27, "G", 2020, "D", "D, Wk Fam, WE", "MCMURRAY, NATHAN D.", 0, 139059, 0,
+  "NY", 2018, "H", 27, "G", 2020, "R", "R, Conservative, I", "COLLINS, CHRISTOPHER C. (CHRIS)", 1, 140146, 1,
+  "NY", 2018, "H", 27, "G", 2020, "Reform", "Reform", "PIEGZA, LARRY", 0, 5973, 0
+)
+
+fusion_2020 <- tibble::tribble(
+  ~state, ~year, ~office, ~dist, ~type, ~nextup, ~party, ~party_formal, ~name_snyder, ~inc, ~vote_g, ~w_g,
+
+  # District 1
+  "NY", 2020, "H", 1, "G", 2022, "D", "D, Wk Fam", "GOROFF, NANCY S.", 0, 157484, 0,
+  "NY", 2020, "H", 1, "G", 2022, "R", "R, Conservative, I", "ZELDIN, LEE M.", 1, 199763, 1,
+
+  # District 2
+  "NY", 2020, "H", 2, "G", 2022, "D", "D, Wk Fam, I", "GORDON, JACKIE", 0, 154123, 0,
+  "NY", 2020, "H", 2, "G", 2022, "R", "R, Conservative, Libertarian, SAM", "GARBARINO, ANDREW R.", 0, 177353, 1,
+  "NY", 2020, "H", 2, "G", 2022, "G", "Green", "BURGER, HARRY R.", 0, 3446, 0,
+
+  # District 3
+  "NY", 2020, "H", 3, "G", 2022, "D", "D, Wk Fam, I", "SUOZZI, THOMAS R. (TOM)", 1, 208412, 1,
+  "NY", 2020, "H", 3, "G", 2022, "R", "R, Conservative", "SANTOS, GEORGE A. D.", 0, 161907, 0,
+  "NY", 2020, "H", 3, "G", 2022, "L", "Libertarian", "RABIN, HOWARD", 0, 2154, 0,
+
+  # District 4
+  "NY", 2020, "H", 4, "G", 2022, "D", "D", "RICE, KATHLEEN M.", 1, 199762, 1,
+  "NY", 2020, "H", 4, "G", 2022, "R", "R, Conservative", "TUMAN, DOUGLAS L.", 0, 153007, 0,
+  "NY", 2020, "H", 4, "G", 2022, "G", "Green", "NAHAM, JOSEPH R.", 0, 3024, 0,
+
+  # District 6
+  "NY", 2020, "H", 6, "G", 2022, "D", "D, Wk Fam", "MENG, GRACE", 1, 158862, 1,
+  "NY", 2020, "H", 6, "G", 2022, "R", "R, Conservative, Save Our City, Libertarian", "ZMICH, THOMAS J.", 0, 74829, 0,
+
+  # District 7
+  "NY", 2020, "H", 7, "G", 2022, "D", "D, Wk Fam", "VELAZQUEZ, NYDIA M.", 1, 191073, 1,
+  "NY", 2020, "H", 7, "G", 2022, "R", "R, Conservative", "KELLY, BRIAN W.", 0, 32520, 0,
+  "NY", 2020, "H", 7, "G", 2022, "L", "Libertarian", "MIDONNET, GILBERT", 0, 1522, 0,
+
+  # District 8
+  "NY", 2020, "H", 8, "G", 2022, "D", "D, Wk Fam", "JEFFRIES, HAKEEM S.", 1, 234933, 1,
+  "NY", 2020, "H", 8, "G", 2022, "R", "R, Conservative", "WALLACE, GARFIELD H.", 0, 42007, 0,
+
+  # District 9
+  "NY", 2020, "H", 9, "G", 2022, "D", "D, Wk Fam", "CLARKE, YVETTE DIANE", 1, 230221, 1,
+  "NY", 2020, "H", 9, "G", 2022, "R", "R, Conservative", "JEAN-PIERRE, CONSTANTINE", 0, 43950, 0,
+  "NY", 2020, "H", 9, "G", 2022, "L", "Libertarian", "POPKIN, GARY", 0, 1644, 0,
+  "NY", 2020, "H", 9, "G", 2022, "SAM", "SAM", "ANABILAH-AZUMAH, JOEL B.", 0, 1052, 0,
+
+  # District 10
+  "NY", 2020, "H", 10, "G", 2022, "D", "D, Wk Fam", "NADLER, JERROLD L. (JERRY)", 1, 206310, 1,
+  "NY", 2020, "H", 10, "G", 2022, "R", "R, Conservative", "BERNSTEIN, CATHY A.", 0, 66889, 0,
+  "NY", 2020, "H", 10, "G", 2022, "L", "Libertarian", "MADRID, MICHAEL", 0, 3370, 0,
+
+  # District 11
+  "NY", 2020, "H", 11, "G", 2022, "D", "D, I", "ROSE, MAX N.", 1, 137198, 0,
+  "NY", 2020, "H", 11, "G", 2022, "R", "R, Conservative", "MALLIOTAKIS, NICOLE", 0, 155608, 1,
+
+  # District 12
+  "NY", 2020, "H", 12, "G", 2022, "D", "D", "MALONEY, CAROLYN B.", 1, 265172, 1,
+  "NY", 2020, "H", 12, "G", 2022, "R", "R, Conservative", "SANTIAGO-CANO, CARLOS", 0, 53061, 0,
+  "NY", 2020, "H", 12, "G", 2022, "L", "Libertarian", "KOLLN, STEVEN", 0, 4015, 0,
+
+  # District 13
+  "NY", 2020, "H", 13, "G", 2022, "D", "D, Wk Fam", "ESPAILLAT, ADRIANO", 1, 231841, 1,
+  "NY", 2020, "H", 13, "G", 2022, "R", "R", "GWINN, LOVELYNN", 0, 19829, 0,
+  "NY", 2020, "H", 13, "G", 2022, "C", "Conservative", "MORRIS-PERRY, CHRISTOPHER", 0, 3295, 0,
+
+  # District 14
+  "NY", 2020, "H", 14, "G", 2022, "D", "D", "OCASIO-CORTEZ, ALEXANDRIA", 1, 152661, 1,
+  "NY", 2020, "H", 14, "G", 2022, "R", "R, Conservative", "CUMMINGS, JOHN C.", 0, 58440, 0,
+  "NY", 2020, "H", 14, "G", 2022, "SAM", "SAM", "CARUSO-CABRERA, MICHELLE", 0, 2000, 0,
+
+  # District 15
+  "NY", 2020, "H", 15, "G", 2022, "D", "D", "TORRES, RITCHIE", 0, 169533, 1,
+  "NY", 2020, "H", 15, "G", 2022, "R", "R, Conservative", "DELICES, PATRICK", 0, 21221, 0,
+
+  # District 17
+  "NY", 2020, "H", 17, "G", 2022, "D", "D, Wk Fam", "JONES, MONDAIRE", 0, 197353, 1,
+  "NY", 2020, "H", 17, "G", 2022, "R", "R, Conservative", "MCARDLE-SCHULMAN, MAUREEN", 0, 126194, 0,
+  "NY", 2020, "H", 17, "G", 2022, "Other", "Education.Community.Law.", "EISEN, JOSHUA", 0, 6363, 0,
+  "NY", 2020, "H", 17, "G", 2022, "SAM", "SAM", "PARIETTI, MICHAEL I.", 0, 2745, 0,
+
+  # District 18
+  "NY", 2020, "H", 18, "G", 2022, "D", "D, Wk Fam, I", "MALONEY, SEAN PATRICK", 1, 187169, 1,
+  "NY", 2020, "H", 18, "G", 2022, "R", "R, Conservative, SAM", "FARLEY, CHELE C.", 0, 145574, 0,
+  "NY", 2020, "H", 18, "G", 2022, "L", "Libertarian", "SMITH, SCOTT A.", 0, 2686, 0,
+
+  # District 19
+  "NY", 2020, "H", 19, "G", 2022, "D", "D, Wk Fam, SAM", "DELGADO, ANTONIO", 1, 192100, 1,
+  "NY", 2020, "H", 19, "G", 2022, "R", "R", "VAN DE WATER, KYLE", 0, 151475, 0,
+  "NY", 2020, "H", 19, "G", 2022, "L", "Libertarian", "ALEXANDER, VICTORIA N.", 0, 4224, 0,
+  "NY", 2020, "H", 19, "G", 2022, "G", "Green", "GREENFIELD, STEVEN", 0, 2799, 0,
+
+  # District 20
+  "NY", 2020, "H", 20, "G", 2022, "D", "D, Wk Fam, I", "TONKO, PAUL DAVID", 1, 219705, 1,
+  "NY", 2020, "H", 20, "G", 2022, "R", "R, Conservative, SAM", "JOY, ELIZABETH L.", 0, 139446, 0,
+
+  # District 21
+  "NY", 2020, "H", 21, "G", 2022, "D", "D, Wk Fam", "COBB, TEDRA L.", 0, 131992, 0,
+  "NY", 2020, "H", 21, "G", 2022, "R", "R, Conservative, I", "STEFANIK, ELISE M.", 1, 188649, 1,
+
+  # District 22
+  "NY", 2020, "H", 22, "G", 2022, "D", "D, Wk Fam, I", "BRINDISI, ANTHONY J.", 1, 155989, 0,
+  "NY", 2020, "H", 22, "G", 2022, "R", "R, Conservative", "TENNEY, CLAUDIA", 0, 156098, 1,
+  "NY", 2020, "H", 22, "G", 2022, "L", "Libertarian", "PRICE, KEITH D., JR.", 0, 6780, 0,
+
+  # District 23
+  "NY", 2020, "H", 23, "G", 2022, "D", "D, Wk Fam", "MITRANO, TRACY", 0, 129014, 0,
+  "NY", 2020, "H", 23, "G", 2022, "R", "R, Conservative, I", "REED, THOMAS W. (TOM), II", 1, 181060, 1,
+  "NY", 2020, "H", 23, "G", 2022, "L", "Libertarian", "KOLSTEE, ANDREW M.", 0, 3650, 0,
+
+  # District 24
+  "NY", 2020, "H", 24, "G", 2022, "D", "D", "BALTER, DANA", 0, 147638, 0,
+  "NY", 2020, "H", 24, "G", 2022, "R", "R, Conservative, I", "KATKO, JOHN M.", 1, 182567, 1,
+  "NY", 2020, "H", 24, "G", 2022, "WF", "Wk Fam", "WILLIAMS, STEVEN", 0, 13232, 0,
+
+  # District 25
+  "NY", 2020, "H", 25, "G", 2022, "D", "D, Wk Fam, I", "MORELLE, JOSEPH D.", 1, 206396, 1,
+  "NY", 2020, "H", 25, "G", 2022, "R", "R, Conservative", "MITRIS, GEORGE", 0, 136198, 0,
+  "NY", 2020, "H", 25, "G", 2022, "L", "Libertarian", "WILSON, KEVIN A.", 0, 5325, 0,
+
+  # District 26
+  "NY", 2020, "H", 26, "G", 2022, "D", "D, Wk Fam, SAM", "HIGGINS, BRIAN M.", 1, 223276, 1,
+  "NY", 2020, "H", 26, "G", 2022, "R", "R", "DONOVAN, RICKY T., SR.", 0, 91687, 0,
+  "NY", 2020, "H", 26, "G", 2022, "G", "Green", "RALEIGH, MICHAEL P.", 0, 4628, 0,
+
+  # District 27
+  "NY", 2020, "H", 27, "G", 2022, "D", "D, Wk Fam", "MCMURRAY, NATHAN D.", 0, 149559, 0,
+  "NY", 2020, "H", 27, "G", 2022, "R", "R, Constitution, I", "JACOBS, CHRIS", 1, 229044, 1,
+  "NY", 2020, "H", 27, "G", 2022, "L", "Libertarian", "WHITMER, DUANE J.", 0, 4884, 0
+)
+
+fusion_2022 <- tibble::tribble(
+  ~state, ~year, ~office, ~dist, ~type, ~nextup, ~party, ~party_formal, ~name_snyder, ~inc, ~vote_g, ~w_g,
+
+  # Senate Race
+  "NY", 2022, "S", 3, "G", 2028, "R", "R, Conservative", "PINION, JOE", 0, 2501151, 0,
+  "NY", 2022, "S", 3, "G", 2028, "D", "D, Wk Fam", "SCHUMER, CHARLES E. (CHUCK)", 1, 3320561, 1,
+  "NY", 2022, "S", 3, "G", 2028, "LaRouche", "LaRouche", "SARE, DIANE", 0, 26844, 0,
+
+  # District 1
+  "NY", 2022, "H", 1, "G", 2024, "R", "R, Conservative", "LALOTA, NICHOLAS J.", 0, 177040, 1,
+  "NY", 2022, "H", 1, "G", 2024, "D", "D, Wk Fam", "FLEMING, BRIDGET", 0, 141907, 0,
+
+  # District 2
+  "NY", 2022, "H", 2, "G", 2024, "R", "R, Conservative", "GARBARINO, ANDREW R.", 1, 151178, 1,
+  "NY", 2022, "H", 2, "G", 2024, "D", "D, Wk Fam", "GORDON, JACKIE", 0, 97774, 0,
+
+  # District 3
+  "NY", 2022, "H", 3, "G", 2024, "R", "R, Conservative", "SANTOS, GEORGE A. D.", 0, 145824, 1,
+  "NY", 2022, "H", 3, "G", 2024, "D", "D, Wk Fam", "ZIMMERMAN, ROBERT P.", 0, 125404, 0,
+
+  # District 4
+  "NY", 2022, "H", 4, "G", 2024, "R", "R, Conservative", "D'ESPOSITO, ANTHONY P.", 0, 140622, 1,
+  "NY", 2022, "H", 4, "G", 2024, "D", "D", "GILLEN, LAURA A.", 0, 130871, 0,
+
+  # District 5
+  "NY", 2022, "H", 5, "G", 2024, "R", "R, Conservative", "KING, PAUL", 0, 34407, 0,
+  "NY", 2022, "H", 5, "G", 2024, "D", "D", "MEEKS, GREGORY W.", 1, 104396, 1,
+
+  # District 6
+  "NY", 2022, "H", 6, "G", 2024, "R", "R, Conservative, Medical Freedom", "ZMICH, THOMAS J.", 0, 47935, 0,
+  "NY", 2022, "H", 6, "G", 2024, "D", "D", "MENG, GRACE", 1, 85049, 1,
+
+  # District 7
+  "NY", 2022, "H", 7, "G", 2024, "R", "R, Conservative", "PAGAN, JUAN", 0, 28597, 0,
+  "NY", 2022, "H", 7, "G", 2024, "D", "D, Wk Fam", "VELAZQUEZ, NYDIA M.", 1, 119473, 1,
+
+  # District 8
+  "NY", 2022, "H", 8, "G", 2024, "R", "R, Conservative", "DASHEVSKY, YURI", 0, 39060, 0,
+  "NY", 2022, "H", 8, "G", 2024, "D", "D", "JEFFRIES, HAKEEM S.", 1, 99079, 1,
+
+  # District 9
+  "NY", 2022, "H", 9, "G", 2024, "D", "D, Wk Fam", "CLARKE, YVETTE DIANE", 1, 116970, 1,
+  "NY", 2022, "H", 9, "G", 2024, "C", "Conservative", "RAITPORT, MENACHEM M.", 0, 26521, 0,
+
+  # District 10
+  "NY", 2022, "H", 10, "G", 2024, "R", "R, Conservative", "HAMDAN, BENINE A.", 0, 29058, 0,
+  "NY", 2022, "H", 10, "G", 2024, "D", "D", "GOLDMAN, DANIEL", 0, 160582, 1,
+  "NY", 2022, "H", 10, "G", 2024, "MF", "Medical Freedom", "SPEER, STEVE F.", 0, 1447, 0,
+
+  # District 11
+  "NY", 2022, "H", 11, "G", 2024, "R", "R, Conservative", "MALLIOTAKIS, NICOLE", 1, 115992, 1,
+  "NY", 2022, "H", 11, "G", 2024, "D", "D", "ROSE, MAX N.", 0, 71801, 0,
+
+  # District 12
+  "NY", 2022, "H", 12, "G", 2024, "R", "R, Conservative, Parent", "ZUMBLUSKAS, MICHAEL K.", 0, 44173, 0,
+  "NY", 2022, "H", 12, "G", 2024, "D", "D, Wk Fam", "NADLER, JERROLD L. (JERRY)", 1, 200890, 1,
+  "NY", 2022, "H", 12, "G", 2024, "Other", "Itkis Campaign", "ITKIS, MIKHAIL", 0, 631, 0,
+
+  # District 14
+  "NY", 2022, "H", 14, "G", 2024, "R", "R", "FORTE, TINA", 0, 31935, 0,
+  "NY", 2022, "H", 14, "G", 2024, "D", "D, Wk Fam", "OCASIO-CORTEZ, ALEXANDRIA", 1, 82453, 1,
+  "NY", 2022, "H", 14, "G", 2024, "C", "Conservative", "CUELLAR, DESI", 0, 2208, 0,
+
+  # District 16
+  "NY", 2022, "H", 16, "G", 2024, "R", "R", "FLISSER, MIRIAM L.", 0, 74156, 0,
+  "NY", 2022, "H", 16, "G", 2024, "D", "D, Wk Fam", "BOWMAN, JAMAAL", 1, 133567, 1,
+
+  # District 17
+  "NY", 2022, "H", 17, "G", 2024, "R", "R, Conservative", "LAWLER, MICHAEL V. (MIKE)", 0, 143550, 1,
+  "NY", 2022, "H", 17, "G", 2024, "D", "D, Wk Fam", "MALONEY, SEAN PATRICK", 1, 141730, 0,
+
+  # District 18
+  "NY", 2022, "H", 18, "G", 2024, "R", "R, Conservative", "SCHMITT, COLIN J.", 0, 131653, 0,
+  "NY", 2022, "H", 18, "G", 2024, "D", "D, Wk Fam", "RYAN, PATRICK", 1, 135245, 1,
+
+  # District 19
+  "NY", 2022, "H", 19, "G", 2024, "R", "R, Conservative", "MOLINARO, MARCUS J. (MARC)", 0, 146004, 1,
+  "NY", 2022, "H", 19, "G", 2024, "D", "D, Wk Fam", "RILEY, JOSH", 0, 141509, 0,
+
+  # District 20
+  "NY", 2022, "H", 20, "G", 2024, "R", "R, Conservative", "JOY, ELIZABETH L.", 0, 130869, 0,
+  "NY", 2022, "H", 20, "G", 2024, "D", "D, Wk Fam", "TONKO, PAUL DAVID", 1, 160420, 1,
+
+  # District 21
+  "NY", 2022, "H", 21, "G", 2024, "R", "R, Conservative", "STEFANIK, ELISE M.", 1, 168579, 1,
+  "NY", 2022, "H", 21, "G", 2024, "D", "D, Moderate", "CASTELLI, MATT", 0, 116421, 0,
+
+  # District 22
+  "NY", 2022, "H", 22, "G", 2024, "R", "R, Conservative", "WILLIAMS, BRANDON M.", 0, 135544, 1,
+  "NY", 2022, "H", 22, "G", 2024, "D", "D", "CONOLE, FRANCIS", 0, 132913, 0,
+
+  # District 23
+  "NY", 2022, "H", 23, "G", 2024, "R", "R, Conservative", "LANGWORTHY, NICK", 0, 192694, 1,
+  "NY", 2022, "H", 23, "G", 2024, "D", "D", "DELLA PIA, MAX H.", 0, 104114, 0,
+
+  # District 24
+  "NY", 2022, "H", 24, "G", 2024, "R", "R, Conservative", "TENNEY, CLAUDIA", 1, 182054, 1,
+  "NY", 2022, "H", 24, "G", 2024, "D", "D", "HOLDEN, STEVEN", 0, 95028, 0,
+
+  # District 25
+  "NY", 2022, "H", 25, "G", 2024, "R", "R, Conservative", "SINGLETARY, LA'RON D.", 0, 130190, 0,
+  "NY", 2022, "H", 25, "G", 2024, "D", "D, Wk Fam", "MORELLE, JOSEPH D.", 1, 152022, 1,
+
+  # District 26
+  "NY", 2022, "H", 26, "G", 2024, "R", "R, Conservative", "SAMS, STEVEN L., II", 0, 88339, 0,
+  "NY", 2022, "H", 26, "G", 2024, "D", "D, Wk Fam", "HIGGINS, BRIAN M.", 1, 156883, 1
+)
+
+fusion_2024 <- tibble::tribble(
+  ~state, ~year, ~office, ~dist, ~type, ~nextup, ~party, ~party_formal, ~name_snyder, ~inc, ~vote_g, ~w_g,
+
+  # Senate Race
+  "NY", 2024, "S", 1, "G", 2030, "R", "R, Conservative", "SAPRAICONE, MICHAEL D.", 0, 3246114, 0,
+  "NY", 2024, "S", 1, "G", 2030, "D", "D, Wk Fam", "GILLIBRAND, KIRSTEN ELIZABETH", 1, 4711298, 1,
+  "NY", 2024, "S", 1, "G", 2030, "LaRouche", "LaRouche", "SARE, DIANE", 0, 39413, 0,
+
+  # District 1
+  "NY", 2024, "H", 1, "G", 2026, "R", "R, Conservative", "LALOTA, NICHOLAS J. (NICK)", 1, 226285, 1,
+  "NY", 2024, "H", 1, "G", 2026, "D", "D, Common Sense Suffolk", "AVLON, JOHN P.", 0, 183540, 0,
+
+  # District 2
+  "NY", 2024, "H", 2, "G", 2026, "R", "R, Conservative", "GARBARINO, ANDREW R.", 1, 202597, 1,
+  "NY", 2024, "H", 2, "G", 2026, "D", "D, Wk Fam", "LUBIN, ROB", 0, 136371, 0,
+
+  # District 3
+  "NY", 2024, "H", 3, "G", 2026, "R", "R, Conservative", "LIPETRI, MICHAEL J., JR.", 0, 174693, 0,
+  "NY", 2024, "H", 3, "G", 2026, "D", "D, Common Sense", "SUOZZI, THOMAS R. (TOM)", 1, 187651, 1,
+
+  # District 4
+  "NY", 2024, "H", 4, "G", 2026, "R", "R, Conservative", "D'ESPOSITO, ANTHONY P.", 1, 183157, 0,
+  "NY", 2024, "H", 4, "G", 2026, "D", "D, Common Sense", "GILLEN, LAURA A.", 0, 191760, 1,
+
+  # District 5
+  "NY", 2024, "H", 5, "G", 2026, "R", "R, Conservative, Common Sense", "KING, PAUL", 0, 62529, 0,
+  "NY", 2024, "H", 5, "G", 2026, "D", "D", "MEEKS, GREGORY W.", 1, 168425, 1,
+
+  # District 6
+  "NY", 2024, "H", 6, "G", 2026, "R", "R, Conservative", "ZMICH, THOMAS J.", 0, 74559, 0,
+  "NY", 2024, "H", 6, "G", 2026, "D", "D", "MENG, GRACE", 1, 120205, 1,
+  "NY", 2024, "H", 6, "G", 2026, "Truth", "Truth", "CHOU, JOSEPH J.", 0, 3272, 0,
+
+  # District 7
+  "NY", 2024, "H", 7, "G", 2026, "R", "R, Conservative", "KREGLER, BILL", 0, 48435, 0,
+  "NY", 2024, "H", 7, "G", 2026, "D", "D, Wk Fam", "VELAZQUEZ, NYDIA M.", 1, 172795, 1,
+
+  # District 8
+  "NY", 2024, "H", 8, "G", 2026, "R", "R, Conservative", "DELANEY, JOHN J.", 0, 54863, 0,
+  "NY", 2024, "H", 8, "G", 2026, "D", "D", "JEFFRIES, HAKEEM S.", 1, 168036, 1,
+
+  # District 9
+  "NY", 2024, "H", 9, "G", 2026, "R", "R, Conservative", "RAITPORT, MENACHEM M.", 0, 60064, 0,
+  "NY", 2024, "H", 9, "G", 2026, "D", "D", "CLARKE, YVETTE DIANE", 1, 173207, 1,
+
+  # District 11
+  "NY", 2024, "H", 11, "G", 2026, "R", "R, Conservative", "MALLIOTAKIS, NICOLE", 1, 167099, 1,
+  "NY", 2024, "H", 11, "G", 2026, "D", "D", "MORSE, ANDREA S.", 0, 93586, 0,
+
+  # District 12
+  "NY", 2024, "H", 12, "G", 2026, "R", "R", "ZUMBLUSKAS, MICHAEL K.", 0, 62989, 0,
+  "NY", 2024, "H", 12, "G", 2026, "D", "D, Wk Fam", "NADLER, JERROLD L. (JERRY)", 1, 260165, 1,
+
+  # District 13
+  "NY", 2024, "H", 13, "G", 2026, "R", "R, Conservative", "VARGAS, RUBEN D.", 0, 35822, 0,
+  "NY", 2024, "H", 13, "G", 2026, "D", "D", "ESPAILLAT, ADRIANO", 1, 181800, 1,
+
+  # District 14
+  "NY", 2024, "H", 14, "G", 2026, "R", "R, Conservative", "FORTE, TINA", 0, 59078, 0,
+  "NY", 2024, "H", 14, "G", 2026, "D", "D, Wk Fam", "OCASIO-CORTEZ, ALEXANDRIA", 1, 132714, 1,
+
+  # District 15
+  "NY", 2024, "H", 15, "G", 2026, "R", "R, Conservative", "DURAN, GONZALO", 0, 36010, 0,
+  "NY", 2024, "H", 15, "G", 2026, "D", "D", "TORRES, RITCHIE", 1, 130392, 1,
+  "NY", 2024, "H", 15, "G", 2026, "LaRouche", "LaRouche", "VEGA, JOSE", 0, 4086, 0,
+
+  # District 17
+  "NY", 2024, "H", 17, "G", 2026, "R", "R, Conservative", "LAWLER, MICHAEL V. (MIKE)", 1, 197845, 1,
+  "NY", 2024, "H", 17, "G", 2026, "D", "D", "JONES, MONDAIRE L.", 0, 173899, 0,
+  "NY", 2024, "H", 17, "G", 2026, "WF", "Wk Fam", "FRASCONE, ANTHONY", 0, 7530, 0,
+
+  # District 18
+  "NY", 2024, "H", 18, "G", 2026, "R", "R, Conservative", "ESPOSITO, ALISON", 0, 155129, 0,
+  "NY", 2024, "H", 18, "G", 2026, "D", "D, Wk Fam", "RYAN, PATRICK", 1, 207106, 1,
+
+  # District 19
+  "NY", 2024, "H", 19, "G", 2026, "R", "R, Conservative", "MOLINARO, MARCUS J. (MARC)", 1, 184290, 0,
+  "NY", 2024, "H", 19, "G", 2026, "D", "D, Wk Fam", "RILEY, JOSH", 0, 192647, 1,
+
+  # District 20
+  "NY", 2024, "H", 20, "G", 2026, "R", "R, Conservative", "WALTZ, KEVIN M.", 0, 141151, 0,
+  "NY", 2024, "H", 20, "G", 2026, "D", "D, Wk Fam", "TONKO, PAUL DAVID", 1, 221997, 1,
+
+  # District 21
+  "NY", 2024, "H", 21, "G", 2026, "R", "R, Conservative", "STEFANIK, ELISE M.", 1, 215996, 1,
+  "NY", 2024, "H", 21, "G", 2026, "D", "D, Wk Fam", "COLLINS, PAULA", 0, 132447, 0,
+
+  # District 22
+  "NY", 2024, "H", 22, "G", 2026, "R", "R, Conservative", "WILLIAMS, BRANDON M.", 1, 161939, 0,
+  "NY", 2024, "H", 22, "G", 2026, "D", "D, Wk Fam", "MANNION, JOHN W.", 0, 194450, 1,
+
+  # District 23
+  "NY", 2024, "H", 23, "G", 2026, "R", "R, Conservative", "LANGWORTHY, NICHOLAS A. (NICK)", 1, 246969, 1,
+  "NY", 2024, "H", 23, "G", 2026, "D", "D", "CARLE, THOMAS A.", 0, 128397, 0,
+
+  # District 24
+  "NY", 2024, "H", 24, "G", 2026, "R", "R, Conservative", "TENNEY, CLAUDIA", 1, 235867, 1,
+  "NY", 2024, "H", 24, "G", 2026, "D", "D", "WAGENHAUSER, DAVID", 0, 123317, 0,
+
+  # District 25
+  "NY", 2024, "H", 25, "G", 2026, "R", "R", "SADWICK, GREGG A.", 0, 141195, 0,
+  "NY", 2024, "H", 25, "G", 2026, "D", "D, Wk Fam", "MORELLE, JOSEPH D.", 1, 219175, 1,
+
+  # District 26
+  "NY", 2024, "H", 26, "G", 2026, "R", "R, Conservative", "MARECKI, ANTHONY G.", 0, 111772, 0,
+  "NY", 2024, "H", 26, "G", 2026, "D", "D, Wk Fam", "KENNEDY, TIMOTHY M.", 1, 209131, 1
+)
+
+# CT tibbles
+
+fusion_2020_CT <- tibble::tribble(
+  ~state, ~year, ~office, ~dist, ~type, ~nextup, ~party, ~party_formal, ~name_snyder, ~inc, ~vote_g, ~w_g,
+
+  # District 1
+  "CT", 2020, "H", 1, "G", 2022, "D", "D, Wk Fam", "LARSON, JOHN B.", 1, 222668, 1,
+  "CT", 2020, "H", 1, "G", 2022, "R", "R", "FAY, MARY", 0, 122111, 0,
+  "CT", 2020, "H", 1, "G", 2022, "G", "Green", "MCCORMICK, THOMAS E.", 0, 4458, 0,
+
+  # District 2
+  "CT", 2020, "H", 2, "G", 2022, "D", "D, Wk Fam", "COURTNEY, JOSEPH D. (JOE)", 1, 218119, 1,
+  "CT", 2020, "H", 2, "G", 2022, "R", "R", "ANDERSON, JUSTIN", 0, 140356, 0,
+  "CT", 2020, "H", 2, "G", 2022, "G", "Green", "MARTINEAU, CASSANDRA", 0, 4960, 0,
+  "CT", 2020, "H", 2, "G", 2022, "L", "Libertarian", "REALE, DANIEL J. (DAN)", 0, 3903, 0,
+  "CT", 2020, "H", 2, "G", 2022, "W", "Write-in", "TRACESKI, JOHN M.", 0, 9, 0,
+
+  # District 3
+  "CT", 2020, "H", 3, "G", 2022, "D", "D, Wk Fam", "DELAURO, ROSA L.", 1, 203265, 1,
+  "CT", 2020, "H", 3, "G", 2022, "R", "R, I", "STREICKER, MARGARET", 0, 137598, 0,
+  "CT", 2020, "H", 3, "G", 2022, "G", "Green", "PAGLINO, JUSTIN C.", 0, 5240, 0,
+
+  # District 5
+  "CT", 2020, "H", 5, "G", 2022, "D", "D, Wk Fam", "HAYES, JAHANA", 1, 192484, 1,
+  "CT", 2020, "H", 5, "G", 2022, "R", "R", "SULLIVAN, DAVID X.", 0, 151988, 0,
+  "CT", 2020, "H", 5, "G", 2022, "I", "I", "WALCZAK, BRUCE W.", 0, 5052, 0
+)
+
+fusion_2022_CT <- tibble::tribble(
+  ~state, ~year, ~office, ~dist, ~type, ~nextup, ~party, ~party_formal, ~name_snyder, ~inc, ~vote_g, ~w_g,
+
+  # Senate Race
+  "CT", 2022, "S", 3, "G", 2028, "R", "R", "LEVY, LEORA R.", 0, 535943, 0,
+  "CT", 2022, "S", 3, "G", 2028, "D", "D, Wk Fam", "BLUMENTHAL, RICHARD", 1, 723864, 1,
+  "CT", 2022, "S", 3, "G", 2028, "W", "Write-in", "ANDERSON, JOHN", 0, 68, 0,
+  "CT", 2022, "S", 3, "G", 2028, "W", "Write-in", "BHARARA, SHABADJOT", 0, 12, 0,
+
+  # District 1
+  "CT", 2022, "H", 1, "G", 2024, "R", "R", "LAZOR, LARRY", 0, 91506, 0,
+  "CT", 2022, "H", 1, "G", 2024, "D", "D, Wk Fam", "LARSON, JOHN B.", 1, 149556, 1,
+  "CT", 2022, "H", 1, "G", 2024, "G", "Green", "SANDERS, MARY L.", 0, 2851, 0,
+
+  # District 4
+  "CT", 2022, "H", 4, "G", 2024, "R", "R, I", "STEVENSON, JAYME", 0, 95822, 0,
+  "CT", 2022, "H", 4, "G", 2024, "D", "D", "HIMES, JAMES A. (JIM)", 1, 140262, 1,
+
+  # District 5
+  "CT", 2022, "H", 5, "G", 2024, "R", "R, I", "LOGAN, GEORGE", 0, 125834, 0,
+  "CT", 2022, "H", 5, "G", 2024, "D", "D, Wk Fam", "HAYES, JAHANA", 1, 127838, 1
+)
+
+fusion_2024_CT <- tibble::tribble(
+  ~state, ~year, ~office, ~dist, ~type, ~nextup, ~party, ~party_formal, ~name_snyder, ~inc, ~vote_g, ~w_g,
+
+  # Senate Race
+  "CT", 2024, "S", 1, "G", 2030, "R", "R", "COREY, MATTHEW MCKINNON", 0, 678256, 0,
+  "CT", 2024, "S", 1, "G", 2030, "D", "D, Wk Fam", "MURPHY, CHRISTOPHER SCOTT (CHRIS)", 1, 1000695, 1,
+  "CT", 2024, "S", 1, "G", 2030, "Other", "Cheaper Gas Groceries Party", "HYDE, ROBERT FINLEY", 0, 14879, 0,
+  "CT", 2024, "S", 1, "G", 2030, "G", "Green", "PAGLINO, JUSTIN C.", 0, 14422, 0,
+  "CT", 2024, "S", 1, "G", 2030, "W", "Write-in", "FLYNN, JOHN", 0, 7, 0,
+
+  # District 1
+  "CT", 2024, "H", 1, "G", 2026, "R", "R", "GRIFFIN, JIM", 0, 115065, 0,
+  "CT", 2024, "H", 1, "G", 2026, "D", "D, Wk Fam", "LARSON, JOHN B.", 1, 208649, 1,
+  "CT", 2024, "H", 1, "G", 2026, "G", "Green", "SANDERS, MARY L.", 0, 6768, 0,
+
+  # District 3
+  "CT", 2024, "H", 3, "G", 2026, "R", "R, I", "MASSEY, MICHAEL", 0, 135113, 0,
+  "CT", 2024, "H", 3, "G", 2026, "D", "D", "DELAURO, ROSA L.", 1, 193684, 1,
+  "CT", 2024, "H", 3, "G", 2026, "W", "Write-in", "OMAR, SHAHD", 0, 124, 0,
+  "CT", 2024, "H", 3, "G", 2026, "W", "Write-in", "ANTAR, OMAR SCOTT", 0, 2, 0,
+
+  # District 5
+  "CT", 2024, "H", 5, "G", 2026, "R", "R", "LOGAN, GEORGE", 0, 157258, 0,
+  "CT", 2024, "H", 5, "G", 2026, "D", "D, Wk Fam", "HAYES, JAHANA", 1, 180268, 1,
+  "CT", 2024, "H", 5, "G", 2026, "W", "Write-in", "DARWISH, AHMAD A. J.", 0, 76, 0,
+  "CT", 2024, "H", 5, "G", 2026, "W", "Write-in", "FERGUSON, BERTRAM", 0, 3, 0
+)
+
+jsdat <- jsdat |>
+  bind_rows(
+    fusion_2018,
+    fusion_2020,
+    fusion_2022,
+    fusion_2024,
+    fusion_2018_CT,
+    fusion_2020_CT,
+    fusion_2022_CT,
+    fusion_2024_CT
+  ) |>
+  arrange(state, year, office, dist, desc(vote_g))
+
+
 
 # GITHUB ISSUES =====
 
@@ -819,64 +1371,34 @@ for (i in seq_len(nrow(additions_2024))) {
 
 
 # POST-PROCESSING =====
-
 ## NY, CT, SC fusion voting aggregation ----
 # In these states candidates can run on multiple party lines (e.g., Democratic and Working Families).
 # Some years have these as separate rows, some as aggregated. This code aggregates all to a single
 # row per candidate-race with summed votes and comma-separated party_formal.
-
 # missing in v4 source data
-cand |>
-  mutate(
-    party = replace(party, state == "CT" & office ==  2018 & office == "S" & dist ==  1 & party == "D", "D, Wk Fam"),
-    party = replace(party, state == "CT" & office ==  2018 & office == "H" & dist ==  1 & party == "D", "D, Wk Fam"),
-    party = replace(party, state == "CT" & office ==  2018 & office == "H" & dist ==  2 & party == "D", "D, Wk Fam"),
-    party = replace(party, state == "CT" & office ==  2018 & office == "H" & dist ==  3 & party == "D", "D, Wk Fam"),
-    party = replace(party, state == "CT" & office ==  2018 & office == "H" & dist ==  5 & party == "D", "D, Wk Fam"),
-    party = replace(party, state == "CT" & office ==  2018 & office == "G" & dist == NA & party == "D", "D, Wk Fam"),
-  )
-
-# Identify fusion state races with multiple rows for the same candidate
 cand <- cand |>
   mutate(
-    n_party_rows = n(),
-    is_fusion_state = state %in% c("NY", "CT", "SC"),
+    party_formal = replace(party_formal, state == "CT" & year == 2018 & office == "S" & dist == 1 & party == "D", "D, Wk Fam"),
+    party_formal = replace(party_formal, state == "CT" & year == 2018 & office == "H" & dist == 1 & party == "D", "D, Wk Fam"),
+    party_formal = replace(party_formal, state == "CT" & year == 2018 & office == "H" & dist == 2 & party == "D", "D, Wk Fam"),
+    party_formal = replace(party_formal, state == "CT" & year == 2018 & office == "H" & dist == 3 & party == "D", "D, Wk Fam"),
+    party_formal = replace(party_formal, state == "CT" & year == 2018 & office == "H" & dist == 5 & party == "D", "D, Wk Fam"),
+    party_formal = replace(party_formal, state == "CT" & year == 2018 & office == "G" & is.na(dist) & party == "D", "D, Wk Fam")
+  )
+
+# Flag the main record (longest party_formal) for each candidate in each race
+# This keeps all rows but marks which one to count for totalvotes
+cand <- cand |>
+  mutate(
+    is_main = nchar(party_formal) == max(nchar(party_formal)),
     .by = c(state, year, office, dist, name_snyder)
   )
 
-# Pick fused vote
-fusion_agg <- cand |>
-  filter(is_fusion_state & n_party_rows > 1)  |>
-  group_by(state, year, office, dist, type, nextup, name_snyder) |>
-  summarize(
-    vote_g = max(vote_g, na.rm = TRUE),
-    # Take the primary party (D > R > others) - first non-Other party alphabetically
-    party = first(party[party %in% c("D", "R")], default = first(party)),
-    # Combine all unique parties from party_formal into comma-separated string
-    party_formal = paste(unique(unlist(strsplit(party_formal, ","))), collapse = ","),
-    inc = first(na.omit(inc)),
-    w_g = first(na.omit(w_g)),
-    n = first(na.omit(n)),
-    totalvotes = first(na.omit(totalvotes)),
-    .groups = "drop"
-  )
-
-# Split and bind
-cand <- cand |>
-  filter(!(is_fusion_state & n_party_rows > 1)) |>
-  select(-c(n_party_rows, is_fusion_state)) |>
-  bind_rows(fusion_agg)
-
-
-## Recalculate totalvotes ----
-# After fusion aggregation, recalculate:
-# - totalvotes: sum of vote_g within each race
-# - n: number of candidates in the race
-
+# Recalculate totalvotes and n using only main records to avoid double-counting
 cand <- cand |>
   mutate(
-    n = n(),
-    totalvotes = sum(vote_g, na.rm = TRUE),
+    n = sum(is_main),
+    totalvotes = sum(vote_g[is_main], na.rm = TRUE),
     .by = c(state, year, office, dist, type)
   )
 
@@ -896,7 +1418,8 @@ cand <- cand |>
       TRUE ~ w_g
     ),
     .by = c(state, year, office)
-  )
+  ) |>
+  select(-is_main)
 
 
 ## Reorder the dataset ----
