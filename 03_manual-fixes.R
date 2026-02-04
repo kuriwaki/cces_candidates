@@ -812,31 +812,29 @@ for (i in seq_len(nrow(additions_2024))) {
 }
 
 
-# NY and CT fusion voting aggregation ----
-# In NY and CT, candidates can run on multiple party lines (e.g., Democratic and Working Families).
+# NY, CT, SC fusion voting aggregation ----
+# In these states candidates can run on multiple party lines (e.g., Democratic and Working Families).
 # Some years have these as separate rows, some as aggregated. This code aggregates all to a single
 # row per candidate-race with summed votes and comma-separated party_formal.
 
-# Identify NY/CT races with multiple rows for the same candidate
+# Identify fusion state races with multiple rows for the same candidate
 cand <- cand |>
   mutate(
     n_party_rows = n(),
-    is_fusion_state = state %in% c("NY", "CT"),
+    is_fusion_state = state %in% c("NY", "CT", "SC"),
     .by = c(state, year, office, dist, name_snyder)
   )
 
-# For NY/CT candidates with multiple rows, aggregate them
+# aggregate
 fusion_agg <- cand |>
   filter(is_fusion_state & n_party_rows > 1)  |>
   group_by(state, year, office, dist, type, nextup, name_snyder) |>
   summarize(
-    # Sum votes across all party lines
     vote_g = sum(vote_g, na.rm = TRUE),
     # Take the primary party (D > R > others) - first non-Other party alphabetically
     party = first(party[party %in% c("D", "R")], default = first(party)),
     # Combine all unique parties from party_formal into comma-separated string
     party_formal = paste(unique(unlist(strsplit(party_formal, ","))), collapse = ","),
-    # These should be the same across rows, take first non-NA
     inc = first(na.omit(inc)),
     w_g = first(na.omit(w_g)),
     n = first(na.omit(n)),
@@ -845,9 +843,9 @@ fusion_agg <- cand |>
   )
 
 # Remove the original multi-row fusion candidates and add the aggregated versions
-cand <- cand %>%
+cand <- cand |>
   filter(!(is_fusion_state & n_party_rows > 1)) |>
-  select(-n_party_rows, -is_fusion_state) |>
+  select(-c(n_party_rows, is_fusion_state)) |>
   bind_rows(fusion_agg)
 
 
