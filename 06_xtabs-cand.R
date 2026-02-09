@@ -17,13 +17,6 @@ jsdat <- read_dta("release/candidates_2006-2024.dta") |>
 js_fct <- jsdat |>
   mutate(party = recode_factor(party, D = "D", R = "R", Lbt = "Lbt", Grn = "Grn", .default = "Oth"))
 
-# One row per candidate-race (deduplicate fusion candidates)
-jsdat_dedup <- jsdat |>
-  distinct(year, state, office, dist, name_snyder, type, .keep_all = TRUE)
-
-js_fct_dedup <- js_fct |>
-  distinct(year, state, office, dist, name_snyder, type, .keep_all = TRUE)
-
 # counts JS ----
 js_fct |> filter(party %in% c("D", "R"), office != "P") |>  write_numbers("all")
 js_fct |> filter(office == "G", party %in% c("D", "R")) |> write_numbers("gov")
@@ -99,7 +92,7 @@ js_fct  |>
 
 
 # office
-jsdat_dedup  |>
+jsdat  |>
   mutate(office = fct_relevel(factor(office), "P", "S", "H", "G")) %>%
   xtabs(~ year + office, .) |>
   fmt_xtab("office") |>
@@ -107,61 +100,61 @@ jsdat_dedup  |>
 
 
 # incumbent
-xtabs(~ year + inc, jsdat_dedup, subset = office == "G") |>
+xtabs(~ year + inc, jsdat, subset = office == "G") |>
   fmt_xtab("inc") |> wri_xtab("inc_G")
-xtabs(~ year + inc, jsdat_dedup, subset = office == "H") |>
+xtabs(~ year + inc, jsdat, subset = office == "H") |>
   fmt_xtab("inc") |> wri_xtab("inc_H")
-xtabs(~ year + inc, jsdat_dedup, subset = office == "S") |>
+xtabs(~ year + inc, jsdat, subset = office == "S") |>
   fmt_xtab("inc") |> wri_xtab("inc_S")
 
 
 # special vs. general
-xtabs(~ year + type, jsdat_dedup, subset = office == "G") |>
+xtabs(~ year + type, jsdat, subset = office == "G") |>
   fmt_xtab("type") |> wri_xtab("type_G")
-xtabs(~ year + type, jsdat_dedup, subset = office == "H") |>
+xtabs(~ year + type, jsdat, subset = office == "H") |>
   fmt_xtab("type") |> wri_xtab("type_H")
-xtabs(~ year + type, jsdat_dedup, subset = office == "S") |>
+xtabs(~ year + type, jsdat, subset = office == "S") |>
   fmt_xtab("type") |> wri_xtab("type_S")
 
 
 # runoff
-xtabs(~ year + runoff, jsdat_dedup, subset = office == "G") |>
+xtabs(~ year + runoff, jsdat, subset = office == "G") |>
   fmt_xtab("runoff") |> wri_xtab("runoff_G")
-xtabs(~ year + runoff, jsdat_dedup, subset = office == "H") |>
+xtabs(~ year + runoff, jsdat, subset = office == "H") |>
   fmt_xtab("runoff") |> wri_xtab("runoff_H")
-xtabs(~ year + runoff, jsdat_dedup, subset = office == "S") |>
+xtabs(~ year + runoff, jsdat, subset = office == "S") |>
   fmt_xtab("runoff") |> wri_xtab("runoff_S")
 
 # nextup
-xtabs(~ year + nextup, jsdat_dedup, subset = office == "G") |>
+xtabs(~ year + nextup, jsdat, subset = office == "G") |>
   fmt_xtab("nextup") |> wri_xtab("nextup_G")
-xtabs(~ year + nextup, jsdat_dedup, subset = office == "H") |>
+xtabs(~ year + nextup, jsdat, subset = office == "H") |>
   fmt_xtab("nextup") |> wri_xtab("nextup_H")
-xtabs(~ year + nextup, jsdat_dedup, subset = office == "S") |>
+xtabs(~ year + nextup, jsdat, subset = office == "S") |>
   fmt_xtab("nextup") |> wri_xtab("nextup_S")
 
 # won
-xtabs(~ year + won, jsdat_dedup, subset = office == "G") |>
+xtabs(~ year + won, jsdat, subset = office == "G") |>
     fmt_xtab("won") |> wri_xtab("won_G")
-xtabs(~ year + won, jsdat_dedup, subset = office == "H") |>
+xtabs(~ year + won, jsdat, subset = office == "H") |>
   fmt_xtab("won") |> wri_xtab("won_H")
-xtabs(~ year + won, jsdat_dedup, subset = office == "S") |>
+xtabs(~ year + won, jsdat, subset = office == "S") |>
   fmt_xtab("won") |> wri_xtab("won_S")
 
 # Generals -- won
-xtabs(~ year + won, jsdat_dedup, subset = (office == "G" & type == "G")) |>
+xtabs(~ year + won, jsdat, subset = (office == "G" & type == "G")) |>
   fmt_xtab("\\\\shortstack{won\\\\\\\\ (generals)}") |> wri_xtab("won_G_gen")
-xtabs(~ year + won, jsdat_dedup, subset = (office == "H" & type == "G")) |>
+xtabs(~ year + won, jsdat, subset = (office == "H" & type == "G")) |>
   fmt_xtab("\\\\shortstack{won\\\\\\\\ (generals)}") |> wri_xtab("won_H_gen")
-xtabs(~ year + won, jsdat_dedup, subset = (office == "S" & type == "G")) |>
+xtabs(~ year + won, jsdat, subset = (office == "S" & type == "G")) |>
   fmt_xtab("\\\\shortstack{won\\\\\\\\ (generals)}") |> wri_xtab("won_S_gen")
 
 # winning party
-xtabs(~ year + party, js_fct_dedup, subset = (office == "G" & won == 1), drop.unused.levels = TRUE) |>
+xtabs(~ year + party, js_fct, subset = (office == "G" & won == 1), drop.unused.levels = TRUE) |>
   fmt_xtab("\\\\shortstack{party\\\\\\\\ (winners)}") |> wri_xtab("party-won_G")
-xtabs(~ year + party, js_fct_dedup, subset = (office == "H" & won == 1), drop.unused.levels = TRUE) |>
+xtabs(~ year + party, js_fct, subset = (office == "H" & won == 1), drop.unused.levels = TRUE) |>
   fmt_xtab("\\\\shortstack{party\\\\\\\\ (winners)}") |> wri_xtab("party-won_H")
-xtabs(~ year + party, js_fct_dedup, subset = (office == "S" & won == 1), drop.unused.levels = TRUE) |>
+xtabs(~ year + party, js_fct, subset = (office == "S" & won == 1), drop.unused.levels = TRUE) |>
   fmt_xtab("\\\\shortstack{party\\\\\\\\ (winners)}") |> wri_xtab("party-won_S")
 
 # jsdat |>

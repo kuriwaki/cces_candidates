@@ -658,7 +658,8 @@ fusion_candidates <- read_rds("data/intermediate/fusion_candidates.rds")
 
 jsdat <- jsdat |>
   bind_rows(fusion_candidates) |>
-  arrange(state, year, office, dist, desc(vote_g))
+  arrange(state, year, office, dist, desc(vote_g)) |>
+  distinct(state, year, office, dist, name_snyder, type, .keep_all = TRUE)
 
 ## NY, CT, SC fusion voting aggregation ----
 # In these states candidates can run on multiple party lines (e.g., Democratic and Working Families).

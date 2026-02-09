@@ -186,6 +186,7 @@ cand <- cand |>
     ),
     .by = c(state, year, office)
   ) |>
+  filter(is_main) |>
   select(-is_main)
 
 
