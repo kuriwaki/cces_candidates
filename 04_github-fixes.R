@@ -186,6 +186,7 @@ cand <- cand |>
     ),
     .by = c(state, year, office)
   ) |>
+  mutate(is_main = replace_na(is_main, TRUE)) |>
   filter(is_main) |>
   select(-is_main)
 

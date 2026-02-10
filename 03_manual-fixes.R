@@ -661,6 +661,14 @@ jsdat <- jsdat |>
   arrange(state, year, office, dist, desc(vote_g)) |>
   distinct(state, year, office, dist, name_snyder, type, .keep_all = TRUE)
 
+# Remove duplicate winners caused by fusion name variants (e.g. "LALOTA, NICHOLAS J."
+# vs "LALOTA, NICHOLAS J. (NICK)"). Data is sorted by desc(vote_g), so duplicated()
+# marks the lower-vote (non-fusion) copy for removal.
+jsdat <- jsdat |>
+  filter(
+    !(w_g == 1 & duplicated(paste(state, year, office, dist, type, w_g)))
+  )
+
 ## NY, CT, SC fusion voting aggregation ----
 # In these states candidates can run on multiple party lines (e.g., Democratic and Working Families).
 # Some years have these as separate rows, some as aggregated. This code aggregates all to a single
