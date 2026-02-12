@@ -24,6 +24,7 @@ js_fct |> filter(office == "H", party %in% c("D", "R")) |> write_numbers("house"
 js_fct |> filter(office == "S", party %in% c("D", "R")) |> write_numbers("sen")
 
 # summaries
+write_lines(nrow(jsdat), "guide/Ns/all_rows.tex")
 
 js_fct |>
   group_by(office) |>

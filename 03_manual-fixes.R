@@ -664,17 +664,22 @@ fusion_candidates <- read_csv(
   col_types = "cdcdcdcccddd")
 
 # Data is sorted by desc(vote_g), so higher candidate first
-jsdat <- jsdat |>
+jsdat_fusion <- jsdat |>
+  filter(state %in% c("NY", "CT", "SC")) |>
   bind_rows(fusion_candidates) |>
   arrange(state, year, office, dist, desc(vote_g)) |>
   tidylog::distinct(state, year, office, dist, name_snyder, type, .keep_all = TRUE)
+
+jsdat <- jsdat |>
+  filter(!state %in% c("NY", "CT", "SC")) |>
+  bind_rows(jsdat_fusion)
 
 # Remove duplicate winners caused by fusion name variants (e.g. "LALOTA, NICHOLAS J."
 # vs "LALOTA, NICHOLAS J. (NICK)"). Data is sorted by desc(vote_g), so duplicated()
 # marks the lower-vote (non-fusion) copy for removal.
 jsdat <- jsdat |>
   tidylog::filter(
-    !(w_g == 1 & duplicated(paste(state, year, office, dist, type, w_g)))
+    !(!is.na(w_g) & w_g == 1 & duplicated(paste(state, year, office, dist, type, w_g)))
   )
 
 # Recalculate totalvotes and n using only main records to avoid double-counting

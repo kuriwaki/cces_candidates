@@ -51,6 +51,8 @@ pres_fmt <- pres_raw |>
     party = replace(party, (writein), "W-I"),
     candidate = replace(candidate, writein, "W-I"),
     party_formal = replace(party_formal, writein, NA_character_),
+    party_formal = replace(party_formal, party_formal == "Democratic", "D"),
+    party_formal = replace(party_formal, party_formal == "Dfl", "DFL"),
     name = recode(
       candidate,
       `OBAMA, BARACK H.` = "OBAMA, BARACK",
