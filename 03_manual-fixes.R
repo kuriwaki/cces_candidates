@@ -652,45 +652,39 @@ for (i in seq_len(nrow(alaska_senate_2010))) {
   }
 }
 
-## Manually Adding Fusion candidates ----
-
-fusion_candidates <- read_rds("data/intermediate/fusion_candidates.rds")
-
-jsdat <- jsdat |>
-  bind_rows(fusion_candidates) |>
-  arrange(state, year, office, dist, desc(vote_g)) |>
-  distinct(state, year, office, dist, name_snyder, type, .keep_all = TRUE)
-
-# Remove duplicate winners caused by fusion name variants (e.g. "LALOTA, NICHOLAS J."
-# vs "LALOTA, NICHOLAS J. (NICK)"). Data is sorted by desc(vote_g), so duplicated()
-# marks the lower-vote (non-fusion) copy for removal.
-jsdat <- jsdat |>
-  filter(
-    !(w_g == 1 & duplicated(paste(state, year, office, dist, type, w_g)))
-  )
-
 ## NY, CT, SC fusion voting aggregation ----
 # In these states candidates can run on multiple party lines (e.g., Democratic and Working Families).
 # Some years have these as separate rows, some as aggregated. This code aggregates all to a single
 # row per candidate-race with summed votes and comma-separated party_formal.
 # missing in v4 source data
 
-# Flag the main record (longest party_formal) for each candidate in each race
-# This keeps all rows but marks which one to count for totalvotes
+# manual additions
+fusion_candidates <- read_csv(
+  "data/intermediate/fusion_candidates.csv",
+  col_types = "cdcdcdcccddd")
+
+# Data is sorted by desc(vote_g), so higher candidate first
 jsdat <- jsdat |>
-  mutate(
-    is_main = nchar(party_formal) == max(nchar(party_formal)),
-    .by = c(state, year, office, dist, name_snyder)
+  bind_rows(fusion_candidates) |>
+  arrange(state, year, office, dist, desc(vote_g)) |>
+  tidylog::distinct(state, year, office, dist, name_snyder, type, .keep_all = TRUE)
+
+# Remove duplicate winners caused by fusion name variants (e.g. "LALOTA, NICHOLAS J."
+# vs "LALOTA, NICHOLAS J. (NICK)"). Data is sorted by desc(vote_g), so duplicated()
+# marks the lower-vote (non-fusion) copy for removal.
+jsdat <- jsdat |>
+  tidylog::filter(
+    !(w_g == 1 & duplicated(paste(state, year, office, dist, type, w_g)))
   )
 
 # Recalculate totalvotes and n using only main records to avoid double-counting
 jsdat <- jsdat |>
   mutate(
-    n = sum(is_main),
-    totalvotes = sum(vote_g[is_main], na.rm = TRUE),
+    totalvotes = sum(vote_g, na.rm = TRUE),
     .by = c(state, year, office, dist, type)
   )
 
 
 write_rds(jsdat, "data/intermediate/candidates_2006-2024-v1.rds")
+
 
