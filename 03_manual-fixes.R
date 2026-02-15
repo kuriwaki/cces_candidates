@@ -99,31 +99,16 @@ jsdat <- jsdat |>
 # VARIABLE CORRECTIONS =====
 
 # Other vote total additions
+# Note: LA House vote_g fixes for 2006 (dists 1,3,4,5,6,7), 2012 (dists 1,2,4,5,6),
+# 2014 (dists 1,2,3,4), 2016 (dists 1,2,6) are omitted here because those rows
+# are deleted and re-added with correct values in the LA House section below.
 jsdat <- jsdat |>
-  tidylog::mutate(vote_g = replace(vote_g, name_snyder == "JINDAL, BOBBY" & office == "H" & year == 2006 & state == "LA", 130508),
-                  vote_g = replace(vote_g, name_snyder == "MCCRERY, JAMES O. (JIM)" & office == "H" & year == 2006 & state == "LA", 77078),
-                  vote_g = replace(vote_g, name_snyder == "ALEXANDER, RODNEY M." & office == "H" & year == 2006 & state == "LA", 78211),
-                  vote_g = replace(vote_g, name_snyder == "BOUSTANY, CHARLES W., JR." & office == "H" & year == 2006 & state == "LA", 113720),
-                  vote_g = replace(vote_g, name_snyder == "BAKER, RICHARD HUGH" & office == "H" & year == 2006 & state == "LA", 94658),
-                  vote_g = replace(vote_g, name_snyder == "MELANCON, CHARLES J. (CHARLIE), JR." & office == "H" & year == 2006 & state == "LA", 75023),
-                  vote_g = replace(vote_g, name_snyder == "JINDAL, BOBBY" & office == "G" & year == 2007 & state == "LA", 699275),
+  tidylog::mutate(vote_g = replace(vote_g, name_snyder == "JINDAL, BOBBY" & office == "G" & year == 2007 & state == "LA", 699275),
                   vote_g = replace(vote_g, name_snyder == "GAIERO, THEODORE J., JR." & office == "H" & year == 2008 & state == "MA", 114),
                   vote_g = replace(vote_g, name_snyder == "SPEIER, KAREN (JACKIE)" & type == "S" & year == 2008 & state == "CA", 66279),
                   vote_g = replace(vote_g, name_snyder == "DJOU, CHARLES KONG" & type == "S" & year == 2010 & state == "HI", 67610),
                   vote_g = replace(vote_g, name_snyder == "PAYNE, DONALD M. (DON), JR." & type == "S" & year == 2012 & state == "NJ", 166413),
-                  vote_g = replace(vote_g, name_snyder == "SCALISE, STEPHEN J. (STEVE)" & type == "G" & year == 2012 & state == "LA", 193496),
-                  vote_g = replace(vote_g, name_snyder == "RICHMOND, CEDRIC L." & type == "G" & year == 2012 & state == "LA", 158501),
-                  vote_g = replace(vote_g, name_snyder == "FLEMING, JOHN C., JR." & type == "G" & year == 2012 & state == "LA", 187894),
-                  vote_g = replace(vote_g, name_snyder == "ALEXANDER, RODNEY M." & type == "G" & year == 2012 & state == "LA", 202536),
-                  vote_g = replace(vote_g, name_snyder == "CASSIDY, WILLIAM (BILL)" & type == "G" & year == 2012 & state == "LA", 243553),
-                  vote_g = replace(vote_g, name_snyder == "SCALISE, STEPHEN J. (STEVE)" & type == "G" & year == 2014 & state == "LA", 189250),
-                  vote_g = replace(vote_g, name_snyder == "RICHMOND, CEDRIC L." & type == "G" & year == 2014 & state == "LA", 152201),
-                  vote_g = replace(vote_g, name_snyder == "BOUSTANY, CHARLES W., JR." & type == "G" & year == 2014 & state == "LA", 185867),
-                  vote_g = replace(vote_g, name_snyder == "FLEMING, JOHN C., JR." & type == "G" & year == 2014 & state == "LA", 152683),
-                  vote_g = replace(vote_g, name_snyder == "SCALISE, STEPHEN J. (STEVE)" & type == "G" & year == 2016 & state == "LA", 243645),
-                  vote_g = replace(vote_g, name_snyder == "RICHMOND, CEDRIC L." & type == "G" & year == 2016 & state == "LA", 198289),
                   vote_g = replace(vote_g, name_snyder == "ABRAHAM, RALPH LEE" & type == "G" & year == 2016 & state == "LA", 208345),
-                  vote_g = replace(vote_g, name_snyder == "GRAVES, GARRET" & type == "G" & year == 2016 & state == "LA", 207483),
                   vote_g = replace(vote_g, name_snyder == "MURPHY, GREGORY F. (GREG)" & type == "S" & year == 2019 & state == "NC", 70407),
                   vote_g = replace(vote_g, name_snyder == "BISHOP, DAN" & type == "S" & year == 2019 & state == "NC", 96573),
                   vote_g = replace(vote_g, name_snyder == "KELLER, FREDERICK B. (FRED)" & type == "S" & year == 2019 & state == "PA", 90000),
@@ -541,13 +526,14 @@ jsdat <- jsdat |>
   filter(!state %in% c("NY", "CT", "SC")) |>
   bind_rows(jsdat_fusion)
 
-# Remove duplicate winners caused by fusion name variants (e.g. "LALOTA, NICHOLAS J."
-# vs "LALOTA, NICHOLAS J. (NICK)"). Data is sorted by desc(vote_g), so duplicated()
-# marks the lower-vote (non-fusion) copy for removal.
-jsdat <- jsdat |>
-  tidylog::filter(
-    !(!is.na(w_g) & w_g == 1 & duplicated(paste(state, year, office, dist, type, w_g)))
-  )
+# Verify no duplicate winners remain after fusion dedup
+stopifnot(
+  "Duplicate winners found" =
+    jsdat |>
+      filter(!is.na(w_g), w_g == 1) |>
+      duplicated(x = _, subset = c("state", "year", "office", "dist", "type")) |>
+      sum() == 0
+)
 
 
 write_rds(jsdat, "data/intermediate/candidates_2006-2024-v1.rds")
