@@ -136,8 +136,8 @@ additions_2024 <- tibble::tribble(
   ~state, ~year, ~office, ~dist, ~type, ~nextup, ~party, ~party_formal, ~name_snyder, ~inc, ~vote_g, ~w_g,
   # NY-15
   "NY", 2024, "H", 15, "G", 2026, "D", "D", "TORRES, RITCHIE", 1, 130392, 1,
-  "NY", 2024, "H", 15, "G", 2026, "R", "R", "DURAN, GONZALEZ", 0, 36010, 0,
-  "NY", 2024, "H", 15, "G", 2026, "Other", "LaRouche", "JOSE VEGA, LAROUCHE", 0, 0, 0,
+  "NY", 2024, "H", 15, "G", 2026, "R", "R, Conservative", "DURAN, GONZALO", 0, 36010, 0,
+  "NY", 2024, "H", 15, "G", 2026, "Other", "LaRouche", "VEGA, JOSE", 0, 0, 0,
   # Maine Senate
   "ME", 2024, "S", 2, "G", 2030, "R", "R", "KOUZOUNAS, DEMI", 0, 284338, 0,
   "ME", 2024, "S", 2, "G", 2030, "D", "D", "COSTELLO, DAVID ALLEN", 0, 88891, 0,
@@ -187,10 +187,15 @@ cand <- cand |>
     .by = c(state, year, office)
   )
 
+# Calculate totalvotes
+cand <- cand |>
+  mutate(
+    totalvotes = sum(vote_g, na.rm = TRUE),
+    .by = c(state, year, office, dist, type)
+  )
+
 
 ## Reorder the dataset ----
-
-
 cand <- cand |>
   arrange(year, office, state, dist)
 

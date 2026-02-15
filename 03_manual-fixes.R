@@ -324,6 +324,19 @@ jsdat <- jsdat |>
     nextup = replace(nextup, state == "AZ" & year == 2020 & office == "S" & type == "S", 2022)
   )
 
+## Dist fixes found by Claude
+jsdat <- jsdat |>
+  mutate(
+    dist = replace(dist, state == "MT" & year == 2017 & type == "S", 1),
+    party = replace(party, year == 2018 & name_snyder == "CROWLEY, JOSEPH (JOE)", "Other"),
+    party_formal = replace(party_formal, year == 2018 & name_snyder == "CROWLEY, JOSEPH (JOE)", "Wk Fam, Women's Equality"),
+    vote_g = replace(vote_g, year == 2018 & name_snyder == "CROWLEY, JOSEPH (JOE)", 9348),
+  ) |>
+  add_row(
+    state = "NY", year = 2022, office = "H", dist = 19, type = "S", nextup = 2022, party = "D",
+    party_formal = "D, Wk Fam", name_snyder = "RYAN, PATRICK (PAT)", inc = 0, vote_g = 66088, w_g = 1,
+  ) |>
+  filter(!(name_snyder == "CROWLEY, JOSEPH (JOE)" & year == 2018))
 
 # INDEPENDENT SENATORS =====
 
@@ -458,7 +471,7 @@ louisiana_senate_2020 <- tibble::tribble(
   "LA", 2020, "S", 1, "G", 2026, "I", "I", "BOURGEOIS, JOHN PAUL", 0, 16518, 0,
   "LA", 2020, "S", 1, "G", 2026, "D", "D", "WENSTRUP, PETER", 0, 14454, 0,
   "LA", 2020, "S", 1, "G", 2026, "L", "L", "SIGLER, AARON C.", 0, 11321, 0,
-  "LA", 2020, "S", 1, "G", 2026, "I", "I", "MENDOZA, M. V. (VINNY)", 0, 7811, 0,
+  "LA", 2020, "S", 1, "G", 2026, "I", "I", "MENDOZA, MANILLO V. (VINNY)", 0, 7811, 0,
   "LA", 2020, "S", 1, "G", 2026, "Other", "Other", "PRICE, MELINDA MARY", 0, 7680, 0,
   "LA", 2020, "S", 1, "G", 2026, "I", "I", "MONTGOMERY, JAMAR", 0, 5804, 0,
   "LA", 2020, "S", 1, "G", 2026, "I", "I", "DARET, RENO JEAN, III", 0, 3954, 0,
@@ -529,7 +542,7 @@ la_additions <- tibble::tribble(
   # LA-01 House 2012
   "LA", 2012, "H", 1, "G", 2014, "R", "R", "KING, GARY", 0, 24844, 0,
   "LA", 2012, "H", 1, "G", 2014, "R", "R", "SCALISE, STEPHEN J. (STEVE)", 1, 193496, 1,
-  "LA", 2012, "H", 1, "G", 2014, "D", "D", "MENDOZA, M. V. (VINNY)", 0, 61703, 0,
+  "LA", 2012, "H", 1, "G", 2014, "D", "D", "MENDOZA, MANILLO V. (VINNY)", 0, 61703, 0,
   "LA", 2012, "H", 1, "G", 2014, "I", "No Party", "TURKNETT, DAVID (TURK)", 0, 6079, 0,
   "LA", 2012, "H", 1, "G", 2014, "I", "No Party", "WELLS, ARDEN", 0, 4288, 0,
   # LA-02 House 2012
@@ -551,8 +564,8 @@ la_additions <- tibble::tribble(
   "LA", 2012, "H", 6, "G", 2014, "I", "No Party", "TORREGANO, RICHARD (RPT)", 0, 30975, 0,
   # LA-01 House 2014
   "LA", 2014, "H", 1, "G", 2016, "R", "R", "SCALISE, STEPHEN J. (STEVE)", 1, 189250, 1,
-  "LA", 2014, "H", 1, "G", 2016, "D", "D", "MENDOZA, M. V. (VINNY)", 0, 24761, 0,
-  "LA", 2014, "H", 1, "G", 2016, "D", "D", "DUGAS, LEE A.", 0, 21286, 0,
+  "LA", 2014, "H", 1, "G", 2016, "D", "D", "MENDOZA, MANILLO V. (VINNY)", 0, 24761, 0,
+  "LA", 2014, "H", 1, "G", 2016, "D", "D", "DUGAS, LEE ANN", 0, 21286, 0,
   "LA", 2014, "H", 1, "G", 2016, "Lbt", "Lbt", "SANFORD, JEFFRY (JEFF)", 0, 8707, 0,
   # LA-02 House 2014
   "LA", 2014, "H", 2, "G", 2016, "D", "D", "RICHMOND, CEDRIC L.", 1, 152201, 1,
@@ -680,13 +693,6 @@ jsdat <- jsdat |>
 jsdat <- jsdat |>
   tidylog::filter(
     !(!is.na(w_g) & w_g == 1 & duplicated(paste(state, year, office, dist, type, w_g)))
-  )
-
-# Recalculate totalvotes and n using only main records to avoid double-counting
-jsdat <- jsdat |>
-  mutate(
-    totalvotes = sum(vote_g, na.rm = TRUE),
-    .by = c(state, year, office, dist, type)
   )
 
 
