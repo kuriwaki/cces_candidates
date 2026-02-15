@@ -51,22 +51,23 @@ for (i in 1:nrow(la_additions)) {
 ## Adding Georgia 2020/2021 elections ----
 
 jsdat <- jsdat |>
-  filter(!(state == "GA" & year == 2020 & office == "S"))
+  filter(!(state == "GA" & year %in% 2020:2022 & office == "S"))
 
 ga_additions <- tibble::tribble(
   ~state, ~year, ~office, ~dist, ~type, ~nextup, ~party, ~party_formal, ~name_snyder, ~vote_g, ~w_g, ~inc,
-  # 2021 Special runoff - Warnock vs. Loeffler (Jan 5, 2021 runoff)
   "GA", 2020, "S", 3, "S", 2022, "D", "D", "WARNOCK, RAPHAEL GAMALIEL", 2289113, 1, 0,
-  "GA", 2020, "S", 3, "S", 2022, "R", "R", "LOEFFLER, KELLY", 2195841, 0, 1,
-  "GA", 2020, "S", 2, "G", 2022, "D", "D", "OSSOFF, THOMAS JONATHAN (JON)", 2269923, 1, 0,
-  "GA", 2020, "S", 2, "G", 2022, "R", "R", "PERDUE, DAVID A.", 2214979, 0, 0
+  "GA", 2020, "S", 3, "S", 2022, "R", "R", "LOEFFLER, KELLY", 2195841, 0, 3,
+  "GA", 2020, "S", 2, "G", 2026, "D", "D", "OSSOFF, THOMAS JONATHAN (JON)", 2269923, 1, 0,
+  "GA", 2020, "S", 2, "G", 2026, "R", "R", "PERDUE, DAVID A.", 2214979, 0, 1,
+  "GA", 2022, "S", 3, "G", 2028, "R", "R", "WALKER, HERSCHEL JUNIOR", 1721244, 0, 0,
+  "GA", 2022, "S", 3, "G", 2028, "D", "D", "WARNOCK, RAPHAEL GAMALIEL", 1820633, 1, 2,
 )
 
 # Only add rows that don't already exist
 for (i in seq_len(nrow(ga_additions))) {
   row <- ga_additions[i, ]
   exists <- jsdat |>
-    filter(state == row$state, year == row$year, office == row$office,
+    dplyr::filter(state == row$state, year == row$year, office == row$office,
            dist == row$dist, name_snyder == row$name_snyder) |>
     nrow() > 0
 
@@ -74,34 +75,6 @@ for (i in seq_len(nrow(ga_additions))) {
     jsdat <- jsdat |> add_row(!!!row)
   }
 }
-
-## Fixing 2020/2022 Georgia Special candidates ----
-jsdat <- jsdat |>
-  # remove runoff only candidates (but keep the main candidates)
-  tidylog::mutate(
-    temp = ifelse((state == "GA" & year %in% 2020:2022 & office == "S"), 1, 0),
-    temp = replace(temp, name_snyder %in% c("LOEFFLER, KELLY", "WARNOCK, RAPHAEL GAMALIEL",
-                                            "WALKER, HERSCHEL JUNIOR",
-                                            "OSSOFF, THOMAS JONATHAN (JON)", "PERDUE, DAVID A."), 0)
-  ) |>
-  tidylog::filter(temp == 0) |>
-  select(-temp) |>
-  # Update vote_g for 2022 GA runoff candidates (2020/2021 already set when rows added)
-  tidylog::mutate(
-    vote_g = replace(vote_g, year == 2022 & state == "GA" & office == "S" & name_snyder == "WALKER, HERSCHEL JUNIOR", 1721244),
-    vote_g = replace(vote_g, year == 2022 & state == "GA" & office == "S" & name_snyder == "WARNOCK, RAPHAEL GAMALIEL", 1820633)
-  ) |>
-  # Fix incumbency for GA special elections
-  # Loeffler was appointed incumbent, Warnock/Walker are challengers
-  tidylog::mutate(
-    inc = replace(inc, state == "GA" & year %in% 2020:2022 & office == "S" & name_snyder == "LOEFFLER, KELLY", 1),
-    inc = replace(inc, state == "GA" & year %in% 2020:2022 & office == "S" & name_snyder == "WARNOCK, RAPHAEL GAMALIEL", 0),
-    inc = replace(inc, state == "GA" & year == 2022 & office == "S" & name_snyder == "WALKER, HERSCHEL JUNIOR", 0)
-  ) |>
-  mutate(
-    inc = replace(inc, year == 2022 & state == "GA" & office == "S" & name_snyder == "WARNOCK, RAPHAEL GAMALIEL", 2)
-  )
-
 
 ## Runoff elections ----
 
@@ -119,6 +92,7 @@ jsdat <- jsdat |>
          name_snyder != "BUCKLEY, ALLEN" | year != 2008) |>
   select(-temp) |>
   tidylog::mutate(runoff = case_when(
+    state == "GA" & year == 2020 & office == "S" ~ 1, # 2022 Georgia Runoff
     state == "GA" & year == 2022 & office == "S" ~ 1, # 2022 Georgia Runoff
     state == "GA" & year == 2007 & office == "H" & dist == 10 ~ 1,
     state == "GA" & year == 2008 & office == "S" ~ 1,
@@ -141,12 +115,7 @@ jsdat <- jsdat |>
     TRUE ~ NA_real_
   ))
 
-
-# VARIABLE CORRECTIONS =====
-
-## Vote total corrections ----
-
-# Correcting vote totals to reflect runoffs
+# Other runoffs
 jsdat <- jsdat |>
   tidylog::mutate(vote_g = case_when(
     year == 2008 & state == "GA" & name_snyder == "MARTIN, JAMES FRANCIS (JIM)" ~ 909923,
@@ -155,6 +124,9 @@ jsdat <- jsdat |>
     year == 2020 & state == "LA" & name_snyder == "HARRIS, LANCE" ~ 30124,
     TRUE ~ vote_g
   ))
+
+
+# VARIABLE CORRECTIONS =====
 
 # Other vote total additions
 jsdat <- jsdat |>
