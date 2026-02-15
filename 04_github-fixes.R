@@ -1,6 +1,11 @@
 library(tidyverse)
 library(tidylog)
 
+# Helper: add rows from `additions` that don't already exist in `data`
+add_rows_if_new <- function(data, additions, by = c("state", "year", "office", "dist", "name_snyder")) {
+  bind_rows(data, anti_join(additions, data, by = by))
+}
+
 jsdat <- readRDS("data/intermediate/candidates_2006-2024-v1.rds")
 
 # GITHUB ISSUES =====
@@ -19,34 +24,17 @@ if ("name" %in% names(house_append) && !"name_snyder" %in% names(house_append)) 
 house_append <- house_append |>
   select(-any_of(c("u_g", "vote_g_share")))
 
-# Only add rows that don't already exist
-for (i in seq_len(nrow(house_append))) {
-  row <- house_append[i, ]
-  exists <- jsdat |>
-    filter(state == row$state, year == row$year, office == row$office,
-           dist == row$dist, name_snyder == row$name_snyder) |>
-    nrow() > 0
-
-  if (!exists) {
-    jsdat <- jsdat |> add_row(!!!row)
-  }
-}
+jsdat <- add_rows_if_new(jsdat, house_append)
 
 
 ## Issue #21: Adding Bridenstine ----
 # https://github.com/kuriwaki/cces_candidates/issues/21
 
-# Add BRIDENSTINE if not already present
-if (nrow(jsdat |> filter(state == "OK", year == 2016, office == "H", dist == 1,
-                         name_snyder == "BRIDENSTINE, JAMES FREDERICK (JIM)")) == 0) {
-  jsdat <- jsdat |>
-    add_row(state = "OK", year = 2016, office = "H", dist = 1,
-            type = "G", nextup = 2018,
-            party = "R",
-            name_snyder = "BRIDENSTINE, JAMES FREDERICK (JIM)", inc = 1,
-            w_g = 1,
-            vote_g = NA)
-}
+jsdat <- add_rows_if_new(jsdat, tibble(
+  state = "OK", year = 2016, office = "H", dist = 1, type = "G", nextup = 2018,
+  party = "R", name_snyder = "BRIDENSTINE, JAMES FREDERICK (JIM)", inc = 1,
+  w_g = 1, vote_g = NA_real_
+))
 
 
 ## Issue #26: Missing gubernatorial candidate states ----
@@ -154,18 +142,7 @@ additions_2024 <- tibble::tribble(
 
 
 
-# Only add 2024 rows that don't already exist
-for (i in seq_len(nrow(additions_2024))) {
-  row <- additions_2024[i, ]
-  exists <- cand |>
-    filter(state == row$state, year == row$year, office == row$office,
-           dist == row$dist, name_snyder == row$name_snyder) |>
-    nrow() > 0
-
-  if (!exists) {
-    cand <- cand |> add_row(!!!row)
-  }
-}
+cand <- add_rows_if_new(cand, additions_2024)
 
 
 # POST-PROCESSING =====

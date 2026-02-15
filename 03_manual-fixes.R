@@ -1,6 +1,12 @@
 library(tidyverse)
 library(tidylog)
 
+# add rows from `additions` that don't already exist in `data` (claude)
+add_rows_if_new <- function(data, additions, by = c("state", "year", "office", "dist", "name_snyder")) {
+  bind_rows(data, anti_join(additions, data, by = by))
+}
+
+# Data --
 jsdat_raw <- readRDS("data/intermediate/prelim/candidates_party-recoded.rds") |>
   filter(year >= 2006)
 
@@ -23,31 +29,6 @@ jsdat <- jsdat_raw
 
 # MANUAL FIXES =====
 
-## Adding missing candidates ----
-
-# Add LA candidates if not already present
-la_additions <- tibble::tribble(
-  ~state, ~year, ~office, ~dist, ~type, ~nextup, ~party, ~party_formal, ~name_snyder, ~w_g, ~inc, ~vote_g,
-  "LA", 2006, "H", 5, "G", 2008, "D", "D", "HEARN, WILLIAMS GLORIA", 0, 0, 33233,
-  "LA", 2006, "H", 5, "G", 2008, "Lbt", "Lbt", "SANDERS, BRENT", 0, 0, 1876,
-  "LA", 2006, "H", 5, "G", 2008, "I", "I", "WATTS, JOHN", 0, 0, 1262,
-  "LA", 2006, "H", 7, "G", 2008, "D", "D", "STAGG, MIKE", 0, 0, 47133
-)
-
-# Only add rows that don't already exist
-for (i in 1:nrow(la_additions)) {
-  row <- la_additions[i, ]
-  exists <- jsdat |>
-    filter(state == row$state, year == row$year, office == row$office,
-           dist == row$dist, name_snyder == row$name_snyder) |>
-    nrow() > 0
-
-  if (!exists) {
-    jsdat <- jsdat |> add_row(!!!row)
-  }
-}
-
-
 ## Adding Georgia 2020/2021 elections ----
 
 jsdat <- jsdat |>
@@ -63,18 +44,7 @@ ga_additions <- tibble::tribble(
   "GA", 2022, "S", 3, "G", 2028, "D", "D", "WARNOCK, RAPHAEL GAMALIEL", 1820633, 1, 2,
 )
 
-# Only add rows that don't already exist
-for (i in seq_len(nrow(ga_additions))) {
-  row <- ga_additions[i, ]
-  exists <- jsdat |>
-    dplyr::filter(state == row$state, year == row$year, office == row$office,
-           dist == row$dist, name_snyder == row$name_snyder) |>
-    nrow() > 0
-
-  if (!exists) {
-    jsdat <- jsdat |> add_row(!!!row)
-  }
-}
+jsdat <- add_rows_if_new(jsdat, ga_additions)
 
 ## Runoff elections ----
 
@@ -268,18 +238,7 @@ tx22_additions <- tibble::tribble(
 )
 
 
-# Only add rows that don't already exist
-for (i in seq_len(nrow(tx22_additions))) {
-  row <- tx22_additions[i, ]
-  exists <- jsdat |>
-    filter(state == row$state, year == row$year, office == row$office,
-           dist == row$dist, name_snyder == row$name_snyder, type == row$type) |>
-    nrow() > 0
-
-  if (!exists) {
-    jsdat <- jsdat |> add_row(!!!row)
-  }
-}
+jsdat <- add_rows_if_new(jsdat, tx22_additions, by = c("state", "year", "office", "dist", "name_snyder", "type"))
 
 ## McMasters, Thomas (Tom) Manual Edit ----
 
@@ -329,21 +288,7 @@ king_additions <- tibble::tribble(
   "ME", 2012, "S", 1, "G", 2018, "D", "D", "RINGELSTEIN, ZAK", 0, 66268, 0
 )
 
-# Check if Kings entries already exist and add only if they don't
-for (i in seq_len(nrow(king_additions))) {
-  row <- king_additions[i, ]
-  exists <- jsdat |>
-    filter(state == row$state, year == row$year, office == row$office,
-           dist == row$dist, name_snyder == row$name_snyder) |>
-    nrow() > 0
-
-  if (!exists) {
-    jsdat <- jsdat |> add_row(!!!row)
-    cat(sprintf("Added: %s (%s %d Senate)\n", row$name_snyder, row$state, row$year))
-  } else {
-    cat(sprintf("Already exists: %s (%s %d Senate)\n", row$name_snyder, row$state, row$year))
-  }
-}
+jsdat <- add_rows_if_new(jsdat, king_additions)
 
 ## Adding Joe Lieberman races ----
 
@@ -358,21 +303,7 @@ lieberman_additions <- tibble::tribble(
   "CT", 2006, "S", 1, "G", 2012, "Other", "Write-in", "VASSAR, CARL E.", 0, 80, 0,
 )
 
-# Check if Lieberman entries already exist and add only if they don't
-for (i in seq_len(nrow(lieberman_additions))) {
-  row <- lieberman_additions[i, ]
-  exists <- jsdat |>
-    filter(state == row$state, year == row$year, office == row$office,
-           dist == row$dist, name_snyder == row$name_snyder) |>
-    nrow() > 0
-
-  if (!exists) {
-    jsdat <- jsdat |> add_row(!!!row)
-    cat(sprintf("Added: %s (%s %d Senate)\n", row$name_snyder, row$state, row$year))
-  } else {
-    cat(sprintf("Already exists: %s (%s %d Senate)\n", row$name_snyder, row$state, row$year))
-  }
-}
+jsdat <- add_rows_if_new(jsdat, lieberman_additions)
 
 
 ## Adding Bernard Sanders Senate elections ----
@@ -406,21 +337,7 @@ sanders_additions <- tibble::tribble(
   "VT" , 2006, "S", 1, "G", 2012, "Other", "Anti-Bush", "MOSS, PETER", 0, 1518, 0
 )
 
-# Check if Sanders entries already exist and add only if they don't
-for (i in seq_len(nrow(sanders_additions))) {
-  row <- sanders_additions[i, ]
-  exists <- jsdat |>
-    filter(state == row$state, year == row$year, office == row$office,
-           dist == row$dist, name_snyder == row$name_snyder) |>
-    nrow() > 0
-
-  if (!exists) {
-    jsdat <- jsdat |> add_row(!!!row)
-    cat(sprintf("Added: %s (%s %d Senate)\n", row$name_snyder, row$state, row$year))
-  } else {
-    cat(sprintf("Already exists: %s (%s %d Senate)\n", row$name_snyder, row$state, row$year))
-  }
-}
+jsdat <- add_rows_if_new(jsdat, sanders_additions)
 
 
 # STATE-SPECIFIC FIXES =====
@@ -451,21 +368,7 @@ louisiana_senate_2020 <- tibble::tribble(
 )
 
 
-# Check if Cassidy entries already exist and add only if they don't
-for (i in seq_len(nrow(louisiana_senate_2020))) {
-  row <- louisiana_senate_2020[i, ]
-  exists <- jsdat |>
-    filter(state == row$state, year == row$year, office == row$office,
-           dist == row$dist, name_snyder == row$name_snyder) |>
-    nrow() > 0
-
-  if (!exists) {
-    jsdat <- jsdat |> add_row(!!!row)
-    cat(sprintf("Added: %s (%s %d Senate)\n", row$name_snyder, row$state, row$year))
-  } else {
-    cat(sprintf("Already exists: %s (%s %d Senate)\n", row$name_snyder, row$state, row$year))
-  }
-}
+jsdat <- add_rows_if_new(jsdat, louisiana_senate_2020)
 
 ## Fixing battery of Louisiana issues ----
 
@@ -600,18 +503,7 @@ la_additions <- tibble::tribble(
   "LA", 2020, "H", 5, "G", 2022, "R", "R", "HARRIS, LANCE", 0, 30124, 0,
 )
 
-# Add LA House entries
-for (i in seq_len(nrow(la_additions))) {
-  row <- la_additions[i, ]
-  exists <- jsdat |>
-    filter(state == row$state, year == row$year, office == row$office,
-           dist == row$dist, name_snyder == row$name_snyder) |>
-    nrow() > 0
-
-  if (!exists) {
-    jsdat <- jsdat |> add_row(!!!row)
-  }
-}
+jsdat <- add_rows_if_new(jsdat, la_additions)
 
 ## Adding Lisa Murkowski 2010 ----
 
@@ -625,17 +517,7 @@ alaska_senate_2010 <- tibble::tribble(
   "AK", 2010, "S", 2, "G", 2016, "I", "Nonaffiliated", "GIANOUTSOS, TED", 0, 458, 0
 )
 
-for (i in seq_len(nrow(alaska_senate_2010))) {
-  row <- alaska_senate_2010[i, ]
-  exists <- jsdat |>
-    filter(state == row$state, year == row$year, office == row$office,
-           dist == row$dist, name_snyder == row$name_snyder) |>
-    nrow() > 0
-
-  if (!exists) {
-    jsdat <- jsdat |> add_row(!!!row)
-  }
-}
+jsdat <- add_rows_if_new(jsdat, alaska_senate_2010)
 
 ## NY, CT, SC fusion voting aggregation ----
 # In these states candidates can run on multiple party lines (e.g., Democratic and Working Families).
