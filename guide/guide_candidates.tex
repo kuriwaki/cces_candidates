@@ -1,20 +1,22 @@
 \documentclass[12pt]{article}
 \usepackage{guide_common-preamble} % guide_common-preamble.sty
+\usepackage{comment}
 
 % Author setting
 \usepackage{authblk}
+\newcommand{\orcid}[1]{\href{https://orcid.org/#1}{\includegraphics[height=1em]{orcid.png}}}
 
 \title{\Large\textbf{Candidates in American General Elections}}
 
-\author[1]{\normalsize Jeremiah Cha}
-\author[2]{\normalsize Shiro Kuriwaki}
-\author[1]{\normalsize James M. Snyder, Jr.}
+\author[1]{\normalsize Jeremiah Cha\,\orcid{0000-0003-3199-3386}}
+\author[2]{\normalsize Shiro Kuriwaki\,\orcid{0000-0002-5687-2647}}
+\author[1]{\normalsize James M. Snyder, Jr.\,\orcid{0000-0002-1386-2844}}
 \affil[1]{\footnotesize Department of Government, Harvard University.}
-\affil[2]{\footnotesize Department of Political Science and Institution of Social and Policy Studies, Yale University}
+\affil[2]{\footnotesize Department of Political Science and Institution of Social and Policy Studies, Yale University.}
 % \affil[*]{\url{https://github.com/kuriwaki/cces_candidates} or email \href{mailto:shirokuriwaki@gmail.com}{\texttt{shirokuriwaki@gmail.com}}}
 
 
-\date{\vspace{-0.2in} \normalsize Version 3.0 (October 2024)}
+\date{\vspace{-0.2in} \normalsize Version 4.0 (February 2026)}
 
 
 \begin{document}
@@ -28,15 +30,15 @@
 
 \emph{Please cite as: }
 
-Cha, Jeremiah, Shiro Kuriwaki, and James M. Snyder, Jr., 2024, ``Candidates in American General Elections'', Harvard Dataverse. \textsc{doi}: \href{https://doi.org/10.7910/DVN/DGDRDT}{\texttt{10.7910/DVN/DGDRDT}}.
+Cha, Jeremiah, Shiro Kuriwaki, and James M. Snyder, Jr., 2026, ``Candidates in American General Elections'', Harvard Dataverse. \textsc{doi}: \href{https://doi.org/10.7910/DVN/DGDRDT}{\texttt{10.7910/DVN/DGDRDT}}.
 \end{minipage}
 \end{center}
 \smallskip
 
-Between 2006 and 2022, there were over 4,000 races for Congress and Governor in the general election, in which \input{Ns/all_cands}\unskip \ Democratic and Republican candidates ran for office.
+Between 2006 and 2024, there were approximately 5,000 races for Congress and Governor in the general election, in which \input{Ns/all_cands}\unskip \ Democratic and Republican candidates ran for office.
 While many existing efforts compile these election results, few include standardized candidate names across years and offices, candidate incumbency status, and elections for different offices and years combined into a single file.
 
-We provide a candidate-level dataset that is comprehensive for Presidential, Congressional and gubernatorial contests between 2006 and 2022 with standardized names for each unique candidate. We also record party, incumbency, vote totals, and election results. For example:
+We provide a candidate-level dataset that is comprehensive for Congressional and gubernatorial contests between 2006 and 2024, sourced from the official House clerk website but with standardized names for each unique candidate. We also append Presidential statewide election results from MEDSL's compilation. We also record party, incumbency, vote totals, and election results. For example:
 
 \begin{table}[!h]
 \centering
@@ -53,11 +55,11 @@ Most of the candidate-level data -- names and incumbency status -- is a subset o
 Election results for the state office of the Governor are collected from statements of votes by the Secretary of State of each state. We include the odd-year elections in Virginia, New Jersey, Kentucky, Mississippi, and Louisiana.
 Recall elections (Wisconsin 2012, California 2021) are not included.
 
-Presidential vote counts are taken from the data compiled by the MIT Election Data Science Lab (\url{https://doi.org/10.7910/DVN/42MVDX}), which in turn mostly sources from the Official Election Statistics by the House Clerk.
+Presidential vote counts at the state level are taken from the data compiled by the MIT Election Data Science Lab (\url{https://doi.org/10.7910/DVN/42MVDX}), which helpfully standardizes party names of Presidential candidates, even for minor parties.
 
 Incumbency is determined by a programmatic count of whether the name is repeated across years, and by manual inspection of the biography of each candidate.
 
-This dataset excludes candidates who receive less than ten votes in their general election and those who identify Blank or Miscellaneous as their party.
+This dataset excludes candidates who receive less than ten votes in their general election and those who list Blank or Miscellaneous as their party.
 We also exclude overvotes, undervotes, and invalid votes.
 Although these removals make the \texttt{totalvotes} be a few votes less than the actual turnout, we made this choice uniformly because states vary in their reporting protocol for such votes. That is, given that some states report overvotes while others exclude them entirely in their official counts, it is more internally consistent to exclude them for all states.
 
@@ -66,11 +68,11 @@ Our code for recoding and editing the data is open-source in a Github repository
 
 \section{Unique Identifiers}
 
-To identify a single election, group by \texttt{year}, \texttt{state}, \texttt{office}, \texttt{dist}, and \texttt{type} (General vs. Special).  To isolate the set of candidates who won a seat in an election cycle, group by subset by \texttt{year}, \texttt{state}, \texttt{office}, and \texttt{type}, then subset by \texttt{won}.
+To identify a single election, group by \texttt{year}, \texttt{state}, \texttt{office}, \texttt{dist}, and \texttt{type} (General vs. Special).  To isolate the set of candidates who won a seat in an election cycle, group by \texttt{year}, \texttt{state}, \texttt{office}, and \texttt{type}, then subset by \texttt{won}.
 
 To identify a single candidate across office and time, group by \texttt{state} and  \texttt{name\_snyder}.
 As we discuss in detail in this documentation, the candidate names are standardized (by Snyder's coding) so that the same candidate has the same spelling across years and office.
-In very rare instances, a candidate for a major party runs for office two different states. For example, Mitt Romney ran for Governor of Massachusetts, President, and U.S. Senator from Utah. For these candidates, group by \texttt{name\_snyder}.
+In very rare instances, a candidate for a major party runs for office in two different states. For example, Mitt Romney ran for Governor of Massachusetts, President, and U.S. Senator from Utah. For these candidates, group by \texttt{name\_snyder}.
 % \clearpage
 \section{Variable Descriptions and Tabulations}
 
@@ -89,7 +91,7 @@ The office the candidate is running for. Following the Snyder data, we use \text
 
 The district the candidate is running for. U.S. House races in at-large districts are numbered 1 instead of 0 or ``-AL''.
 
- For U.S. Senate candidates, the district variable denotes the class of the particular Senate seat (e.g. Dianne Feinstein has a \texttt{dist} value of 1 since her seat is part of Senate Class I).
+ For U.S. Senate candidates, the district variable denotes the class of the particular Senate seat (e.g. Dianne Feinstein had a \texttt{dist} value of 1 since her seat is part of Senate Class I).
 
 \begin{table}[!h]
 \centering
@@ -113,6 +115,7 @@ The type of election the candidate is running in. We use \texttt{G} to denote ge
 
 \FloatBarrier
 
+
 \subsection*{\texttt{runoff}}
 
 The candidate's election round. In some states (e.g. Louisiana), if no candidate receives over 50 percent of the vote, the top two candidates must run in a runoff election again to determine the winner.
@@ -132,7 +135,7 @@ A runoff variable with a value of 1 denotes that the election the candidate is r
 
 
 Standardized candidate name following Snyder coding rules. The
-specifics of these coding rules are important for overtime tracking because
+specifics of these coding rules are important for tracking over time because
 \textbf{name and state uniquely identify a unique person} across all his
 Congressional candidate data (at least 1950 to the present). The syntax
 is
@@ -177,7 +180,7 @@ above. Candidates may report different style names on the ballot vs.~the
 FEC or they may have multiple FEC IDs at the same time. More commonly, a
 House representative who then runs for higher office like the Senate will
 often get a separate FEC ID, even though they are the same person. In
-theses cases, the Snyder formalization of identifying people by their full
+these cases, the Snyder formalization of identifying people by their full
 name and state is the most reliable.
 
 Therefore, it is important in our formalization to spell out nicknames
@@ -185,9 +188,9 @@ and distinguish between hyphenated last names to the extent that it
 uniquely identifies a person within a state. The same person's name
 should be formatted exactly the same way, and conversely, two different
 people with near-identical last names should somehow be given
-{different} names. For example, if a John Smith ran for Congress
+{different} names. For example, suppose a John Smith ran for Congress
 in 1980 in Ohio and then a \emph{separate, unrelated} John Smith ran
-again in Ohio in 2020. To distinguish the two different people, we
+again in 2020 in Ohio. To distinguish the two different people, we
 would need to find {something} like a middle name or suffix to
 distinguish the name in characters.
 
@@ -359,12 +362,11 @@ The NC-09 House race in 2018 is listed as having no winner because it was later 
 
 \section{Related Work and Extensions}
 
-The MIT Election Data Science Lab (\url{https://dataverse.harvard.edu/dataverse/medsl\_election\_returns}) produces similar election results. Their data goes back as far as 1976. However, the data does not include incumbency status, and the names are taken as officially reported rather than standardized to match across years.
-
+The MIT Election Data Science Lab (\url{https://dataverse.harvard.edu/dataverse/medsl\_election\_returns}) produces similar election result data. Their data goes back as far as 1976. The data does not include incumbency status, and the names are taken as officially reported rather than standardized to be consistent across years.
 
 % \section{Extensions: Race, Gender, and Primary Elections}
 
-Our dataset does not contain information about the gender or race of the candidates. We hope to work collect that data and combine other sources of data in the future.  In the meantime there are several related data sources users can rely on. First, Numerous years in the CES have data available on candidate race and gender for interested researchers. Please see the table below for further information regarding the availability of such information by year and where it can be located.
+Our dataset does not contain information about the gender or race of the candidates. We hope to collect that data and combine other sources of data in the future.  In the meantime there are several related data sources users can rely on. First, numerous years in the CES have data available on candidate race and gender for interested researchers. Please see the table below for further information regarding the availability of such information by year and where it can be located.
 
 \begin{table}[H]
 	\footnotesize
@@ -404,13 +406,14 @@ Elections'' by Bernard Fraga (available at \url{https://www.bernardfraga.com/res
 
 \section{Reporting Errors and Suggesting Improvements}
 
-If you find any errors or ambiguities, please do not hesitate to contact us. The preferred method is to open a ``Issue'' at \url{https://github.com/kuriwaki/cces_candidates/issues}, which we monitor. Otherwise, please email us at \href{mailto:jeremiahcha@g.harvard.edu}{\texttt{jeremiahcha@g.harvard.edu}}, \href{mailto:shirokuriwaki@gmail.com}{\texttt{shirokuriwaki@gmail.com}}, or \href{mailto:jsnyder@gov.harvard.edu}{\texttt{jsnyder@gov.harvard.edu}}.
+If you find any errors or ambiguities, please do not hesitate to contact us (e.g. at \url{https://orcid.org/0000-0002-5687-2647}). The preferred method is to open a ``Issue'' at \url{https://github.com/kuriwaki/cces_candidates/issues}, which we monitor. Otherwise, please email us at any of our emails.
 
 
 
 \section{Version History}
 
 \begin{itemize}
+\item Dataverse v4.0: Added 2024 general elections (2026-02-14). A few corrections of other issues submitted during this time, e.g. 43, 45.
 \item Dataverse v3.0: Added 2021, 2022, 2023 general elections (2024-10-18). These do not include House special elections held during this time.
 \item Dataverse v2.0: Minor Fixes (2023-06-16). Fixes coding for fusion candidates, incumbents, special elections, and additional name inconsistencies (Github issues \href{https://github.com/kuriwaki/cces_candidates/issues/25}{25}, \href{https://github.com/kuriwaki/cces_candidates/issues/26}{26}, \href{https://github.com/kuriwaki/cces_candidates/issues/27}{27}, \href{https://github.com/kuriwaki/cces_candidates/issues/28}{28}, \href{https://github.com/kuriwaki/cces_candidates/issues/29}{29}, \href{https://github.com/kuriwaki/cces_candidates/issues/30}{30},
 \href{https://github.com/kuriwaki/cces_candidates/issues/35}{35}). Thanks to Luca Bellodi and Bill Wilkerson for finding some of these errors.
@@ -418,8 +421,7 @@ If you find any errors or ambiguities, please do not hesitate to contact us. The
 \end{itemize}
 
 \section{Acknowledgements}
-
-Our thanks to Stephen Ansolabehere and Jaclyn Kaslovsky for their suggestions and comments.
+Our thanks to Daniel Moskowitz and Luca Bellodi for submitting issues.
 
 
 

@@ -5,11 +5,10 @@ library(glue)
 library(kableExtra)
 library(tidyverse)
 
-
 source("00b_xtabs-functions.R")
 
 # data ---
-jsdat <- read_dta("release/candidates_2006-2022.dta") |>
+jsdat <- read_dta("release/candidates_2006-2024.dta") |>
   mutate(won_by_type = str_c(type, won, sep = "-"),
          wonparty_by_type = str_c(type, won, sep = "-"))
 
@@ -25,6 +24,7 @@ js_fct |> filter(office == "H", party %in% c("D", "R")) |> write_numbers("house"
 js_fct |> filter(office == "S", party %in% c("D", "R")) |> write_numbers("sen")
 
 # summaries
+write_lines(nrow(jsdat), "guide/Ns/all_rows.tex")
 
 js_fct |>
   group_by(office) |>
