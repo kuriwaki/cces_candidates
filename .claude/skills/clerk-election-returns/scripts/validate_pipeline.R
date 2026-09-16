@@ -1,32 +1,26 @@
-# Validate the clerk-election-returns pipeline on a year CAGE already covers.
+# Validate the clerk-election-returns pipeline against released CAGE.
 #
-# Run from the repo root:
+# Run from the repo root after TASK.md has been executed for a year CAGE already
+# covers:
 #
 #   Rscript .claude/skills/clerk-election-returns/scripts/validate_pipeline.R 2024
 #
-# Runs extract_clerk.py and 00e_skeleton-newyear.R end to end, then scores the
-# skeleton against released CAGE on candidate counts, party, name_snyder and
-# votes. The name history handed to 00e is cut off before YEAR, so a name can
-# only be carried over from an earlier cycle, never copied from the answer.
-# Every extracted vote is also re-read from the PDF with poppler (pdftools), an
-# engine independent of the pypdf extractor.
-#
-# Only creates new files: the PDF under data/clerk/, and summary.csv,
-# candidates.csv, cage_scope.csv, poppler_check.csv plus the pipeline's own
-# outputs under data/clerk/validation/<year>/. No existing file is changed.
+# Compares the pipeline's data/<year>/candidates_<year>_skeleton.csv and its
+# hand-entry list with the CAGE rows for that year, prints the diagnostics and
+# writes them to data/clerk/validation/<year>/: summary.csv (one row per
+# measure), candidates.csv (one row per candidate, pipeline vs CAGE, with each
+# comparison) and cage_scope.csv (every CAGE row and whether the pipeline was
+# responsible for it).
 
 library(tidyverse)
 library(fs)
 
 YEAR <- as.integer(commandArgs(trailingOnly = TRUE)[[1]])
+options(width = 250)
 CAGE_FILE <- "candidates_2006-2024.tab"
 CAGE_VERSION <- "4.1"
 
-skill_dir <- path(".claude", "skills", "clerk-election-returns")
-pdf_path <- path("data", "clerk", str_glue("{YEAR}election.pdf"))
 val_dir <- path("data", "clerk", "validation", YEAR)
-clerk_csv <- path(val_dir, str_glue("clerk_raw_{YEAR}.csv"))
-report_json <- path(val_dir, str_glue("clerk_report_{YEAR}.json"))
 dir_create(val_dir)
 
 norm <- \(x) x |>
@@ -37,14 +31,19 @@ norm <- \(x) x |>
 surname <- \(x) norm(str_extract(x, "^[^,]+"))
 given <- \(x) norm(str_remove(coalesce(str_split_i(x, ",", 2), ""), "\\(.*\\)"))
 nickname <- \(x) norm(coalesce(str_extract(x, "(?<=\\()[^)]+"), ""))
+suffix <- \(x) norm(coalesce(str_split_i(x, ",", 3), ""))
 race_key <- \(state, office, dist, type) str_c(state, office, if_else(office == "H", as.character(dist), ""), type, sep = "|")
+same <- \(a, b) coalesce(a == b, is.na(a) & is.na(b))
 
-# Run the pipeline ----
+# Read ----
 
-if (!file_exists(pdf_path)) {
-  download.file(str_glue("https://history.house.gov/Institution/Election-Statistics/{YEAR}election/"),
-                pdf_path, mode = "wb")
-}
+skel <- read_csv(path("data", YEAR, str_glue("candidates_{YEAR}_skeleton.csv")), col_types = cols(.default = "c")) |>
+  mutate(across(c(dist, nextup, candidatevotes, totalvotes, won), as.numeric),
+         key = race_key(state, office, dist, type))
+
+hand <- read_csv(path("data", YEAR, str_glue("candidates_{YEAR}_hand-entry.csv")), col_types = cols(.default = "c")) |>
+  filter(scope == "race") |>
+  mutate(key = race_key(state, office, dist, if_else(special == "1", "S", "G")))
 
 cage <- dataverse::get_dataframe_by_name(
   file = CAGE_FILE,
@@ -53,46 +52,25 @@ cage <- dataverse::get_dataframe_by_name(
   version = CAGE_VERSION,
   .f = \(f) read_tsv(f, show_col_types = FALSE))
 
-write_rds(filter(cage, year < YEAR), path(val_dir, "cage_history.rds"))
-
-status <- system2("python3", c(path(skill_dir, "scripts", "extract_clerk.py"), pdf_path, YEAR,
-                               "-o", clerk_csv, "--report", report_json))
-stopifnot(status == 0)
-status <- system2("Rscript", c("00e_skeleton-newyear.R", YEAR, clerk_csv,
-                               path(val_dir, "cage_history.rds"), val_dir))
-stopifnot(status == 0)
-
-clerk <- read_csv(clerk_csv, col_types = cols(.default = "c"))
-report <- jsonlite::read_json(report_json)
-hand <- read_csv(path(val_dir, str_glue("candidates_{YEAR}_hand-entry.csv")), col_types = cols(.default = "c"))
-
-skel <- read_csv(path(val_dir, str_glue("candidates_{YEAR}_skeleton.csv")), col_types = cols(.default = "c")) |>
-  mutate(votes = as.numeric(candidatevotes),
-         key = race_key(state, office, dist, type))
-
-# Scope: which CAGE rows the automatic path is responsible for ----
-
-# a race with any row on the hand-entry list is a hand-entry race, even if
-# some of its rows also went into the skeleton
-hand_keys <- hand |>
-  transmute(key = race_key(state_abb, office, dist, if_else(is.na(unexpired_term_ending), "G", "S"))) |>
-  distinct() |>
-  pull(key)
+# Scope: which CAGE rows the skeleton is responsible for ----
 
 cage_scope <- cage |>
   filter(year == YEAR, office %in% c("H", "S")) |>
   mutate(key = race_key(state, office, dist, type),
-         votes = candidatevotes,
          scope = case_when(
-           office == "H" & type == "S" ~ "House special (not printed in volume)",
-           key %in% hand_keys ~ "Hand-entry worklist",
-           runoff %in% 1 & key %in% skel$key ~ "Runoff race sent to skeleton",
-           runoff %in% 1 ~ "Runoff round (not printed in volume)",
-           key %in% skel$key ~ "Automatic",
-           .default = "Race missing from extraction"
+           office == "H" & type == "S" ~ "House special (not printed in the volume)",
+           key %in% hand$key ~ "On the hand-entry list",
+           runoff %in% 1 & key %in% skel$key ~ "Runoff round, but the race is in the skeleton",
+           runoff %in% 1 ~ "Runoff round (not printed in the volume)",
+           key %in% skel$key ~ "Scored",
+           .default = "Race missing from the skeleton"
          ))
 
-count(cage_scope, scope)
+# races the pipeline sends to hand entry although CAGE takes them from the November volume
+hand_but_regular <- cage_scope |>
+  filter(scope == "On the hand-entry list", type == "G", !runoff %in% 1) |>
+  distinct(state, office, dist, key) |>
+  left_join(distinct(hand, key, reason), by = "key")
 
 # Match candidates within race ----
 
@@ -109,12 +87,11 @@ match_on <- function(pairs, pipe, truth, col, how) {
 }
 
 pipe <- skel |>
-  filter(!key %in% hand_keys) |>
-  mutate(pid = row_number(), sur = surname(name_snyder), sur_last = word(sur, -1))
+  mutate(pid = row_number(), sur = surname(name_snyder), sur_last = word(sur, -1), votes = candidatevotes)
 
 truth <- cage_scope |>
-  filter(scope == "Automatic") |>
-  mutate(cid = row_number(), sur = surname(name_snyder), sur_last = word(sur, -1))
+  filter(scope == "Scored") |>
+  mutate(cid = row_number(), sur = surname(name_snyder), sur_last = word(sur, -1), votes = candidatevotes)
 
 # votes come last so that vote agreement is mostly measured on name-matched pairs
 pairs <- tibble(pid = integer(), cid = integer(), how = character()) |>
@@ -123,169 +100,182 @@ pairs <- tibble(pid = integer(), cid = integer(), how = character()) |>
   match_on(pipe, truth, "sur_last", "last surname token") |>
   match_on(pipe, truth, "votes", "vote count")
 
-# Score each candidate ----
+# Compare each candidate ----
 
 prior_people <- cage |>
   filter(year < YEAR) |>
   distinct(state, c_name = name_snyder) |>
   mutate(prior = TRUE)
-later_people <- cage |>
-  filter(year > YEAR) |>
-  distinct(state, c_name = name_snyder) |>
-  mutate(runs_later = TRUE)
-
-incomplete_races <- report$problems |>
-  keep(\(p) str_starts(p$msg, "at least one vote missing")) |>
-  map_chr(\(p) race_key(p$race[[1]], p$race[[2]], p$race[[3]] %||% "", "G"))
 
 candidates <- pairs |>
-  full_join(select(pipe, pid, key, state, office, dist, name_printed, party_printed, name_snyder,
-                   name_source, name_needs_review, party, party_formal, votes, clerk_flags, source_page),
+  full_join(select(pipe, pid, key, state, office, dist, name_printed, party_lines, name_basis, name_snyder,
+                   party, party_formal, votes, totalvotes, won, nextup, source_page, flags),
             by = "pid") |>
-  full_join(select(truth, cid, c_key = key, c_state = state, c_office = office, c_dist = dist,
-                   c_name = name_snyder, c_party = party, c_party_formal = party_formal, c_votes = votes),
+  full_join(select(truth, cid, c_key = key, c_state = state, c_office = office, c_dist = dist, c_name = name_snyder,
+                   c_party = party, c_party_formal = party_formal, c_votes = votes, c_totalvotes = totalvotes,
+                   c_won = won, c_nextup = nextup),
             by = "cid") |>
   mutate(key = coalesce(key, c_key),
          state = coalesce(state, c_state),
          office = coalesce(office, c_office),
-         dist = coalesce(dist, as.character(c_dist)),
          status = case_when(
            !is.na(pid) & !is.na(cid) ~ "matched",
            is.na(cid) ~ "pipeline only",
            .default = "CAGE only"
          )) |>
   left_join(prior_people, by = c("state", "c_name")) |>
-  left_join(later_people, by = c("state", "c_name")) |>
   mutate(
-    year = YEAR,
     prior = coalesce(prior, FALSE),
-    runs_later = coalesce(runs_later, FALSE),
+    from_history = str_starts(coalesce(name_basis, ""), "history"),
     name_equal = coalesce(name_snyder == c_name, FALSE),
     name_outcome = case_when(
       status != "matched" ~ NA,
-      prior & name_equal ~ "Returning: linked to prior record",
-      prior & name_source == "history" ~ "Returning: linked to a different record",
-      prior ~ "Returning: link missed (treated as new)",
-      name_equal ~ "New: name matches CAGE",
-      name_source == "history" ~ "New per CAGE: pipeline linked to a prior record",
-      .default = "New: name differs from CAGE"
+      prior & name_equal ~ "returning: linked to their CAGE record",
+      prior & from_history ~ "returning: linked to a different record",
+      prior ~ "returning: not linked (new name built)",
+      name_equal ~ "new: name identical",
+      from_history ~ "new in CAGE: pipeline linked to an earlier record",
+      .default = "new: name differs"
     ),
     name_diff = case_when(
       status != "matched" | name_equal ~ NA,
       str_remove_all(norm(name_snyder), " ") == str_remove_all(norm(c_name), " ") ~ "punctuation or spacing",
       surname(name_snyder) != surname(c_name) ~ "surname",
-      word(given(name_snyder), 1) != word(given(c_name), 1) ~ "first name (e.g. MIKE vs MICHAEL)",
+      word(given(name_snyder), 1) != word(given(c_name), 1) ~ "first name",
       given(name_snyder) != given(c_name) ~ "middle name or initial",
       nickname(name_snyder) != nickname(c_name) ~ "nickname",
-      norm(coalesce(str_split_i(name_snyder, ",", 3), "")) != norm(coalesce(str_split_i(c_name, ",", 3), "")) ~ "suffix",
+      suffix(name_snyder) != suffix(c_name) ~ "suffix",
       .default = "order of name parts"
     ),
     party_equal = coalesce(party == c_party, FALSE),
     party_formal_equal = coalesce(party_formal == c_party_formal, FALSE),
-    recap_verified = !str_detect(coalesce(clerk_flags, ""), "UNVERIFIED|MISMATCH") &
-      !key %in% incomplete_races,
-    vote_outcome = case_when(
+    votes_outcome = case_when(
       status != "matched" ~ NA,
       is.na(votes) & is.na(c_votes) ~ "both blank",
-      is.na(votes) ~ "pipeline blank",
-      is.na(c_votes) ~ "CAGE blank",
+      is.na(votes) ~ "blank in pipeline",
+      is.na(c_votes) ~ "blank in CAGE",
       votes == c_votes ~ "equal",
       .default = "differ"
-    )
+    ),
+    totalvotes_equal = same(totalvotes, c_totalvotes),
+    won_equal = same(won, c_won),
+    dist_equal = same(dist, c_dist),
+    nextup_equal = same(nextup, c_nextup)
   ) |>
-  select(-pid, -cid, -c_key, -c_state, -c_office, -c_dist)
+  select(-pid, -cid, -c_key, -c_state, -c_office)
 
-# Re-read every vote with poppler ----
-
-page_lines <- tibble(text = pdftools::pdf_text(pdf_path)) |>
-  mutate(page = as.character(row_number())) |>
-  separate_longer_delim(text, "\n") |>
-  mutate(line = row_number(), .by = page) |>
-  mutate(text = str_to_upper(stringi::stri_trans_general(text, "Latin-ASCII")))
-
-# a cross-endorsement line sits a few lines under the candidate's own line
-poppler_check <- clerk |>
-  filter(kind == "candidate", !is.na(candidatevotes)) |>
-  mutate(token = word(str_remove(norm(name_printed), " (JR|SR|II|III|IV|V)$"), -1)) |>
-  transmute(state_abb, office, dist, page, name_printed, token,
-            own = candidatevotes, extra = coalesce(extra_votes, "")) |>
-  pivot_longer(c(own, extra), names_to = "line_type", values_to = "votes") |>
-  separate_longer_delim(votes, "; ") |>
-  filter(votes != "") |>
-  mutate(check_id = row_number(),
-         printed = format(as.numeric(votes), big.mark = ",", scientific = FALSE, trim = TRUE),
-         lo = if_else(line_type == "own", -1, 0),
-         hi = if_else(line_type == "own", 1, 4))
-
-name_hits <- poppler_check |>
-  inner_join(page_lines, by = "page", relationship = "many-to-many") |>
-  filter(str_detect(text, str_c("\\b", token, "\\b"))) |>
-  select(check_id, name_line = line)
-
-vote_hits <- poppler_check |>
-  inner_join(page_lines, by = "page", relationship = "many-to-many") |>
-  filter(str_detect(text, str_c("(?<![0-9,])", printed, "(?![0-9]|,[0-9])"))) |>
-  select(check_id, vote_line = line)
-
-confirmed <- inner_join(name_hits, vote_hits, by = "check_id", relationship = "many-to-many") |>
-  left_join(select(poppler_check, check_id, lo, hi), by = "check_id") |>
-  filter(vote_line - name_line >= lo, vote_line - name_line <= hi) |>
-  distinct(check_id)
-
-poppler_check <- poppler_check |>
-  mutate(year = YEAR, confirmed = check_id %in% confirmed$check_id)
-
-# Summarise ----
+# Summary ----
 
 metric <- \(section, name, n, d = NA) tibble(section, metric = name, n = as.numeric(n), d = as.numeric(d))
 m <- filter(candidates, status == "matched")
-states50 <- filter(clerk, kind == "candidate", office == "H", !state_abb %in% c("DC", "AS", "GU", "PR", "VI", "MP"))
+dr <- filter(m, c_party %in% c("D", "R"))
+scored <- filter(cage_scope, scope == "Scored")
 
 summary <- bind_rows(
-  metric("extraction", "races whose printed lines sum to the PDF's recapitulation", report$races_matching_recap, report$races_cross_checked),
-  metric("extraction", "ERROR entries in extractor report", sum(map_chr(report$problems, "level") == "ERROR")),
-  metric("extraction", "extracted vote figures re-read identically by poppler", sum(poppler_check$confirmed), nrow(poppler_check)),
-  metric("extraction", "House districts found (50 states)", nrow(distinct(states50, state_abb, dist)), 435),
-  metric("extraction", "rows routed to hand-entry worklist", nrow(filter(hand, kind == "candidate"))),
-  metric("counts", "CAGE H/S candidate rows in scope for the automatic path", sum(cage_scope$scope == "Automatic"), nrow(cage_scope)),
-  metric("counts", "CAGE in-scope races found in skeleton", n_distinct(truth$key), n_distinct(truth$key)),
-  metric("counts", "CAGE in-scope candidates matched to a skeleton row", nrow(m), nrow(truth)),
-  metric("counts", "skeleton rows matched to a CAGE candidate", nrow(m), nrow(pipe)),
+  metric("counts", "CAGE House and Senate rows", nrow(cage_scope)),
+  count(cage_scope, scope) |> transmute(section = "counts", metric = str_c("CAGE rows: ", scope), n, d = NA),
+  metric("counts", "skeleton rows", nrow(skel)),
+  metric("counts", "scored CAGE rows found in the skeleton", nrow(m), nrow(scored)),
+  metric("counts", "skeleton rows found in CAGE", nrow(m), nrow(skel)),
   metric("counts", "skeleton rows with no CAGE counterpart", sum(candidates$status == "pipeline only")),
-  metric("counts", "CAGE rows with no skeleton counterpart", sum(candidates$status == "CAGE only")),
-  metric("counts", "skeleton rows in a race that is also on the hand-entry list", sum(skel$key %in% hand_keys)),
-  metric("counts", "CAGE races missing from extraction", n_distinct(filter(cage_scope, scope == "Race missing from extraction")$key)),
-  metric("counts", "CAGE runoff races sent to skeleton", n_distinct(filter(cage_scope, scope == "Runoff race sent to skeleton")$key)),
-  metric("party", "party equal", sum(m$party_equal), nrow(m)),
-  metric("party", "party equal where CAGE is D or R", sum(filter(m, c_party %in% c("D", "R"))$party_equal), sum(m$c_party %in% c("D", "R"))),
-  metric("party", "D/R candidates given the opposite major party", sum(m$party %in% c("D", "R") & m$c_party %in% c("D", "R") & !m$party_equal)),
-  metric("party", "party_formal equal", sum(m$party_formal_equal), nrow(m)),
-  metric("names", "name_snyder equal", sum(m$name_equal), nrow(m)),
-  metric("names", "name_snyder equal, carried from history", sum(filter(m, name_source == "history")$name_equal), sum(m$name_source == "history")),
-  metric("names", "name_snyder equal, reformatted from PDF", sum(filter(m, name_source == "reformatted")$name_equal), sum(m$name_source == "reformatted")),
-  metric("names", "returning candidates linked to their prior record", sum(m$name_outcome == "Returning: linked to prior record"), sum(m$prior)),
-  metric("names", "returning candidates with link missed", sum(m$name_outcome == "Returning: link missed (treated as new)"), sum(m$prior)),
-  metric("names", "candidates linked to a prior record CAGE does not use", sum(str_detect(m$name_outcome, "different record|pipeline linked"))),
-  metric("names", "reformatted names that differ from CAGE and are flagged CHECK",
-         sum(filter(m, name_source == "reformatted", !name_equal)$name_needs_review == "TRUE"),
-         sum(m$name_source == "reformatted" & !m$name_equal)),
-  metric("names", "new names that differ from CAGE, person runs again later",
-         sum(m$name_outcome == "New: name differs from CAGE" & m$runs_later),
-         sum(m$name_outcome == "New: name differs from CAGE")),
-  metric("votes", "votes equal", sum(m$vote_outcome == "equal"), sum(m$vote_outcome %in% c("equal", "differ"))),
-  metric("votes", "votes equal in recapitulation-verified races",
-         sum(filter(m, recap_verified)$vote_outcome == "equal"),
-         sum(filter(m, recap_verified)$vote_outcome %in% c("equal", "differ"))),
-  metric("votes", "votes blank in skeleton but present in CAGE", sum(m$vote_outcome == "pipeline blank")),
-  metric("votes", "votes blank in CAGE but present in skeleton", sum(m$vote_outcome == "CAGE blank"))
+  metric("counts", "scored CAGE rows with no skeleton counterpart", sum(candidates$status == "CAGE only")),
+  metric("counts", "races in both", n_distinct(intersect(skel$key, scored$key)), n_distinct(scored$key)),
+  metric("counts", "hand-entry races CAGE takes from the November volume", nrow(hand_but_regular)),
+  metric("party", "party identical", sum(m$party_equal), nrow(m)),
+  metric("party", "CAGE D or R: party identical", sum(dr$party_equal), nrow(dr)),
+  metric("party", "CAGE D or R: opposite major party", sum(dr$party %in% c("D", "R") & !dr$party_equal)),
+  metric("party", "party_formal identical", sum(m$party_formal_equal), nrow(m)),
+  metric("names", "name_snyder identical", sum(m$name_equal), nrow(m)),
+  metric("names", "copied from history: identical", sum(m$name_equal & m$from_history), sum(m$from_history)),
+  metric("names", "reformatted from printed name: identical", sum(m$name_equal & !m$from_history), sum(!m$from_history)),
+  metric("names", "returning candidates linked to their CAGE record", sum(m$prior & m$name_equal), sum(m$prior)),
+  metric("names", "returning candidates not linked", sum(m$name_outcome == "returning: not linked (new name built)", na.rm = TRUE)),
+  metric("names", "linked to an earlier record CAGE did not use",
+         sum(m$from_history & !m$name_equal)),
+  metric("names", "new candidates: name identical", sum(!m$prior & m$name_equal), sum(!m$prior)),
+  metric("votes", "candidatevotes identical", sum(m$votes_outcome == "equal"), sum(m$votes_outcome %in% c("equal", "differ"))),
+  metric("votes", "candidatevotes blank in pipeline, present in CAGE", sum(m$votes_outcome == "blank in pipeline")),
+  metric("votes", "candidatevotes blank in CAGE, present in pipeline", sum(m$votes_outcome == "blank in CAGE")),
+  metric("votes", "totalvotes identical", sum(m$totalvotes_equal), nrow(m)),
+  metric("votes", "won identical", sum(m$won_equal), nrow(m)),
+  metric("other columns", "dist identical", sum(m$dist_equal), nrow(m)),
+  metric("other columns", "nextup identical", sum(m$nextup_equal), nrow(m))
 ) |>
   mutate(year = YEAR, rate = n / d, .before = 1)
 
-message(str_glue("{YEAR}: {nrow(m)}/{nrow(truth)} CAGE candidates matched, ",
-                 "party {sum(m$party_equal)}/{nrow(m)}, names {sum(m$name_equal)}/{nrow(m)}, ",
-                 "votes {sum(m$vote_outcome == 'equal')}/{sum(m$vote_outcome %in% c('equal', 'differ'))}"))
+# Diagnostics ----
+
+show <- \(df) if (nrow(df) == 0) message("none") else print(as.data.frame(df), row.names = FALSE, right = FALSE)
+
+message(str_glue("\n# {YEAR}: pipeline skeleton vs CAGE v{CAGE_VERSION}"))
+summary |>
+  mutate(value = if_else(is.na(d), as.character(n), str_glue("{n} / {d} ({round(100 * rate, 1)}%)"))) |>
+  select(section, metric, value) |>
+  show()
+
+message("\n# Skeleton rows with no CAGE counterpart")
+candidates |>
+  filter(status == "pipeline only") |>
+  select(state, office, dist, name_printed, name_snyder, party_formal, votes) |>
+  show()
+
+message("\n# Scored CAGE rows with no skeleton counterpart")
+candidates |>
+  filter(status == "CAGE only") |>
+  select(state, office, c_dist, c_name, c_party_formal, c_votes) |>
+  show()
+
+message("\n# CAGE races missing from the skeleton, or runoff rounds left in it")
+cage_scope |>
+  filter(scope %in% c("Race missing from the skeleton", "Runoff round, but the race is in the skeleton")) |>
+  select(scope, state, office, dist, type, name_snyder, candidatevotes) |>
+  show()
+
+message("\n# Hand-entry races CAGE takes from the November volume")
+show(hand_but_regular)
+
+message("\n# Party differences (CAGE party by pipeline party)")
+m |>
+  filter(!party_equal) |>
+  count(c_party, party) |>
+  show()
+m |>
+  filter(!party_equal) |>
+  select(state, office, dist, name_printed, party_lines, party, c_party, party_formal, c_party_formal) |>
+  show()
+
+message("\n# name_snyder differences")
+m |>
+  filter(!name_equal) |>
+  count(name_outcome, name_diff) |>
+  show()
+m |>
+  filter(!name_equal) |>
+  arrange(name_outcome, name_diff) |>
+  select(name_outcome, name_diff, state, office, dist, name_printed, name_snyder, c_name, name_basis) |>
+  show()
+
+message("\n# candidatevotes differences")
+m |>
+  filter(votes_outcome %in% c("differ", "blank in pipeline", "blank in CAGE")) |>
+  select(votes_outcome, state, office, dist, name_printed, votes, c_votes, source_page) |>
+  show()
+
+message("\n# totalvotes and won differences")
+m |>
+  filter(!totalvotes_equal | !won_equal) |>
+  select(state, office, dist, name_snyder, votes, totalvotes, c_totalvotes, won, c_won) |>
+  show()
+
+message("\n# dist and nextup differences")
+m |>
+  filter(!dist_equal | !nextup_equal) |>
+  count(office, dist, c_dist, nextup, c_nextup) |>
+  show()
 
 write_csv(summary, path(val_dir, "summary.csv"), na = "")
 write_csv(candidates, path(val_dir, "candidates.csv"), na = "")
-write_csv(select(cage_scope, -votes), path(val_dir, "cage_scope.csv"), na = "")
-write_csv(poppler_check, path(val_dir, "poppler_check.csv"), na = "")
+write_csv(select(cage_scope, year, state, office, dist, type, name_snyder, party, candidatevotes, runoff, scope),
+          path(val_dir, "cage_scope.csv"), na = "")
+
+message(str_glue("\nwrote summary.csv, candidates.csv and cage_scope.csv to {val_dir}"))
